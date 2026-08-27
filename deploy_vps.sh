@@ -3,29 +3,30 @@
 # ==============================================================================
 # YouthCamping OS - Automated VPS Production Deployment Script
 # ==============================================================================
+# Origin MUST point at the production GitHub repo before running this script:
+#   https://github.com/techyouthcamping-ship-it/YouthCamping.git
+#   git remote set-url origin https://github.com/techyouthcamping-ship-it/YouthCamping.git
+# ycadmin is a normal folder in this repo (not a git submodule).
+# ==============================================================================
 set -e
 
-echo "🚀 [1/6] Pulling latest updates from GitHub..."
+echo "🚀 [1/5] Pulling latest updates from GitHub..."
 git pull origin main
 
-echo "🔄 [2/6] Updating and syncing submodules..."
-git submodule update --init --recursive --remote
-cd ycadmin && git pull origin main && cd ..
-
-echo "📦 [3/6] Building Admin Panel (ycadmin)..."
+echo "📦 [2/5] Building Admin Panel (ycadmin)..."
 cd ycadmin
 npm install --no-audit
 npm run build
 cd ..
 
-echo "🌐 [4/6] Building Next.js Public Website (frontend)..."
+echo "🌐 [3/5] Building Next.js Public Website (frontend)..."
 cd frontend
 export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL:-https://api.youthcamping.online/api}"
 npm install --no-audit
 npm run build
 cd ..
 
-echo "⚙️ [5/6] Updating Backend & Prisma Client..."
+echo "⚙️ [4/5] Updating Backend & Prisma Client..."
 cd backend
 npm install --no-audit
 npx prisma generate
@@ -42,7 +43,7 @@ else
 fi
 cd ..
 
-echo "🔁 [6/6] Reloading PM2 services with updated bundle..."
+echo "🔁 [5/5] Reloading PM2 services with updated bundle..."
 pm2 restart youthcamping-backend --update-env || true
 if pm2 describe youthcamping-web >/dev/null 2>&1; then
   pm2 reload youthcamping-web --update-env

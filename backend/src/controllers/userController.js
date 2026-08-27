@@ -252,11 +252,15 @@ exports.sendOTP = async (req, res, next) => {
       phone ? "phone_verification" : "email_verification",
     );
 
-    console.log("\n==================================================");
-    console.log("📲 [OTP SIMULATOR]");
-    console.log(`Sending verification code to: ${cleanIdentifier}`);
-    console.log(`Message: Your YouthCamping verification code is: ${otp}`);
-    console.log("==================================================\n");
+    if (process.env.NODE_ENV === "production") {
+      console.log(`OTP dispatched for identifier ending ${cleanIdentifier.slice(-4)}`);
+    } else {
+      console.log("\n==================================================");
+      console.log("📲 [OTP SIMULATOR]");
+      console.log(`Sending verification code to: ${cleanIdentifier}`);
+      console.log(`Message: Your YouthCamping verification code is: ${otp}`);
+      console.log("==================================================\n");
+    }
 
     res.status(200).json({
       success: true,
