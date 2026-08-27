@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YouthCamping - Accounting Workspace</title>
+<style>
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#f5f7fb;color:#1e293b}
+header{background:#fff;border-bottom:1px solid #e5e7eb;padding:18px 28px;display:flex;justify-content:space-between;align-items:center}
+h1{margin:0;font-size:22px}
+.sidebar{display:none !important}
+.sidebar h2{font-size:18px}
+.sidebar div{padding:10px 0;color:#cbd5e1}
+main{margin-left:0;padding:25px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:18px}
+.value{font-size:28px;font-weight:700;color:#ea6d1e}
+table{width:100%;border-collapse:collapse;background:#fff;margin-top:20px}
+th,td{padding:12px;border-bottom:1px solid #e5e7eb;text-align:left}
+th{background:#f8fafc}
+button{background:#ea6d1e;color:#fff;border:none;padding:10px 16px;border-radius:6px;cursor:pointer}
+.tabs{display:flex;gap:12px;margin:20px 0}
+.tab{background:#fff;border:1px solid #ddd;padding:10px 15px;border-radius:6px}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>Accounting Workspace</h1>
+<button>Add Payment</button>
+</header>
+
+<div class="tabs">
+<div class="tab">Overview</div>
+<div class="tab">Payments</div>
+<div class="tab">Cash Handover</div>
+<div class="tab">Deposits</div>
+<div class="tab">Customer Dues</div>
+<div class="tab">Receipts</div>
+<div class="tab">Audit Log</div>
+</div>
+
+<div class="cards">
+<div class="card"><div>Today's Collection</div><div class="value">₹2.35L</div></div>
+<div class="card"><div>Cash Pending Deposit</div><div class="value">₹42K</div></div>
+<div class="card"><div>Outstanding Dues</div><div class="value">₹8.2L</div></div>
+<div class="card"><div>Refund Pending</div><div class="value">₹21K</div></div>
+</div>
+
+<h2 style="margin-top:30px">Recent Payments</h2>
+<table>
+<thead>
+<tr>
+<th>Booking</th>
+<th>Customer</th>
+<th>Amount</th>
+<th>Mode</th>
+<th>Collected By</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>BK-2401</td><td>Rahul Shah</td><td>₹5,000</td><td>Cash</td><td>Zeel</td><td>Pending Deposit</td></tr>
+<tr><td>BK-2402</td><td>Priya Patel</td><td>₹12,000</td><td>UPI</td><td>Vidhi</td><td>Verified</td></tr>
+<tr><td>BK-2403</td><td>Aman Mehta</td><td>₹7,999</td><td>Bank</td><td>Hemal</td><td>Verified</td></tr>
+</tbody>
+</table>
+
+<h2 style="margin-top:30px">Employee Cash Ledger</h2>
+<table>
+<thead>
+<tr><th>Employee</th><th>Collected</th><th>Deposited</th><th>Cash in Hand</th></tr>
+</thead>
+<tbody>
+<tr><td>Zeel</td><td>₹45,000</td><td>₹30,000</td><td>₹15,000</td></tr>
+<tr><td>Vidhi</td><td>₹25,000</td><td>₹25,000</td><td>₹0</td></tr>
+<tr><td>Hemal</td><td>₹18,500</td><td>₹0</td><td>₹18,500</td></tr>
+</tbody>
+</table>
+
+</main>
+</body>
+</html>

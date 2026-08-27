@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouthCamping - Booking Workspace</title>
+    <style>
+        :root {
+            --orange: #F5760E;
+            --dark: #1a1a1a;
+            --grey-900: #2d2d2d;
+            --grey-700: #4a4a4a;
+            --grey-500: #757575;
+            --grey-300: #c0c0c0;
+            --grey-100: #f5f5f5;
+            --grey-50: #fafafa;
+            --blue: #0066cc;
+            --green: #10b981;
+            --amber: #f59e0b;
+            --red: #ef4444;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+            --radius: 12px;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --spacing-xl: 24px;
+            --spacing-2xl: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--white);
+            color: var(--dark);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            min-height: 100vh;
+            background: var(--white);
+        }
+
+        .sidebar {
+            display: none !important;
+        }
+
+        .sidebar-item {
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: var(--spacing-sm);
+            transition: background 0.2s;
+        }
+
+        .sidebar-item:hover {
+            background: var(--grey-700);
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--white);
+            border-bottom: 1px solid var(--grey-100);
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--spacing-xl);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--grey-500);
+            font-size: 16px;
+            padding: 4px 8px;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--dark);
+        }
+
+        .booking-title {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .booking-id-label {
+            font-size: 12px;
+            color: var(--grey-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .booking-id {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .trip-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            flex: 1;
+            min-width: 0;
+        }
+
+        .trip-name {
+            font-weight: 600;
+            color: var(--dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .trip-dates {
+            font-size: 13px;
+            color: var(--grey-500);
+            white-space: nowrap;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            flex-shrink: 0;
+        }
+
+        .customer-name {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .customer-phone {
+            color: var(--grey-500);
+            font-size: 13px;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-shrink: 0;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-primary {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #e55c05;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-secondary {
+            background: var(--grey-100);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background: var(--grey-200);
+        }
+
+        .btn-more {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border-radius: 6px;
+            justify-content: center;
+            background: var(--grey-50);
+        }
+
+        .btn-more:hover {
+            background: var(--grey-100);
+        }
+
+        .kpi-strip {
+            position: sticky;
+            top: 61px;
+            z-index: 99;
+            background: var(--white);
+            border-bottom: 1px solid var(--grey-100);
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .kpi-card {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: var(--spacing-md);
+            background: var(--grey-50);
+            border: 1px solid var(--grey-100);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .kpi-card:hover {
+            background: var(--grey-100);
+            border-color: var(--grey-300);
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            color: var(--grey-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .kpi-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .kpi-status {
+            font-size: 12px;
+            color: var(--grey-500);
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .main-panel {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-2xl);
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-2xl);
+            border-bottom: 1px solid var(--grey-100);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-nav::-webkit-scrollbar {
+            height: 2px;
+        }
+
+        .tab-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .tab-nav::-webkit-scrollbar-thumb {
+            background: var(--grey-300);
+            border-radius: 2px;
+        }
+
+        .tab-link {
+            padding: 12px 0;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: var(--grey-500);
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-link:hover {
+            color: var(--dark);
+        }
+
+        .tab-link.active {
+            color: var(--orange);
+            border-bottom-color: var(--orange);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .alert {
+            padding: var(--spacing-lg);
+            border-radius: var(--radius);
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: var(--green);
+            font-size: 14px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--grey-100);
+            border-radius: var(--radius);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: var(--grey-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .summary-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .issue-item {
+            padding: var(--spacing-md);
+            background: var(--grey-50);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid var(--amber);
+        }
+
+        .issue-icon {
+            font-size: 16px;
+        }
+
+        .issue-text {
+            flex: 1;
+            font-size: 13px;
+            color: var(--dark);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--grey-100);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .table th {
+            background: var(--grey-50);
+            padding: var(--spacing-lg);
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--grey-700);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--grey-100);
+        }
+
+        .table td {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--grey-100);
+            font-size: 13px;
+        }
+
+        .table tr:hover {
+            background: var(--grey-50);
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-draft {
+            background: rgba(117, 117, 117, 0.1);
+            color: var(--grey-700);
+        }
+
+        .badge-progress {
+            background: rgba(0, 102, 204, 0.1);
+            color: var(--blue);
+        }
+
+        .badge-complete {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--green);
+        }
+
+        .badge-pending {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--amber);
+        }
+
+        .badge-blocked {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--red);
+        }
+
+        .right-rail {
+            width: 340px;
+            background: var(--white);
+            border-left: 1px solid var(--grey-100);
+            padding: var(--spacing-2xl);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .rail-section {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .rail-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--grey-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .rail-section-edit {
+            cursor: pointer;
+            color: var(--orange);
+            font-size: 14px;
+            background: none;
+            border: none;
+        }
+
+        .customer-card {
+            background: var(--grey-50);
+            border: 1px solid var(--grey-100);
+            border-radius: var(--radius);
+            padding: var(--spacing-lg);
+        }
+
+        .customer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--orange);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .customer-name-rail {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+
+        .customer-detail {
+            font-size: 12px;
+            color: var(--grey-500);
+            margin-bottom: 4px;
+        }
+
+        .note-area {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 1px solid var(--grey-100);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 80px;
+            background: var(--white);
+            color: var(--dark);
+            transition: border-color 0.2s;
+        }
+
+        .note-area:focus {
+            outline: none;
+            border-color: var(--orange);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+            background: var(--orange);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #e55c05;
+        }
+
+        .action-btn-ghost {
+            background: transparent;
+            color: var(--grey-700);
+            border: 1px solid var(--grey-300);
+        }
+
+        .action-btn-ghost:hover {
+            background: var(--grey-50);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--grey-100);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: var(--spacing-md);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--green);
+            width: 65%;
+            transition: width 0.3s;
+        }
+
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .checklist-item {
+            display: grid;
+            grid-template-columns: 24px 1fr 100px 100px 100px;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--grey-50);
+            border-radius: 8px;
+            border: 1px solid var(--grey-100);
+            align-items: center;
+        }
+
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--orange);
+        }
+
+        .checklist-label {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .checklist-status {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--grey-50);
+            border-radius: 8px;
+            border-left: 3px solid var(--orange);
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--orange);
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 2px;
+        }
+
+        .timeline-time {
+            font-size: 12px;
+            color: var(--grey-500);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-2xl);
+            color: var(--grey-500);
+        }
+
+        .empty-state-icon {
+            font-size: 32px;
+            margin-bottom: var(--spacing-lg);
+            opacity: 0.5;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: var(--spacing-2xl);
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: var(--spacing-lg);
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 1px solid var(--grey-300);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            background: var(--white);
+            color: var(--dark);
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--orange);
+        }
+
+        @media (max-width: 1400px) {
+            .right-rail {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 320px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="main-content">
+            <div class="header">
+                <div class="header-left">
+                    <button class="back-btn">← Back</button>
+                    <div class="booking-title">
+                        <div class="booking-id-label">Booking ID</div>
+                        <div class="booking-id">BK-X5EXKFB00MNW</div>
+                    </div>
+                </div>
+
+                <div class="trip-header">
+                    <div>
+                        <div class="trip-name">Manali Kasol Amritsar Backpacking</div>
+                        <div class="trip-dates">27 Jul – 06 Aug 2026</div>
+                    </div>
+                </div>
+
+                <div class="customer-info">
+                    <div>
+                        <div class="customer-name">Suru Chaudhary</div>
+                        <div class="customer-phone">+91 9978567823</div>
+                    </div>
+                    <div class="status-badge status-confirmed">CONFIRMED</div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="showAddPaymentModal()">+ Add Payment</button>
+                    <button class="btn btn-secondary" onclick="showAssignTaskModal()">Assign Task</button>
+                    <button class="btn btn-more">⋯</button>
+                </div>
+            </div>
+
+            <div class="kpi-strip">
+                <div class="kpi-card" onclick="switchTab('payments')">
+                    <div class="kpi-label">💰 Payment</div>
+                    <div class="kpi-value">₹35,696</div>
+                    <div class="kpi-status">Due of ₹35,696</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('passengers')">
+                    <div class="kpi-label">👥 Passengers</div>
+                    <div class="kpi-value">16</div>
+                    <div class="kpi-status">Confirmed</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">📅 Departure</div>
+                    <div class="kpi-value">26</div>
+                    <div class="kpi-status">Days to go</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('operations')">
+                    <div class="kpi-label">🏨 Operations</div>
+                    <div class="kpi-value">2/6</div>
+                    <div class="kpi-status">Booked</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('ticketing')">
+                    <div class="kpi-label">🎫 Ticketing</div>
+                    <div class="kpi-value">1</div>
+                    <div class="kpi-status">Pending</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('activity')">
+                    <div class="kpi-label">📋 Tasks</div>
+                    <div class="kpi-value">3</div>
+                    <div class="kpi-status">Open</div>
+                </div>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="main-panel">
+                    <div class="tab-nav">
+                        <button class="tab-link active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+                        <button class="tab-link" data-tab="passengers" onclick="switchTab('passengers')">Passengers</button>
+                        <button class="tab-link" data-tab="payments" onclick="switchTab('payments')">Payments</button>
+                        <button class="tab-link" data-tab="operations" onclick="switchTab('operations')">Operations</button>
+                        <button class="tab-link" data-tab="ticketing" onclick="switchTab('ticketing')">Ticketing</button>
+                        <button class="tab-link" data-tab="accounting" onclick="switchTab('accounting')">Accounting</button>
+                        <button class="tab-link" data-tab="files" onclick="switchTab('files')">Files & Notes</button>
+                        <button class="tab-link" data-tab="activity" onclick="switchTab('activity')">Activity</button>
+                        <button class="tab-link" data-tab="feedback" onclick="switchTab('feedback')">Feedback</button>
+                    </div>
+
+                    <!-- OVERVIEW TAB -->
+                    <div id="overview" class="tab-content active">
+                        <div class="alert">✓ All systems operational. No pending actions.</div>
+
+                        <div class="section">
+                            <div class="section-title">⚠️ Items Needing Attention</div>
+                            <div class="issue-item">
+                                <div class="issue-icon">💰</div>
+                                <div class="issue-text">Outstanding Balance: ₹35,696 due</div>
+                            </div>
+                            <div class="issue-item">
+                                <div class="issue-icon">🎫</div>
+                                <div class="issue-text">1 Ticket pending approval</div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Trip Summary</div>
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <div class="summary-label">Package</div>
+                                    <div class="summary-value">Sleeper Train</div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Upgrade</div>
+                                    <div class="summary-value">3AC Available</div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Departure</div>
+                                    <div class="summary-value">27 Jul 2026</div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Duration</div>
+                                    <div class="summary-value">11 Days</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Departure History</div>
+                            <div class="card">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Changed From</th>
+                                            <th>Changed By</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>27 Jul 2026</td>
+                                            <td>30 Jul 2026</td>
+                                            <td>Sales Admin</td>
+                                            <td>28 Jun 2026</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PASSENGERS TAB -->
+                    <div id="passengers" class="tab-content">
+                        <div class="section">
+                            <div class="section-title" style="justify-content: space-between;">
+                                <span>Passengers (16)</span>
+                                <button class="btn btn-primary btn-small" style="padding: 6px 12px; font-size: 12px;">+ Add Passenger</button>
+                            </div>
+                            <div class="card">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 30px;"></th>
+                                            <th>Name</th>
+                                            <th>Age</th>
+                                            <th>Gender</th>
+                                            <th>Phone</th>
+                                            <th>Documents</th>
+                                            <th>Room Sharing</th>
+                                            <th>Food Preference</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: center;">👤</td>
+                                            <td><strong>Suru Chaudhary</strong></td>
+                                            <td>28</td>
+                                            <td>Male</td>
+                                            <td>9978567823</td>
+                                            <td><span class="badge badge-complete">✓ 3/3</span></td>
+                                            <td>Double</td>
+                                            <td><span class="badge badge-complete">Normal Food</span></td>
+                                            <td><span class="badge badge-complete">Confirmed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">👤</td>
+                                            <td><strong>Priya Sharma</strong></td>
+                                            <td>26</td>
+                                            <td>Female</td>
+                                            <td>9876543210</td>
+                                            <td><span class="badge badge-pending">⚠ 2/3</span></td>
+                                            <td>Double</td>
+                                            <td><span class="badge badge-pending">Jain Food</span></td>
+                                            <td><span class="badge badge-pending">Ahmedabad (RAC)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">👤</td>
+                                            <td><strong>Rahul Desai</strong></td>
+                                            <td>30</td>
+                                            <td>Male</td>
+                                            <td>9765432109</td>
+                                            <td><span class="badge badge-complete">✓ 3/3</span></td>
+                                            <td>Quad</td>
+                                            <td><span class="badge badge-complete">Normal Food</span></td>
+                                            <td><span class="badge badge-pending">Amritsar (WL)</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENTS TAB -->
+                    <div id="payments" class="tab-content">
+                        <div class="section">
+                            <div class="card">
+                                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Package Price</div>
+                                        <div class="summary-value">₹33,996</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">GST (5%)</div>
+                                        <div class="summary-value">₹1,699</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Net Amount</div>
+                                        <div class="summary-value" style="color: var(--red);">₹35,696</div>
+                                    </div>
+                                </div>
+                                <div style="border-top: 1px solid var(--grey-100); padding-top: var(--spacing-lg); display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg);">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Received</div>
+                                        <div class="summary-value">₹0</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Pending</div>
+                                        <div class="summary-value" style="color: var(--red);">₹35,696</div>
+                                    </div>
+                                </div>
+                                <div class="progress-bar" style="margin-top: var(--spacing-lg);">
+                                    <div class="progress-bar-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Payment Status</div>
+                            <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                                <button onclick="switchPaymentTab('successful')" class="tab-link" style="border-bottom: 2px solid var(--orange); color: var(--orange);">Successful (0)</button>
+                                <button onclick="switchPaymentTab('outstanding')" class="tab-link">Outstanding Requests (1)</button>
+                                <button onclick="switchPaymentTab('expired')" class="tab-link">Expired/Failed (0)</button>
+                            </div>
+                            <div class="card">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">💾</div>
+                                    <div>No payments recorded yet</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Payment History</div>
+                            <div class="card">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Mode</th>
+                                            <th>Collected By</th>
+                                            <th>Approved By</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; color: var(--grey-500); padding: var(--spacing-2xl) 0;">No payment records</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OPERATIONS TAB -->
+                    <div id="operations" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Operations Checklist</div>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox" checked>
+                                    <div class="checklist-label">Hotel Booking</div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">Assigned</div>
+                                    <div class="checklist-status"><span class="badge badge-complete">Booked</span></div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">28 Jun 2026</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Tempo Traveller</div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">Not assigned</div>
+                                    <div class="checklist-status"><span class="badge badge-pending">Pending</span></div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">—</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Guide Assignment</div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">Not assigned</div>
+                                    <div class="checklist-status"><span class="badge badge-pending">Pending</span></div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">—</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox" checked>
+                                    <div class="checklist-label">Room Allocation</div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">Assigned</div>
+                                    <div class="checklist-status"><span class="badge badge-complete">Done</span></div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">29 Jun 2026</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Insurance</div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">Not assigned</div>
+                                    <div class="checklist-status"><span class="badge badge-pending">Pending</span></div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">—</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Visa Processing</div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">Not assigned</div>
+                                    <div class="checklist-status"><span class="badge badge-pending">Pending</span></div>
+                                    <div style="font-size: 12px; color: var(--grey-500);">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TICKETING TAB -->
+                    <div id="ticketing" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Train Tickets</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-lg);">
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                                        <div>
+                                            <div class="summary-label">PNR</div>
+                                            <div class="summary-value" style="font-size: 16px;">BK123ABC</div>
+                                        </div>
+                                        <span class="badge badge-pending">PENDING</span>
+                                    </div>
+                                    <div style="border-top: 1px solid var(--grey-100); padding-top: var(--spacing-lg);">
+                                        <div class="summary-item" style="margin-bottom: var(--spacing-md);">
+                                            <div class="summary-label">Seat</div>
+                                            <div class="summary-value" style="font-size: 14px;">S1, S2</div>
+                                        </div>
+                                        <div class="summary-item" style="margin-bottom: var(--spacing-md);">
+                                            <div class="summary-label">Coach</div>
+                                            <div class="summary-value" style="font-size: 14px;">C2</div>
+                                        </div>
+                                        <div class="summary-item">
+                                            <div class="summary-label">Status</div>
+                                            <div class="summary-value" style="font-size: 14px;">Confirmed</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-lg);">
+                                        <button class="btn btn-secondary" style="flex: 1; padding: 6px; font-size: 12px;">Download</button>
+                                        <button class="btn btn-secondary" style="flex: 1; padding: 6px; font-size: 12px;">Edit</button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: var(--spacing-lg);">
+                                        <div>
+                                            <div class="summary-label">PNR</div>
+                                            <div class="summary-value" style="font-size: 16px;">BK456DEF</div>
+                                        </div>
+                                        <span class="badge badge-draft">DRAFT</span>
+                                    </div>
+                                    <div style="border-top: 1px solid var(--grey-100); padding-top: var(--spacing-lg);">
+                                        <div class="empty-state" style="padding: var(--spacing-lg) 0;">
+                                            <div style="font-size: 12px; color: var(--grey-500);">Awaiting passenger details</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: var(--spacing-sm); margin-top: var(--spacing-lg);">
+                                        <button class="btn btn-primary" style="flex: 1; padding: 6px; font-size: 12px;">Generate</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACCOUNTING TAB -->
+                    <div id="accounting" class="tab-content">
+                        <div class="alert">🔒 Finance Dashboard - Role Restricted</div>
+                        <div class="section">
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg);">
+                                <div class="card">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Selling Price</div>
+                                        <div class="summary-value">₹35,696</div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Vendor Cost</div>
+                                        <div class="summary-value">₹18,500</div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Gross Profit</div>
+                                        <div class="summary-value" style="color: var(--green);">₹17,196</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--spacing-lg);">
+                                <div class="card">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Margin %</div>
+                                        <div class="summary-value">48%</div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="summary-item">
+                                        <div class="summary-label">GST</div>
+                                        <div class="summary-value">₹1,699</div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Discount</div>
+                                        <div class="summary-value">₹0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FILES TAB -->
+                    <div id="files" class="tab-content">
+                        <div class="section">
+                            <div class="section-title" style="justify-content: space-between;">
+                                <span>Files & Documents</span>
+                                <button class="btn btn-primary btn-small" style="padding: 6px 12px; font-size: 12px;">⬆ Upload</button>
+                            </div>
+                            <div class="card">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Type</th>
+                                            <th>Uploaded By</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Invoice_BK-X5EXKFB00MNW.pdf</td>
+                                            <td><span class="badge badge-complete">Invoice</span></td>
+                                            <td>Sales Admin</td>
+                                            <td>28 Jun 2026</td>
+                                            <td><a href="#" style="color: var(--orange); text-decoration: none;">Download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hotel_Voucher_Manali.pdf</td>
+                                            <td><span class="badge badge-progress">Voucher</span></td>
+                                            <td>Operations</td>
+                                            <td>29 Jun 2026</td>
+                                            <td><a href="#" style="color: var(--orange); text-decoration: none;">Download</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Internal Notes</div>
+                            <div class="card">
+                                <textarea class="note-area" placeholder="Add internal notes..." style="width: 100%;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTIVITY TAB -->
+                    <div id="activity" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Activity Timeline</div>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Booking Created</div>
+                                        <div class="timeline-time">28 Jun 2026 at 03:24 pm • By Suru Chaudhary</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Booking Confirmed</div>
+                                        <div class="timeline-time">28 Jun 2026 at 05:12 pm • By Sales Admin</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Hotel Assigned - Manali Resort</div>
+                                        <div class="timeline-time">29 Jun 2026 at 10:30 am • By Operations</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Room Allocation Completed</div>
+                                        <div class="timeline-time">29 Jun 2026 at 02:15 pm • By Operations</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Task Assigned: Verify PNR</div>
+                                        <div class="timeline-time">30 Jun 2026 at 09:00 am • By Manager</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FEEDBACK TAB -->
+                    <div id="feedback" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Trip Feedback</div>
+                            <div class="card">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">⭐</div>
+                                    <div>Trip feedback will appear here after completion</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-rail">
+                    <div class="rail-section">
+                        <div class="rail-section-title">Customer Info</div>
+                        <div class="customer-card">
+                            <div class="customer-avatar">SC</div>
+                            <div class="customer-name-rail">Suru Chaudhary</div>
+                            <div class="customer-detail">📞 +91 9978567823</div>
+                            <div class="customer-detail">✉️ sureshchaudhary310@gmail.com</div>
+                            <div style="border-top: 1px solid var(--grey-200); margin: var(--spacing-md) 0; padding-top: var(--spacing-md);">
+                                <div class="customer-detail" style="margin-bottom: 2px;">Lead Source</div>
+                                <div style="font-size: 13px; color: var(--dark);">Website Booking</div>
+                            </div>
+                            <div style="margin-top: var(--spacing-md);">
+                                <div class="customer-detail" style="margin-bottom: 2px;">Booking Executive</div>
+                                <div style="font-size: 13px; color: var(--dark);">Sales Admin Master</div>
+                            </div>
+                            <div style="margin-top: var(--spacing-md);">
+                                <div class="customer-detail" style="margin-bottom: 2px;">Pickup City</div>
+                                <div style="font-size: 13px; color: var(--dark);">Ahmedabad</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rail-section">
+                        <div class="rail-section-title">Internal Note</div>
+                        <textarea class="note-area" placeholder="Add a pinned note..." style="width: 100%;">Customer prefers morning departures. Has medical requirements - mild asthma.</textarea>
+                    </div>
+
+                    <div class="rail-section">
+                        <div class="rail-section-title">Tags</div>
+                        <div class="card" style="background: var(--grey-50);">
+                            <div style="font-size: 13px; color: var(--grey-500);">No tags added</div>
+                        </div>
+                    </div>
+
+                    <div class="rail-section">
+                        <div class="rail-section-title">Automation</div>
+                        <button class="action-btn action-btn-ghost">Resend Confirmation</button>
+                        <button class="action-btn action-btn-ghost">Send Reminder</button>
+                        <button class="action-btn action-btn-ghost">Payment Link</button>
+                        <button class="action-btn action-btn-ghost">Push Invoice</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add Payment -->
+    <div id="addPaymentModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-title">Add Payment</div>
+            <div class="form-group">
+                <label class="form-label">Amount (₹)</label>
+                <input type="number" class="form-input" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Payment Mode</label>
+                <select class="form-input">
+                    <option>Cash</option>
+                    <option>UPI</option>
+                    <option>Bank Transfer</option>
+                    <option>Card</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Collected By</label>
+                <select class="form-input">
+                    <option>Sales Team</option>
+                    <option>Guide</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: var(--spacing-lg);">
+                <button class="btn btn-primary" style="flex: 1;" onclick="closeAddPaymentModal()">Add Payment</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeAddPaymentModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Assign Task -->
+    <div id="assignTaskModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-title">Assign Task</div>
+            <div class="form-group">
+                <label class="form-label">Task Title</label>
+                <input type="text" class="form-input" placeholder="Enter task title...">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Assign To</label>
+                <select class="form-input">
+                    <option>Sales Admin</option>
+                    <option>Operations</option>
+                    <option>Finance</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Due Date</label>
+                <input type="date" class="form-input">
+            </div>
+            <div style="display: flex; gap: var(--spacing-lg);">
+                <button class="btn btn-primary" style="flex: 1;" onclick="closeAssignTaskModal()">Create Task</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeAssignTaskModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const links = document.querySelectorAll('.tab-link');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            links.forEach(link => link.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        }
+
+        function switchPaymentTab(tabName) {
+            console.log('Switched to payment tab:', tabName);
+        }
+
+        function showAddPaymentModal() {
+            document.getElementById('addPaymentModal').classList.add('active');
+        }
+
+        function closeAddPaymentModal() {
+            document.getElementById('addPaymentModal').classList.remove('active');
+        }
+
+        function showAssignTaskModal() {
+            document.getElementById('assignTaskModal').classList.add('active');
+        }
+
+        function closeAssignTaskModal() {
+            document.getElementById('assignTaskModal').classList.remove('active');
+        }
+
+        // Close modals on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAddPaymentModal();
+                closeAssignTaskModal();
+            }
+        });
+
+        // Close modals on outside click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departure Workspace - YouthCamping</title>
+    <style>
+        :root {
+            --orange-600: #ea6d1e;
+            --orange-50: #fef9f3;
+            --slate-900: #0f172a;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --green-600: #16a34a;
+            --green-50: #f0fdf4;
+            --blue-600: #2563eb;
+            --blue-50: #eff6ff;
+            --amber-600: #d97706;
+            --amber-50: #fffbeb;
+            --red-600: #dc2626;
+            --red-50: #fef2f2;
+            --gray-600: #4b5563;
+            --gray-50: #f9fafb;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+        }
+
+        body {
+            font-family: Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--slate-900);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            min-height: 100vh;
+            background: var(--white);
+        }
+
+        /* ============ SIDEBAR ============ */
+        .sidebar {
+            display: none !important;
+        }
+
+        .sidebar-logo {
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--orange-600);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.15s;
+            color: var(--slate-300);
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--white);
+        }
+
+        .sidebar-item.active {
+            background-color: var(--orange-600);
+            color: var(--white);
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-back {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: none;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--slate-600);
+            transition: all 0.15s;
+        }
+
+        .header-back:hover {
+            background: var(--slate-50);
+            color: var(--slate-900);
+        }
+
+        .header-departure-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .header-departure-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-departure-id {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--slate-900);
+            font-family: 'Courier New', monospace;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 24px;
+            background: var(--border);
+        }
+
+        .header-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .header-section-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-section-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-900);
+        }
+
+        .header-spacer {
+            flex: 1;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-header {
+            padding: 8px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: var(--slate-50);
+            color: var(--slate-600);
+        }
+
+        .btn-header:hover {
+            background: var(--slate-100);
+            color: var(--slate-900);
+        }
+
+        .btn-primary {
+            background: var(--orange-600);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #d96c1b;
+        }
+
+        /* ============ STATUS BADGE ============ */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-planning {
+            background: var(--blue-50);
+            color: var(--blue-600);
+        }
+
+        .status-ready {
+            background: var(--amber-50);
+            color: var(--amber-600);
+        }
+
+        .status-inprogress {
+            background: var(--orange-50);
+            color: var(--orange-600);
+        }
+
+        .status-completed {
+            background: var(--green-50);
+            color: var(--green-600);
+        }
+
+        .status-cancelled {
+            background: var(--red-50);
+            color: var(--red-600);
+        }
+
+        /* ============ KPI STRIP ============ */
+        .kpi-strip {
+            position: sticky;
+            top: 56px;
+            z-index: 40;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .kpi-card {
+            flex-shrink: 0;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            min-width: 160px;
+            cursor: pointer;
+            transition: all 0.15s;
+            text-align: center;
+        }
+
+        .kpi-card:hover {
+            border-color: var(--orange-600);
+            box-shadow: var(--shadow);
+        }
+
+        .kpi-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .kpi-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+
+        .kpi-subtext {
+            font-size: 11px;
+            color: var(--slate-500);
+            margin-top: 2px;
+        }
+
+        /* ============ CONTENT AREA ============ */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ============ TABS ============ */
+        .tab-navigation {
+            position: sticky;
+            top: 142px;
+            z-index: 40;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tab-link {
+            padding: 12px 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-500);
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .tab-link:hover {
+            color: var(--slate-900);
+        }
+
+        .tab-link.active {
+            color: var(--orange-600);
+            border-bottom-color: var(--orange-600);
+        }
+
+        .tab-dropdown {
+            position: relative;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-top: 8px;
+            min-width: 180px;
+            display: none;
+            flex-direction: column;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .dropdown-menu.active {
+            display: flex;
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            font-size: 13px;
+            color: var(--slate-600);
+            cursor: pointer;
+            border: none;
+            background: none;
+            text-align: left;
+            transition: all 0.15s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--slate-50);
+            color: var(--slate-900);
+        }
+
+        /* ============ TAB CONTENT ============ */
+        .tab-content {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ============ CARDS ============ */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-item-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .card-item-value {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-900);
+        }
+
+        /* ============ PROGRESS BAR ============ */
+        .progress-container {
+            margin-bottom: 16px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--slate-100);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--orange-600);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* ============ CHECKLIST ============ */
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            border-radius: 6px;
+            background: var(--slate-50);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .checklist-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .status-completed {
+            background: var(--green-600);
+            color: var(--white);
+        }
+
+        .status-pending {
+            background: var(--amber-600);
+            color: var(--white);
+        }
+
+        .status-blocked {
+            background: var(--red-600);
+            color: var(--white);
+        }
+
+        /* ============ ALERT BOX ============ */
+        .alert-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .alert-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: var(--red-50);
+            border-left: 3px solid var(--red-600);
+            font-size: 12px;
+            color: var(--red-600);
+            font-weight: 600;
+        }
+
+        .alert-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* ============ TABLE ============ */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--white);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: var(--slate-50);
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--slate-900);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--slate-600);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--slate-50);
+        }
+
+        .cell-name {
+            font-weight: 600;
+            color: var(--slate-900);
+        }
+
+        .cell-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--green-50);
+            color: var(--green-600);
+        }
+
+        .cell-status.pending {
+            background: var(--amber-50);
+            color: var(--amber-600);
+        }
+
+        .cell-status.blocked {
+            background: var(--red-50);
+            color: var(--red-600);
+        }
+
+        .cell-status.cancelled {
+            background: var(--red-50);
+            color: var(--red-600);
+        }
+
+        .cell-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: var(--orange-50);
+            color: var(--orange-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* ============ EMPTY STATE ============ */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            color: var(--slate-500);
+            text-align: center;
+        }
+
+        .empty-state-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            color: var(--slate-400);
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* ============ ROOM ALLOCATION PLANNER ============ */
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .room-card {
+            background: var(--white);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .room-card:hover {
+            border-color: var(--orange-600);
+            box-shadow: var(--shadow);
+        }
+
+        .room-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-bottom: 12px;
+        }
+
+        .room-occupants {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .occupant {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px;
+            background: var(--slate-50);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--slate-600);
+        }
+
+        .occupant-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            background: var(--orange-50);
+            color: var(--orange-600);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* ============ TIMELINE ============ */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 6px;
+            background: var(--slate-50);
+        }
+
+        .timeline-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--orange-600);
+            border-radius: 50%;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .timeline-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-900);
+        }
+
+        .timeline-time {
+            font-size: 11px;
+            color: var(--slate-500);
+        }
+
+        /* ============ RIGHT RAIL ============ */
+        .right-rail {
+            border-left: 1px solid var(--border);
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: var(--slate-50);
+        }
+
+        .rail-section {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .rail-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--slate-900);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .contact-label {
+            font-weight: 600;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .contact-value {
+            color: var(--slate-900);
+            font-weight: 500;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: var(--white);
+            color: var(--slate-600);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .action-btn:hover {
+            background: var(--slate-50);
+            color: var(--slate-900);
+            border-color: var(--slate-300);
+        }
+
+        .action-btn:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ============ MODALS ============ */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--slate-500);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .modal-close:hover {
+            color: var(--slate-900);
+        }
+
+        .modal-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            justify-content: flex-end;
+        }
+
+        /* ============ FORM ============ */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--slate-900);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: Inter, sans-serif;
+            transition: all 0.15s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--orange-600);
+            box-shadow: 0 0 0 3px rgba(234,109,30,0.1);
+        }
+
+        .btn {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-secondary {
+            background: var(--slate-100);
+            color: var(--slate-900);
+        }
+
+        .btn-secondary:hover {
+            background: var(--slate-200);
+        }
+
+        /* ============ TIMELINE VIEW ============ */
+        .timeline-section {
+            margin-bottom: 24px;
+        }
+
+        .timeline-section-header {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--orange-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: var(--orange-50);
+            border-radius: 6px;
+            border-left: 3px solid var(--orange-600);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1200px) {
+            .app-container {
+                grid-template-columns: 260px 1fr;
+            }
+
+            .right-rail {
+                display: none;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .checklist {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                top: 0;
+                height: 100vh;
+                z-index: 300;
+            }
+
+            .header {
+                padding: 12px 16px;
+                flex-wrap: wrap;
+            }
+
+            .kpi-strip {
+                top: 54px;
+            }
+
+            .tab-navigation {
+                top: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- MAIN WRAPPER -->
+        <div class="main-wrapper">
+            <!-- HEADER -->
+            <div class="header">
+                <button class="header-back" onclick="goBack()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 8H4M8 4L4 8l4 4"/>
+                    </svg>
+                </button>
+
+                <div class="header-departure-info">
+                    <div class="header-departure-label">Departure</div>
+                    <div class="header-departure-id">MKA-0705</div>
+                </div>
+
+                <div class="header-divider"></div>
+
+                <div class="header-section">
+                    <div class="header-section-label">Trip</div>
+                    <div class="header-section-value">Manali Kasol Amritsar</div>
+                </div>
+
+                <div class="header-section">
+                    <div class="header-section-label">Date</div>
+                    <div class="header-section-value">05 Jul 2027</div>
+                </div>
+
+                <div class="header-section">
+                    <div class="header-section-label">Guide</div>
+                    <div class="header-section-value">Dikshu Sir</div>
+                </div>
+
+                <div class="header-section">
+                    <div class="header-section-label">Operations</div>
+                    <div class="header-section-value">Neeki</div>
+                </div>
+
+                <div class="header-spacer"></div>
+
+                <span class="status-badge status-inprogress">
+                    <span style="width: 6px; height: 6px; background: currentColor; border-radius: 50%; display: block;"></span>
+                    In Progress
+                </span>
+
+                <div class="header-actions">
+                    <button class="btn-header">Assign Guide</button>
+                    <button class="btn-header">Send Update</button>
+                    <button class="btn-header">Generate PDF</button>
+                    <button class="btn-header">More</button>
+                </div>
+            </div>
+
+            <!-- KPI STRIP -->
+            <div class="kpi-strip">
+                <div class="kpi-card" onclick="switchTab('overview')">
+                    <div class="kpi-label">Readiness</div>
+                    <div class="kpi-value">91%</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('participants')">
+                    <div class="kpi-label">Participants</div>
+                    <div class="kpi-value">57</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('tasks')">
+                    <div class="kpi-label">Tasks Pending</div>
+                    <div class="kpi-value">3</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('hotels')">
+                    <div class="kpi-label">Hotels Confirmed</div>
+                    <div class="kpi-value">4</div>
+                </div>
+                <div class="kpi-card" onclick="switchTab('transport')">
+                    <div class="kpi-label">Transport</div>
+                    <div class="kpi-value">3/3</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Critical Alerts</div>
+                    <div class="kpi-value">2</div>
+                </div>
+            </div>
+
+            <!-- TAB NAVIGATION -->
+            <div class="tab-navigation">
+                <button class="tab-link active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+                <button class="tab-link" data-tab="participants" onclick="switchTab('participants')">Participants</button>
+                <button class="tab-link" data-tab="tasks" onclick="switchTab('tasks')">Tasks</button>
+                <button class="tab-link" data-tab="transport" onclick="switchTab('transport')">Transport</button>
+                <button class="tab-link" data-tab="hotels" onclick="switchTab('hotels')">Hotels</button>
+                <button class="tab-link" data-tab="rooms" onclick="switchTab('rooms')">Room Allocation</button>
+                <button class="tab-link" data-tab="communication" onclick="switchTab('communication')">Communication</button>
+                <div class="tab-dropdown">
+                    <button class="tab-link" onclick="toggleDropdown()">More</button>
+                    <div class="dropdown-menu" id="moreDropdown">
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('trains')">Train / Flights</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('documents')">Documents</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('medical')">Medical</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('rental')">Rental</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('finance')">Finance</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('incidents')">Incident Register</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('complaints')">Complaint Register</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('guidereports')">Guide Reports</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('lessons')">Lessons Learned</button>
+                        <button class="dropdown-item" onclick="switchTabFromDropdown('timeline')">Activity Timeline</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB CONTENTS -->
+            <div class="content-area">
+                <!-- OVERVIEW TAB -->
+                <div id="overview" class="tab-content active">
+                    <div style="display: flex; gap: 16px; flex-direction: column;">
+                        <!-- Departure Summary -->
+                        <div class="card">
+                            <div class="card-header">Departure Summary</div>
+                            <div class="card-grid">
+                                <div class="card-item">
+                                    <div class="card-item-label">Trip Name</div>
+                                    <div class="card-item-value">Manali Kasol Amritsar</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Departure Date</div>
+                                    <div class="card-item-value">05 Jul 2027</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Return Date</div>
+                                    <div class="card-item-value">10 Jul 2027</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Duration</div>
+                                    <div class="card-item-value">6 Days</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Participants</div>
+                                    <div class="card-item-value">57</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Guide Assigned</div>
+                                    <div class="card-item-value">Dikshu Sir</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Operations Executive</div>
+                                    <div class="card-item-value">Neeki</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Lead Driver</div>
+                                    <div class="card-item-value">Rajesh</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Readiness Widget -->
+                        <div class="card">
+                            <div class="card-header">Departure Readiness</div>
+                            <div class="progress-container">
+                                <div class="progress-label">
+                                    <span>Overall Progress</span>
+                                    <span style="color: var(--orange-600); font-weight: 700;">91%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 91%;"></div>
+                                </div>
+                            </div>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-completed">✓</div>
+                                    <span>Hotels</span>
+                                </div>
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-completed">✓</div>
+                                    <span>Transport</span>
+                                </div>
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-completed">✓</div>
+                                    <span>Guide</span>
+                                </div>
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-pending">!</div>
+                                    <span>Room Allocation</span>
+                                </div>
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-completed">✓</div>
+                                    <span>Communication</span>
+                                </div>
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-pending">!</div>
+                                    <span>Documents</span>
+                                </div>
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-completed">✓</div>
+                                    <span>Medical</span>
+                                </div>
+                                <div class="checklist-item">
+                                    <div class="checklist-status status-completed">✓</div>
+                                    <span>Train Tickets</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Critical Alerts -->
+                        <div class="card">
+                            <div class="card-header">Critical Alerts</div>
+                            <div class="alert-box">
+                                <div class="alert-item">
+                                    <svg class="alert-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6h2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2-1.6 3.67-3.6 3.97V13h2c2.76 0 5 2.24 5 5v2H7v-2c0-1.11.9-2 2-2h2.59C11.89 15.03 12 14.54 12 14c0-2.21-1.79-4-4-4z"/>
+                                    </svg>
+                                    2 Aadhaar documents still pending from participants
+                                </div>
+                                <div class="alert-item">
+                                    <svg class="alert-icon" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6h2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2-1.6 3.67-3.6 3.97V13h2c2.76 0 5 2.24 5 5v2H7v-2c0-1.11.9-2 2-2h2.59C11.89 15.03 12 14.54 12 14c0-2.21-1.79-4-4-4z"/>
+                                    </svg>
+                                    Train booking shows RAC for 3 seats on Sealdah Express
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Countdown -->
+                        <div class="card">
+                            <div class="card-header">Departure Countdown</div>
+                            <div class="card-grid">
+                                <div class="card-item">
+                                    <div class="card-item-label">Days Until Departure</div>
+                                    <div class="card-item-value" style="font-size: 28px;">4</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Collection Target</div>
+                                    <div class="card-item-value">₹23,60,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Collected So Far</div>
+                                    <div class="card-item-value">₹22,50,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Pending Collection</div>
+                                    <div class="card-item-value" style="color: var(--red-600);">₹1,10,000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PARTICIPANTS TAB -->
+                <div id="participants" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Participants List</div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Age</th>
+                                        <th>Room</th>
+                                        <th>Balance</th>
+                                        <th>Medical</th>
+                                        <th>Aadhaar</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">Suru Chaudhary</td>
+                                        <td>Male</td>
+                                        <td>28</td>
+                                        <td>201</td>
+                                        <td style="color: var(--slate-600); font-weight: 500;">₹0</td>
+                                        <td><span class="cell-status">Normal</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">Confirmed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Priya Sharma</td>
+                                        <td>Female</td>
+                                        <td>26</td>
+                                        <td>202</td>
+                                        <td style="color: var(--amber-600); font-weight: 500;">₹2,500</td>
+                                        <td><span class="cell-status">Asthma</span></td>
+                                        <td><span class="cell-status pending">Pending</span></td>
+                                        <td><span class="cell-status pending">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Rajesh Kumar</td>
+                                        <td>Male</td>
+                                        <td>32</td>
+                                        <td>203</td>
+                                        <td style="color: var(--slate-600); font-weight: 500;">₹0</td>
+                                        <td><span class="cell-status">Normal</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">Confirmed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Ananya Patel</td>
+                                        <td>Female</td>
+                                        <td>24</td>
+                                        <td>202</td>
+                                        <td style="color: var(--slate-600); font-weight: 500;">₹0</td>
+                                        <td><span class="cell-status">Normal</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">Confirmed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Vikram Singh</td>
+                                        <td>Male</td>
+                                        <td>29</td>
+                                        <td>TBD</td>
+                                        <td style="color: var(--amber-600); font-weight: 500;">₹5,000</td>
+                                        <td><span class="cell-status">Normal</span></td>
+                                        <td><span class="cell-status pending">Pending</span></td>
+                                        <td><span class="cell-status blocked">Blocked</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="padding: 12px; background: var(--slate-50); border-radius: 6px; margin-top: 12px; font-size: 12px; color: var(--slate-600);">
+                            Showing 5 of 57 participants. Filter available in the sidebar.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TASKS TAB -->
+                <div id="tasks" class="tab-content">
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Task List</span>
+                            <button class="btn-header btn-primary">Add Task</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Assigned To</th>
+                                        <th>Priority</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">Verify Tempo Tax & Permit</td>
+                                        <td>Neeki</td>
+                                        <td><span style="color: var(--red-600); font-weight: 600;">High</span></td>
+                                        <td>02 Jul 2027</td>
+                                        <td><span class="cell-status pending">In Progress</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Share Pickup Points with Guide</td>
+                                        <td>Dikshu Sir</td>
+                                        <td><span style="color: var(--amber-600); font-weight: 600;">Medium</span></td>
+                                        <td>03 Jul 2027</td>
+                                        <td><span class="cell-status pending">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Collect Remaining Aadhaar Documents</td>
+                                        <td>Neeki</td>
+                                        <td><span style="color: var(--red-600); font-weight: 600;">High</span></td>
+                                        <td>04 Jul 2027</td>
+                                        <td><span class="cell-status blocked">Blocked</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Generate Room Allocation List</td>
+                                        <td>Neeki</td>
+                                        <td><span style="color: var(--blue-600); font-weight: 600;">Low</span></td>
+                                        <td>04 Jul 2027</td>
+                                        <td><span class="cell-status">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Medical Review & Briefing</td>
+                                        <td>Dikshu Sir</td>
+                                        <td><span style="color: var(--red-600); font-weight: 600;">High</span></td>
+                                        <td>05 Jul 2027</td>
+                                        <td><span class="cell-status pending">Pending</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRANSPORT TAB -->
+                <div id="transport" class="tab-content">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">GJ06DK1234</div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Driver</div>
+                                        <div class="card-item-value">Rajesh Kumar</div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Cleaner</div>
+                                        <div class="card-item-value">Mohan</div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Permit</div>
+                                        <div class="card-item-value"><span style="color: var(--green-600); font-weight: 700;">Valid</span></div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Fitness</div>
+                                        <div class="card-item-value"><span style="color: var(--red-600); font-weight: 700;">15 Aug 2027</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">GJ06DK5678</div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Driver</div>
+                                        <div class="card-item-value">Vikram Sharma</div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Cleaner</div>
+                                        <div class="card-item-value">Suresh</div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Permit</div>
+                                        <div class="card-item-value"><span style="color: var(--green-600); font-weight: 700;">Valid</span></div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Fitness</div>
+                                        <div class="card-item-value"><span style="color: var(--green-600); font-weight: 700;">Dec 2027</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div>
+                                    <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">GJ06DK9012</div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Driver</div>
+                                        <div class="card-item-value">Arjun Singh</div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Cleaner</div>
+                                        <div class="card-item-value">Ramesh</div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Permit</div>
+                                        <div class="card-item-value"><span style="color: var(--amber-600); font-weight: 700;">Expiring</span></div>
+                                    </div>
+                                    <div class="card-item" style="margin-bottom: 8px;">
+                                        <div class="card-item-label">Fitness</div>
+                                        <div class="card-item-value"><span style="color: var(--green-600); font-weight: 700;">Sep 2027</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HOTELS TAB -->
+                <div id="hotels" class="tab-content">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;">
+                        <div class="card">
+                            <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">Shreeraj Resorts</div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">City</div>
+                                <div class="card-item-value">Manali</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Owner Contact</div>
+                                <div class="card-item-value">+91 98765 43210</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Rooms Booked</div>
+                                <div class="card-item-value">8</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Check-in / Check-out</div>
+                                <div class="card-item-value">05 Jul / 06 Jul</div>
+                            </div>
+                            <div style="border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px;">
+                                <div class="card-item-label" style="margin-bottom: 6px;">Amenities</div>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                    <span style="background: var(--slate-100); padding: 4px 8px; border-radius: 3px; font-size: 11px; color: var(--slate-600); font-weight: 600;">Hot Water</span>
+                                    <span style="background: var(--slate-100); padding: 4px 8px; border-radius: 3px; font-size: 11px; color: var(--slate-600); font-weight: 600;">WiFi</span>
+                                    <span style="background: var(--slate-100); padding: 4px 8px; border-radius: 3px; font-size: 11px; color: var(--slate-600); font-weight: 600;">Parking</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">Kasol Cottage</div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">City</div>
+                                <div class="card-item-value">Kasol</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Owner Contact</div>
+                                <div class="card-item-value">+91 98765 12345</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Rooms Booked</div>
+                                <div class="card-item-value">12</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Check-in / Check-out</div>
+                                <div class="card-item-value">06 Jul / 08 Jul</div>
+                            </div>
+                            <div style="border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px;">
+                                <div class="card-item-label" style="margin-bottom: 6px;">Amenities</div>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                    <span style="background: var(--slate-100); padding: 4px 8px; border-radius: 3px; font-size: 11px; color: var(--slate-600); font-weight: 600;">WiFi</span>
+                                    <span style="background: var(--slate-100); padding: 4px 8px; border-radius: 3px; font-size: 11px; color: var(--slate-600); font-weight: 600;">Breakfast</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">Amritsar Heritage Hotel</div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">City</div>
+                                <div class="card-item-value">Amritsar</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Owner Contact</div>
+                                <div class="card-item-value">+91 98765 67890</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Rooms Booked</div>
+                                <div class="card-item-value">10</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Check-in / Check-out</div>
+                                <div class="card-item-value">08 Jul / 09 Jul</div>
+                            </div>
+                            <div style="border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px;">
+                                <div class="card-item-label" style="margin-bottom: 6px;">Amenities</div>
+                                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                    <span style="background: var(--slate-100); padding: 4px 8px; border-radius: 3px; font-size: 11px; color: var(--slate-600); font-weight: 600;">Lift</span>
+                                    <span style="background: var(--slate-100); padding: 4px 8px; border-radius: 3px; font-size: 11px; color: var(--slate-600); font-weight: 600;">Parking</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROOM ALLOCATION TAB -->
+                <div id="rooms" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Room Allocation - Shreeraj Resorts</div>
+                        <div class="room-grid">
+                            <div class="room-card">
+                                <div class="room-number">Room 201</div>
+                                <div class="room-occupants">
+                                    <div class="occupant">
+                                        <div class="occupant-avatar">SC</div>
+                                        <span>Suru Chaudhary</span>
+                                    </div>
+                                    <div class="occupant">
+                                        <div class="occupant-avatar">RK</div>
+                                        <span>Rajesh Kumar</span>
+                                    </div>
+                                </div>
+                                <div style="font-size: 11px; color: var(--slate-500); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">2 Sharing</div>
+                            </div>
+
+                            <div class="room-card">
+                                <div class="room-number">Room 202</div>
+                                <div class="room-occupants">
+                                    <div class="occupant">
+                                        <div class="occupant-avatar">PS</div>
+                                        <span>Priya Sharma</span>
+                                    </div>
+                                    <div class="occupant">
+                                        <div class="occupant-avatar">AP</div>
+                                        <span>Ananya Patel</span>
+                                    </div>
+                                </div>
+                                <div style="font-size: 11px; color: var(--slate-500); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">2 Sharing</div>
+                            </div>
+
+                            <div class="room-card">
+                                <div class="room-number">Room 203</div>
+                                <div class="room-occupants">
+                                    <div class="occupant">
+                                        <div class="occupant-avatar">VS</div>
+                                        <span>Vikram Singh</span>
+                                    </div>
+                                </div>
+                                <div style="font-size: 11px; color: var(--amber-600); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); font-weight: 600;">1 Extra Bed Needed</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMMUNICATION TAB -->
+                <div id="communication" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Communication Timeline</div>
+                        <div class="timeline">
+                            <div class="timeline-section">
+                                <div class="timeline-section-header">3 Days Before</div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Packing Guide PDF</div>
+                                        <div class="timeline-time"><span class="cell-status" style="background: var(--green-50); color: var(--green-600);">Sent</span> 02 Jul 2027 at 09:30 AM</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-section">
+                                <div class="timeline-section-header">2 Days Before</div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Hotel Information</div>
+                                        <div class="timeline-time"><span class="cell-status" style="background: var(--green-50); color: var(--green-600);">Delivered</span> 03 Jul 2027 at 02:15 PM</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Guide Contact Number</div>
+                                        <div class="timeline-time"><span class="cell-status" style="background: var(--blue-50); color: var(--blue-600);">Read</span> 03 Jul 2027 at 04:45 PM</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-section">
+                                <div class="timeline-section-header">1 Day Before</div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Pickup Point & Time</div>
+                                        <div class="timeline-time"><span class="cell-status pending" style="background: var(--amber-50); color: var(--amber-600);">Pending Send</span> Scheduled for 04 Jul 08:00 AM</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Weather Alert & Packing Tips</div>
+                                        <div class="timeline-time"><span class="cell-status pending" style="background: var(--amber-50); color: var(--amber-600);">Pending Send</span> Scheduled for 04 Jul 06:00 PM</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TRAINS TAB -->
+                <div id="trains" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Train Bookings</div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>PNR</th>
+                                        <th>Route</th>
+                                        <th>Status</th>
+                                        <th>Coach</th>
+                                        <th>Seats</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">6542187364</td>
+                                        <td>Kolkata - Howrah</td>
+                                        <td><span class="cell-status">Confirmed</span></td>
+                                        <td>S-5</td>
+                                        <td>1-45 RAC</td>
+                                        <td style="font-size: 12px; color: var(--red-600); font-weight: 600;">3 seats in RAC</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">8765432198</td>
+                                        <td>New Delhi - Kolkata</td>
+                                        <td><span class="cell-status">Confirmed</span></td>
+                                        <td>A-2, A-3</td>
+                                        <td>46-57</td>
+                                        <td style="font-size: 12px; color: var(--slate-600);">All confirmed</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCUMENTS TAB -->
+                <div id="documents" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Document Tracker</div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Participant</th>
+                                        <th>Aadhaar</th>
+                                        <th>Passport</th>
+                                        <th>Medical Form</th>
+                                        <th>Waiver</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">Suru Chaudhary</td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">N/A</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Priya Sharma</td>
+                                        <td><span class="cell-status pending">Pending</span></td>
+                                        <td><span class="cell-status">N/A</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Rajesh Kumar</td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">N/A</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                        <td><span class="cell-status">Collected</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEDICAL TAB -->
+                <div id="medical" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Medical Information</div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Participant</th>
+                                        <th>Blood Group</th>
+                                        <th>Conditions</th>
+                                        <th>Medicines</th>
+                                        <th>Risk Level</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">Suru Chaudhary</td>
+                                        <td>O+</td>
+                                        <td>None</td>
+                                        <td>None</td>
+                                        <td><span style="background: var(--green-50); color: var(--green-600); padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: 600;">Low</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Priya Sharma</td>
+                                        <td>A+</td>
+                                        <td>Asthma</td>
+                                        <td>Inhaler (Regular)</td>
+                                        <td><span style="background: var(--amber-50); color: var(--amber-600); padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: 600;">Medium</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Rajesh Kumar</td>
+                                        <td>B+</td>
+                                        <td>Diabetes Type 2</td>
+                                        <td>Metformin</td>
+                                        <td><span style="background: var(--amber-50); color: var(--amber-600); padding: 4px 8px; border-radius: 3px; font-size: 11px; font-weight: 600;">Medium</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RENTAL TAB -->
+                <div id="rental" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Rental Equipment Tracker</div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Collected</th>
+                                        <th>Returned</th>
+                                        <th>Pending</th>
+                                        <th>Deposit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">Trekking Shoes</td>
+                                        <td>45</td>
+                                        <td>0</td>
+                                        <td>12</td>
+                                        <td>₹500</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Hiking Jacket</td>
+                                        <td>38</td>
+                                        <td>0</td>
+                                        <td>19</td>
+                                        <td>₹800</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Trekking Poles</td>
+                                        <td>42</td>
+                                        <td>0</td>
+                                        <td>15</td>
+                                        <td>₹300</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Helmet</td>
+                                        <td>50</td>
+                                        <td>0</td>
+                                        <td>7</td>
+                                        <td>₹400</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FINANCE TAB -->
+                <div id="finance" class="tab-content">
+                    <div style="display: flex; gap: 16px; flex-direction: column;">
+                        <div class="card">
+                            <div class="card-header">Revenue & Collections</div>
+                            <div class="card-grid">
+                                <div class="card-item">
+                                    <div class="card-item-label">Total Revenue</div>
+                                    <div class="card-item-value">₹24,50,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Collected</div>
+                                    <div class="card-item-value">₹22,50,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Outstanding</div>
+                                    <div class="card-item-value" style="color: var(--red-600);">₹2,00,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Collection %</div>
+                                    <div class="card-item-value">92%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">Expense Breakdown</div>
+                            <div class="card-grid">
+                                <div class="card-item">
+                                    <div class="card-item-label">Hotel Payments</div>
+                                    <div class="card-item-value">₹8,50,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Tempo/Vehicle</div>
+                                    <div class="card-item-value">₹6,75,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Guide Payments</div>
+                                    <div class="card-item-value">₹3,50,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Miscellaneous</div>
+                                    <div class="card-item-value">₹2,25,000</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">Profit Estimate</div>
+                            <div class="card-grid">
+                                <div class="card-item">
+                                    <div class="card-item-label">Total Expenses</div>
+                                    <div class="card-item-value">₹21,00,000</div>
+                                </div>
+                                <div class="card-item">
+                                    <div class="card-item-label">Estimated Profit</div>
+                                    <div class="card-item-value" style="color: var(--green-600); font-size: 18px;">₹3,50,000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INCIDENTS TAB -->
+                <div id="incidents" class="tab-content">
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Incident Register</span>
+                            <button class="btn-header btn-primary">Log Incident</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Category</th>
+                                        <th>Severity</th>
+                                        <th>Assigned To</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>02 Jul 2027</td>
+                                        <td>Vehicle</td>
+                                        <td><span style="color: var(--amber-600); font-weight: 600;">Medium</span></td>
+                                        <td>Neeki</td>
+                                        <td><span class="cell-status">Resolved</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>01 Jul 2027</td>
+                                        <td>Medical</td>
+                                        <td><span style="color: var(--red-600); font-weight: 600;">High</span></td>
+                                        <td>Guide</td>
+                                        <td><span class="cell-status pending">In Progress</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMPLAINTS TAB -->
+                <div id="complaints" class="tab-content">
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Complaint Register</span>
+                            <button class="btn-header btn-primary">Log Complaint</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Complaint</th>
+                                        <th>Category</th>
+                                        <th>Participant</th>
+                                        <th>Root Cause</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">Room not cleaned on time</td>
+                                        <td>Cleanliness</td>
+                                        <td>Suru Chaudhary</td>
+                                        <td>Hotel staff shortage</td>
+                                        <td><span class="cell-status">Resolved</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Late dinner service</td>
+                                        <td>Food</td>
+                                        <td>Priya Sharma</td>
+                                        <td>Kitchen delay</td>
+                                        <td><span class="cell-status pending">Pending Action</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GUIDE REPORTS TAB -->
+                <div id="guidereports" class="tab-content">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;">
+                        <div class="card">
+                            <div style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">01 Jul 2027 - Manali Day 1</div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">On Time Status</div>
+                                <div class="card-item-value"><span style="color: var(--green-600); font-weight: 700;">On Schedule</span></div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Food Rating</div>
+                                <div class="card-item-value">4.5/5</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Hotel Rating</div>
+                                <div class="card-item-value">4/5</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Medical Issues</div>
+                                <div class="card-item-value">None</div>
+                            </div>
+                            <div class="card-item" style="margin-bottom: 8px;">
+                                <div class="card-item-label">Notes</div>
+                                <div class="card-item-value" style="font-size: 12px; color: var(--slate-600);">All participants happy. Weather good.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LESSONS LEARNED TAB -->
+                <div id="lessons" class="tab-content">
+                    <div class="card">
+                        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                            <span>Lessons Learned</span>
+                            <button class="btn-header btn-primary">Add Lesson</button>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Problem</th>
+                                        <th>Root Cause</th>
+                                        <th>Solution</th>
+                                        <th>ERP Update</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="cell-name">Missed hotel change notification</td>
+                                        <td>Manual communication forgot</td>
+                                        <td>Auto communication module needed</td>
+                                        <td><span class="cell-status pending">Planned</span></td>
+                                        <td><span class="cell-status pending">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-name">Tempo breakdown mid-trip</td>
+                                        <td>Preventive maintenance missed</td>
+                                        <td>Pre-departure vehicle checklist</td>
+                                        <td><span class="cell-status">Completed</span></td>
+                                        <td><span class="cell-status">Closed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIVITY TIMELINE TAB -->
+                <div id="timeline" class="tab-content">
+                    <div class="card">
+                        <div class="card-header">Activity Timeline</div>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Departure Created</div>
+                                    <div class="timeline-time">28 Jun 2027 at 10:30 AM • By Hemal</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Guide Assigned</div>
+                                    <div class="timeline-time">28 Jun 2027 at 02:15 PM • By Operations Team</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Hotels Confirmed</div>
+                                    <div class="timeline-time">29 Jun 2027 at 09:45 AM • By Neeki</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Room Allocation Completed</div>
+                                    <div class="timeline-time">29 Jun 2027 at 03:30 PM • By Operations Team</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Transport Confirmed</div>
+                                    <div class="timeline-time">30 Jun 2027 at 11:20 AM • By Hemal</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Communication Started</div>
+                                    <div class="timeline-time">02 Jul 2027 at 09:30 AM • By System</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR -->
+        <div class="right-rail">
+            <div class="rail-section">
+                <div class="rail-section-title">Guide Details</div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-label">Name</div>
+                        <div class="contact-value">Dikshu Sharma</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Phone</div>
+                        <div class="contact-value">+91 98765 43210</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Experience</div>
+                        <div class="contact-value">8 years</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Rating</div>
+                        <div class="contact-value">4.8/5</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Operations Executive</div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-label">Name</div>
+                        <div class="contact-value">Neeki Patel</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Phone</div>
+                        <div class="contact-value">+91 98765 12345</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value">neeki@yc.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Emergency Contacts</div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-label">Guide</div>
+                        <div class="contact-value">+91 98765 43210</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Operations</div>
+                        <div class="contact-value">+91 98765 12345</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Lead Driver</div>
+                        <div class="contact-value">+91 87654 32109</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Quick Notes</div>
+                <textarea class="form-input" style="resize: vertical; min-height: 80px; font-size: 12px;" placeholder="Add departure notes...">High altitude participants: Rajesh Kumar, Priya Sharma. Monitor carefully.</textarea>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Trip Statistics</div>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-label">Participants</div>
+                        <div class="contact-value">57</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Hotels</div>
+                        <div class="contact-value">4</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Vehicles</div>
+                        <div class="contact-value">3</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Readiness</div>
+                        <div class="contact-value" style="color: var(--green-600); font-weight: 700;">91%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rail-section">
+                <div class="rail-section-title">Quick Actions</div>
+                <button class="action-btn" onclick="showModal('assignGuide')">Assign Guide</button>
+                <button class="action-btn" onclick="showModal('generateRoomList')">Generate Room List</button>
+                <button class="action-btn" onclick="showModal('generateTempoList')">Generate Tempo List</button>
+                <button class="action-btn" onclick="showModal('exportPDF')">Export PDF</button>
+                <button class="action-btn" onclick="showModal('addIncident')">Add Incident</button>
+                <button class="action-btn" onclick="showModal('assignTask')">Assign Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Assign Task</div>
+                <button class="modal-close" onclick="closeModal('task')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Task Title</label>
+                    <input type="text" class="form-input" placeholder="Enter task title...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Assign To</label>
+                    <select class="form-select">
+                        <option>Select team member</option>
+                        <option>Dikshu Sir (Guide)</option>
+                        <option>Neeki (Operations)</option>
+                        <option>Rajesh (Driver)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Due Date</label>
+                    <input type="date" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select">
+                        <option>Select priority</option>
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('task')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('task')">Assign Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const links = document.querySelectorAll('.tab-link');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            links.forEach(link => link.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector(`[data-tab="${tabName}"]`)?.classList.add('active');
+            
+            // Close dropdown if open
+            document.getElementById('moreDropdown').classList.remove('active');
+        }
+
+        function switchTabFromDropdown(tabName) {
+            switchTab(tabName);
+        }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('moreDropdown');
+            dropdown.classList.toggle('active');
+        }
+
+        function showModal(type) {
+            document.getElementById(type + 'Modal').classList.add('active');
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+                document.getElementById('moreDropdown').classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('moreDropdown');
+            const tabDropdown = document.querySelector('.tab-dropdown');
+            if (!tabDropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

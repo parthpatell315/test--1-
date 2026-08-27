@@ -1,0 +1,1689 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Workspace - YouthCamping</title>
+    <style>
+        :root {
+            --orange-600: #ea6d1e;
+            --orange-50: #fef9f3;
+            --slate-900: #0f172a;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+            --green-600: #16a34a;
+            --green-50: #f0fdf4;
+            --blue-600: #2563eb;
+            --blue-50: #eff6ff;
+            --amber-600: #d97706;
+            --amber-50: #fffbeb;
+            --red-600: #dc2626;
+            --red-50: #fef2f2;
+            --gray-600: #4b5563;
+            --gray-50: #f9fafb;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+            --shadow: 0 1px 3px 0 rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+        }
+
+        body {
+            font-family: Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--slate-900);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 260px 1fr 340px;
+            min-height: 100vh;
+            background: var(--white);
+        }
+
+        /* ============ SIDEBAR ============ */
+        .sidebar {
+            background: var(--slate-900);
+            border-right: 1px solid var(--slate-700);
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            color: var(--white);
+            font-size: 13px;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--orange-600);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 11px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.15s;
+            color: var(--slate-300);
+        }
+
+        .sidebar-item:hover {
+            background-color: rgba(255,255,255,0.1);
+            color: var(--white);
+        }
+
+        .sidebar-item.active {
+            background-color: var(--orange-600);
+            color: var(--white);
+        }
+
+        /* ============ MAIN CONTENT ============ */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: var(--white);
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-back {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: none;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--slate-600);
+            transition: all 0.15s;
+        }
+
+        .header-back:hover {
+            background: var(--slate-50);
+            color: var(--slate-900);
+        }
+
+        .back-arrow {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-booking-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .header-booking-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-booking-id {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--slate-900);
+            font-family: 'Courier New', monospace;
+        }
+
+        .header-trip-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-left: 12px;
+            border-left: 1px solid var(--border);
+        }
+
+        .header-trip-name {
+            font-weight: 600;
+            color: var(--slate-900);
+            font-size: 14px;
+        }
+
+        .header-trip-dates {
+            font-size: 12px;
+            color: var(--slate-500);
+        }
+
+        .header-customer {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            padding: 0 12px;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+
+        .header-customer-name {
+            font-weight: 600;
+            color: var(--slate-900);
+            font-size: 13px;
+        }
+
+        .header-customer-phone {
+            font-size: 11px;
+            color: var(--slate-500);
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-left: auto;
+        }
+
+        .status-badge {
+            padding: 5px 11px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .status-confirmed {
+            background: var(--green-50);
+            color: var(--green-600);
+        }
+
+        .status-draft {
+            background: var(--gray-50);
+            color: var(--gray-600);
+        }
+
+        .status-pending {
+            background: var(--amber-50);
+            color: var(--amber-600);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: var(--orange-600);
+            color: var(--white);
+            border: 1px solid var(--orange-600);
+        }
+
+        .btn-primary:hover {
+            background: #d86a1a;
+            border-color: #d86a1a;
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--slate-700);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--slate-50);
+            border-color: var(--slate-200);
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============ KPI STRIP ============ */
+        .kpi-strip {
+            position: sticky;
+            top: 57px;
+            z-index: 40;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 24px;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .kpi-card {
+            padding: 12px;
+            background: var(--slate-50);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .kpi-card:hover {
+            background: var(--white);
+            border-color: var(--slate-300);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .kpi-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .kpi-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+
+        .kpi-status {
+            font-size: 11px;
+            color: var(--slate-500);
+        }
+
+        .icon-sm {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* ============ CONTENT WRAPPER ============ */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .content-main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            background: var(--white);
+        }
+
+        /* ============ TABS ============ */
+        .tab-navigation {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .tab-link {
+            padding: 12px 0;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--slate-500);
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+
+        .tab-link:hover {
+            color: var(--slate-900);
+        }
+
+        .tab-link.active {
+            color: var(--orange-600);
+            border-bottom-color: var(--orange-600);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ============ SECTIONS ============ */
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--slate-900);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-divider {
+            width: 2px;
+            height: 14px;
+            background: var(--slate-300);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 6px;
+            background: var(--green-50);
+            border: 1px solid var(--green-600);
+            border-left: 3px solid var(--green-600);
+            color: var(--green-600);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .alert-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* ============ CARDS ============ */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .summary-item {
+            padding: 12px;
+            background: var(--slate-50);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .summary-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+
+        /* ============ TABLES ============ */
+        .table-wrapper {
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead {
+            background: var(--slate-50);
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            padding: 12px;
+            text-align: left;
+            font-weight: 700;
+            color: var(--slate-600);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-right: 1px solid var(--border);
+        }
+
+        th:last-child {
+            border-right: none;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            color: var(--slate-700);
+        }
+
+        td:last-child {
+            border-right: none;
+        }
+
+        tbody tr:hover {
+            background: var(--slate-50);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ============ BADGES ============ */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .badge-draft {
+            background: var(--gray-50);
+            color: var(--gray-600);
+        }
+
+        .badge-progress {
+            background: var(--blue-50);
+            color: var(--blue-600);
+        }
+
+        .badge-complete {
+            background: var(--green-50);
+            color: var(--green-600);
+        }
+
+        .badge-pending {
+            background: var(--amber-50);
+            color: var(--amber-600);
+        }
+
+        .badge-blocked {
+            background: var(--red-50);
+            color: var(--red-600);
+        }
+
+        /* ============ RIGHT RAIL ============ */
+        .right-rail {
+            width: 340px;
+            background: var(--white);
+            border-left: 1px solid var(--border);
+            padding: 24px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .rail-section {
+            margin-bottom: 24px;
+        }
+
+        .rail-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .customer-card {
+            background: var(--slate-50);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+        }
+
+        .customer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--orange-600);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .customer-name {
+            font-weight: 700;
+            color: var(--slate-900);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .customer-detail {
+            font-size: 12px;
+            color: var(--slate-500);
+            margin-bottom: 3px;
+        }
+
+        .customer-detail-label {
+            font-weight: 600;
+        }
+
+        .note-area {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 12px;
+            resize: vertical;
+            min-height: 60px;
+            background: var(--white);
+            color: var(--slate-900);
+            transition: border-color 0.15s;
+        }
+
+        .note-area:focus {
+            outline: none;
+            border-color: var(--orange-600);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 8px;
+            background: var(--white);
+            color: var(--slate-700);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.15s;
+        }
+
+        .action-btn:hover {
+            background: var(--slate-50);
+            border-color: var(--slate-300);
+        }
+
+        /* ============ CHECKLIST ============ */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .checklist-item {
+            display: grid;
+            grid-template-columns: 24px 1fr 100px 120px;
+            gap: 12px;
+            padding: 12px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            align-items: center;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--orange-600);
+        }
+
+        .checklist-label {
+            font-weight: 600;
+            color: var(--slate-900);
+            font-size: 13px;
+        }
+
+        .checklist-meta {
+            font-size: 11px;
+            color: var(--slate-500);
+            text-align: right;
+        }
+
+        /* ============ TIMELINE ============ */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: var(--slate-50);
+            border-radius: 6px;
+            border-left: 3px solid var(--orange-600);
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--orange-600);
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: var(--slate-900);
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
+
+        .timeline-time {
+            font-size: 11px;
+            color: var(--slate-500);
+        }
+
+        /* ============ EMPTY STATE ============ */
+        .empty-state {
+            padding: 48px 24px;
+            text-align: center;
+            color: var(--slate-500);
+        }
+
+        .empty-state-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 12px;
+            opacity: 0.4;
+        }
+
+        .empty-state-text {
+            font-size: 13px;
+            color: var(--slate-500);
+        }
+
+        /* ============ MODAL ============ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            width: 90%;
+            max-width: 480px;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--slate-500);
+            transition: color 0.15s;
+        }
+
+        .modal-close:hover {
+            color: var(--slate-900);
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        /* ============ FORM ============ */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 13px;
+            background: var(--white);
+            color: var(--slate-900);
+            transition: border-color 0.15s;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--orange-600);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* ============ PROGRESS BAR ============ */
+        .progress-container {
+            margin-top: 12px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--slate-200);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--green-600);
+            width: 65%;
+            transition: width 0.3s;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1400px) {
+            .right-rail {
+                width: 300px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .app-container {
+                grid-template-columns: 1fr 320px;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+
+            .right-rail {
+                display: none;
+            }
+
+            .kpi-strip {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .header {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <div class="sidebar-logo-icon">Y</div>
+                <span>YouthCamping</span>
+            </div>
+            <div class="sidebar-nav">
+                <div class="sidebar-item active">Dashboard</div>
+                <div class="sidebar-item">Bookings</div>
+                <div class="sidebar-item">Trips</div>
+                <div class="sidebar-item">Customers</div>
+                <div class="sidebar-item">Operations</div>
+                <div class="sidebar-item">Accounting</div>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main-wrapper">
+            <!-- HEADER -->
+            <div class="header">
+                <button class="header-back" onclick="goBack()">
+                    <svg class="back-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+
+                <div class="header-booking-info">
+                    <div class="header-booking-label">Booking ID</div>
+                    <div class="header-booking-id">BK-X5EXKFB00MNW</div>
+                </div>
+
+                <div class="header-trip-info">
+                    <div>
+                        <div class="header-trip-name">Manali Kasol Amritsar Backpacking</div>
+                        <div class="header-trip-dates">27 Jul – 06 Aug 2026</div>
+                    </div>
+                </div>
+
+                <div class="header-customer">
+                    <div class="header-customer-name">Suru Chaudhary</div>
+                    <div class="header-customer-phone">+91 9978567823</div>
+                </div>
+
+                <div class="header-status">
+                    <div class="status-badge status-confirmed">Confirmed</div>
+                </div>
+
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="showModal('payment')">Add Payment</button>
+                    <button class="btn btn-secondary" onclick="showModal('task')">Assign Task</button>
+                    <button class="btn btn-secondary btn-icon">⋯</button>
+                </div>
+            </div>
+
+            <!-- KPI STRIP -->
+            <div class="kpi-strip">
+                <div class="kpi-card" onclick="switchTab('payments')">
+                    <div class="kpi-label">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M1 3a1 1 0 011-1h12a1 1 0 011 1H1zm0 3v8a2 2 0 002 2h10a2 2 0 002-2V6H1z"/>
+                        </svg>
+                        Payment
+                    </div>
+                    <div class="kpi-value">₹35,696</div>
+                    <div class="kpi-status">Due of ₹35,696</div>
+                </div>
+
+                <div class="kpi-card" onclick="switchTab('passengers')">
+                    <div class="kpi-label">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 8a2 2 0 100-4 2 2 0 000 4zM.5 14s0-2 3.75-3.5S8 9.5 8 9.5s.5 0 3.75 1.5S15.5 14 15.5 14H.5z"/>
+                        </svg>
+                        Passengers
+                    </div>
+                    <div class="kpi-value">16</div>
+                    <div class="kpi-status">Confirmed</div>
+                </div>
+
+                <div class="kpi-card">
+                    <div class="kpi-label">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M6.5 7a1 1 0 100-2 1 1 0 000 2zM4 5.5a1 1 0 11-2 0 1 1 0 012 0zm7 8a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Departure
+                    </div>
+                    <div class="kpi-value">26</div>
+                    <div class="kpi-status">Days to go</div>
+                </div>
+
+                <div class="kpi-card" onclick="switchTab('operations')">
+                    <div class="kpi-label">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M1 2.5A1.5 1.5 0 112.5 1H1v1.5zm3-1.5v1.5h2V.5H4zm3 0v1.5h3V.5H7zM1 4h14v1H1V4zm0 2h14v1H1V6zm0 2h14v1H1V8z"/>
+                        </svg>
+                        Operations
+                    </div>
+                    <div class="kpi-value">2/6</div>
+                    <div class="kpi-status">Items booked</div>
+                </div>
+
+                <div class="kpi-card" onclick="switchTab('ticketing')">
+                    <div class="kpi-label">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M2.5 1A1.5 1.5 0 001 2.5v11A1.5 1.5 0 002.5 15h11a1.5 1.5 0 001.5-1.5v-11A1.5 1.5 0 0013.5 1h-11zM2 2.5a.5.5 0 01.5-.5h11a.5.5 0 01.5.5v11a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5v-11z"/>
+                        </svg>
+                        Ticketing
+                    </div>
+                    <div class="kpi-value">1</div>
+                    <div class="kpi-status">Pending approval</div>
+                </div>
+
+                <div class="kpi-card" onclick="switchTab('activity')">
+                    <div class="kpi-label">
+                        <svg class="icon-sm" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z"/>
+                        </svg>
+                        Tasks
+                    </div>
+                    <div class="kpi-value">3</div>
+                    <div class="kpi-status">Open</div>
+                </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="content-wrapper">
+                <div class="content-main">
+                    <!-- TAB NAVIGATION -->
+                    <div class="tab-navigation">
+                        <button class="tab-link active" data-tab="overview" onclick="switchTab('overview')">Overview</button>
+                        <button class="tab-link" data-tab="passengers" onclick="switchTab('passengers')">Passengers</button>
+                        <button class="tab-link" data-tab="payments" onclick="switchTab('payments')">Payments</button>
+                        <button class="tab-link" data-tab="operations" onclick="switchTab('operations')">Operations</button>
+                        <button class="tab-link" data-tab="ticketing" onclick="switchTab('ticketing')">Ticketing</button>
+                        <button class="tab-link" data-tab="accounting" onclick="switchTab('accounting')">Accounting</button>
+                        <button class="tab-link" data-tab="files" onclick="switchTab('files')">Files & Notes</button>
+                        <button class="tab-link" data-tab="activity" onclick="switchTab('activity')">Activity</button>
+                        <button class="tab-link" data-tab="feedback" onclick="switchTab('feedback')">Feedback</button>
+                    </div>
+
+                    <!-- OVERVIEW TAB -->
+                    <div id="overview" class="tab-content active">
+                        <div class="alert">
+                            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M10.894 2.553a.5.5 0 00-.888.12l-.51 1.042a1 1 0 001.005 1.396.5.5 0 00.488-.5zM1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 100-6 3 3 0 000 6z"/>
+                            </svg>
+                            <span>All systems operational. No critical issues.</span>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Items Requiring Attention</div>
+                            <div class="card">
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border);">
+                                    <svg style="width: 16px; height: 16px; color: var(--red-600);" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 15A7 7 0 108 1a7 7 0 000 14zM8 4a.5.5 0 01.5.5v3a.5.5 0 01-1 0V4.5A.5.5 0 018 4zm0 8a.5.5 0 100-1 .5.5 0 000 1z"/>
+                                    </svg>
+                                    <span style="color: var(--slate-900);">Outstanding Balance: <strong>₹35,696</strong></span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0;">
+                                    <svg style="width: 16px; height: 16px; color: var(--amber-600);" viewBox="0 0 16 16" fill="currentColor">
+                                        <path d="M8 15A7 7 0 108 1a7 7 0 000 14zM8 4a.5.5 0 01.5.5v3a.5.5 0 01-1 0V4.5A.5.5 0 018 4zm0 8a.5.5 0 100-1 .5.5 0 000 1z"/>
+                                    </svg>
+                                    <span style="color: var(--slate-900);">1 Ticket pending approval</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Trip Summary</div>
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <div class="summary-label">Package</div>
+                                    <div class="summary-value">Sleeper Train</div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Upgrade Available</div>
+                                    <div class="summary-value">3AC</div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Departure</div>
+                                    <div class="summary-value">27 Jul 2026</div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Duration</div>
+                                    <div class="summary-value">11 Days</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Departure History</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Changed Date</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Changed By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>28 Jun 2026</td>
+                                            <td>30 Jul 2026</td>
+                                            <td>27 Jul 2026</td>
+                                            <td>Sales Admin</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PASSENGERS TAB -->
+                    <div id="passengers" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Passengers (16)</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px;"></th>
+                                            <th>Name</th>
+                                            <th>Age</th>
+                                            <th>Gender</th>
+                                            <th>Email</th>
+                                            <th>Documents</th>
+                                            <th>Room Sharing</th>
+                                            <th>Food Preference</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <div style="width: 32px; height: 32px; background: var(--orange-600); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">SC</div>
+                                            </td>
+                                            <td><strong>Suru Chaudhary</strong></td>
+                                            <td>28</td>
+                                            <td>Male</td>
+                                            <td>suru@email.com</td>
+                                            <td><span class="badge badge-complete">3/3</span></td>
+                                            <td>Double</td>
+                                            <td><span class="badge badge-complete">Normal Food</span></td>
+                                            <td><span class="badge badge-complete">Confirmed</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <div style="width: 32px; height: 32px; background: var(--blue-600); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">PS</div>
+                                            </td>
+                                            <td><strong>Priya Sharma</strong></td>
+                                            <td>26</td>
+                                            <td>Female</td>
+                                            <td>priya@email.com</td>
+                                            <td><span class="badge badge-pending">2/3</span></td>
+                                            <td>Double</td>
+                                            <td><span class="badge badge-pending">Jain Food</span></td>
+                                            <td><span class="badge badge-pending">Ahmedabad (RAC)</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <div style="width: 32px; height: 32px; background: var(--green-600); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;">RD</div>
+                                            </td>
+                                            <td><strong>Rahul Desai</strong></td>
+                                            <td>30</td>
+                                            <td>Male</td>
+                                            <td>rahul@email.com</td>
+                                            <td><span class="badge badge-complete">3/3</span></td>
+                                            <td>Quad</td>
+                                            <td><span class="badge badge-complete">Normal Food</span></td>
+                                            <td><span class="badge badge-pending">Amritsar (WL)</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PAYMENTS TAB -->
+                    <div id="payments" class="tab-content">
+                        <div class="section">
+                            <div class="card">
+                                <div class="summary-grid" style="grid-template-columns: repeat(3, 1fr);">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Package Price</div>
+                                        <div class="summary-value">₹33,996</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">GST (5%)</div>
+                                        <div class="summary-value">₹1,699</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Net Amount</div>
+                                        <div class="summary-value" style="color: var(--red-600);">₹35,696</div>
+                                    </div>
+                                </div>
+                                <div style="border-top: 1px solid var(--border); padding-top: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                    <div class="summary-item">
+                                        <div class="summary-label">Received</div>
+                                        <div class="summary-value">₹0</div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Pending</div>
+                                        <div class="summary-value" style="color: var(--red-600);">₹35,696</div>
+                                    </div>
+                                </div>
+                                <div class="progress-container">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Payment Status</div>
+                            <div style="border-bottom: 1px solid var(--border); margin-bottom: 12px;">
+                                <button class="tab-link" style="padding: 12px 0; border-bottom: 2px solid var(--orange-600); color: var(--orange-600);">Successful (0)</button>
+                                <button class="tab-link" style="padding: 12px 0; margin-left: 24px;">Outstanding (1)</button>
+                                <button class="tab-link" style="padding: 12px 0; margin-left: 24px;">Expired/Failed (0)</button>
+                            </div>
+                            <div class="empty-state">
+                                <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                                </svg>
+                                <div class="empty-state-text">No payments recorded yet</div>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Payment History</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Mode</th>
+                                            <th>Collected By</th>
+                                            <th>Approved By</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; padding: 32px 12px;">No payment records</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OPERATIONS TAB -->
+                    <div id="operations" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Operations Checklist</div>
+                            <div class="checklist">
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox" checked>
+                                    <div class="checklist-label">Hotel Booking</div>
+                                    <span class="badge badge-complete">Booked</span>
+                                    <div class="checklist-meta">28 Jun 2026</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Tempo Traveller</div>
+                                    <span class="badge badge-pending">Pending</span>
+                                    <div class="checklist-meta">—</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Guide Assignment</div>
+                                    <span class="badge badge-pending">Pending</span>
+                                    <div class="checklist-meta">—</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox" checked>
+                                    <div class="checklist-label">Room Allocation</div>
+                                    <span class="badge badge-complete">Done</span>
+                                    <div class="checklist-meta">29 Jun 2026</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Insurance</div>
+                                    <span class="badge badge-pending">Pending</span>
+                                    <div class="checklist-meta">—</div>
+                                </div>
+                                <div class="checklist-item">
+                                    <input type="checkbox" class="checkbox">
+                                    <div class="checklist-label">Visa Processing</div>
+                                    <span class="badge badge-pending">Pending</span>
+                                    <div class="checklist-meta">—</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TICKETING TAB -->
+                    <div id="ticketing" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Train Tickets</div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                        <div>
+                                            <div class="summary-label">PNR</div>
+                                            <div class="summary-value">BK123ABC</div>
+                                        </div>
+                                        <span class="badge badge-pending">Pending</span>
+                                    </div>
+                                    <div style="border-top: 1px solid var(--border); padding-top: 12px;">
+                                        <div class="summary-item" style="margin-bottom: 8px;">
+                                            <div class="summary-label">Seat</div>
+                                            <div class="summary-value" style="font-size: 14px;">S1, S2</div>
+                                        </div>
+                                        <div class="summary-item" style="margin-bottom: 8px;">
+                                            <div class="summary-label">Coach</div>
+                                            <div class="summary-value" style="font-size: 14px;">C2</div>
+                                        </div>
+                                        <div class="summary-item">
+                                            <div class="summary-label">Status</div>
+                                            <div class="summary-value" style="font-size: 14px;">Confirmed</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+                                        <div>
+                                            <div class="summary-label">PNR</div>
+                                            <div class="summary-value">BK456DEF</div>
+                                        </div>
+                                        <span class="badge badge-draft">Draft</span>
+                                    </div>
+                                    <div class="empty-state" style="padding: 20px;">
+                                        <div class="empty-state-text">Awaiting passenger details</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACCOUNTING TAB -->
+                    <div id="accounting" class="tab-content">
+                        <div class="alert">
+                            <svg class="alert-icon" viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M5.338 1.59a61.44 61.44 0 00-2.837.856.481.481 0 00-.328.39c-.554 4.157.726 7.213 2.363 9.337a11.777 11.777 0 003.871 3.912c.04.036.084.07.147.124.466.383 1.011.856 1.632 1.335l.322.266c.114.093.227.186.242.199.163.152.33.305.51.472.146.148.309.3.476.45.378.35.844.775 1.456 1.338l.223.184c.432.355.927.76 1.456 1.222.528.46 1.033.905 1.466 1.305a2.137 2.137 0 01.542 2.6c-.534 1.338-2.845-.335-4.26-1.516-.428-.35-.853-.695-1.222-.982-.05-.041-.1-.082-.147-.123l-.058-.047a2.13 2.13 0 01-.285-.256 6.887 6.887 0 01-.979-1.23 7.12 7.12 0 01-.745-1.456 6.437 6.437 0 01-.26-1.358l-.007-.029a1 1 0 00-.995.91 1 1 0 001 1.092 8.432 8.432 0 00.404 2.645l.047.135c.27.646.623 1.462 1.04 2.28.96 1.979 2.25 4.482 3.476 4.6.15.013.313 0 .PropertyName"/>
+                            </svg>
+                            <span>Finance Dashboard - Role Restricted</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                            <div class="card">
+                                <div class="summary-item">
+                                    <div class="summary-label">Selling Price</div>
+                                    <div class="summary-value">₹35,696</div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="summary-item">
+                                    <div class="summary-label">Vendor Cost</div>
+                                    <div class="summary-value">₹18,500</div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="summary-item">
+                                    <div class="summary-label">Gross Profit</div>
+                                    <div class="summary-value" style="color: var(--green-600);">₹17,196</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FILES TAB -->
+                    <div id="files" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Documents</div>
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>File Name</th>
+                                            <th>Type</th>
+                                            <th>Uploaded By</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Invoice_BK-X5EXKFB00MNW.pdf</td>
+                                            <td><span class="badge badge-complete">Invoice</span></td>
+                                            <td>Sales Admin</td>
+                                            <td>28 Jun 2026</td>
+                                            <td><a href="#" style="color: var(--orange-600); text-decoration: none; font-size: 12px; font-weight: 600;">Download</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hotel_Voucher.pdf</td>
+                                            <td><span class="badge badge-progress">Voucher</span></td>
+                                            <td>Operations</td>
+                                            <td>29 Jun 2026</td>
+                                            <td><a href="#" style="color: var(--orange-600); text-decoration: none; font-size: 12px; font-weight: 600;">Download</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="section">
+                            <div class="section-title">Internal Notes</div>
+                            <div class="card">
+                                <textarea class="form-textarea" placeholder="Add internal notes..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTIVITY TAB -->
+                    <div id="activity" class="tab-content">
+                        <div class="section">
+                            <div class="section-title">Activity Timeline</div>
+                            <div class="timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Booking Created</div>
+                                        <div class="timeline-time">28 Jun 2026 at 03:24 pm • By Suru Chaudhary</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Booking Confirmed</div>
+                                        <div class="timeline-time">28 Jun 2026 at 05:12 pm • By Sales Admin</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Hotel Assigned</div>
+                                        <div class="timeline-time">29 Jun 2026 at 10:30 am • By Operations Team</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Room Allocation Completed</div>
+                                        <div class="timeline-time">29 Jun 2026 at 02:15 pm • By Operations Team</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-item">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-content">
+                                        <div class="timeline-title">Task Assigned: Verify PNR</div>
+                                        <div class="timeline-time">30 Jun 2026 at 09:00 am • By Manager</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FEEDBACK TAB -->
+                    <div id="feedback" class="tab-content">
+                        <div class="empty-state">
+                            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+                            </svg>
+                            <div class="empty-state-text">Trip feedback will be available after departure</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT RAIL -->
+                <div class="right-rail">
+                    <div class="rail-section">
+                        <div class="rail-section-title">Customer Information</div>
+                        <div class="customer-card">
+                            <div class="customer-avatar">SC</div>
+                            <div class="customer-name">Suru Chaudhary</div>
+                            <div class="customer-detail"><span class="customer-detail-label">Phone:</span> +91 9978567823</div>
+                            <div class="customer-detail"><span class="customer-detail-label">Email:</span> suru@email.com</div>
+                            <div style="margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px;">
+                                <div class="customer-detail" style="margin-bottom: 4px;"><span class="customer-detail-label">Lead Source:</span> Website</div>
+                                <div class="customer-detail" style="margin-bottom: 4px;"><span class="customer-detail-label">Executive:</span> Sales Admin</div>
+                                <div class="customer-detail"><span class="customer-detail-label">Pickup City:</span> Ahmedabad</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rail-section">
+                        <div class="rail-section-title">Internal Note</div>
+                        <textarea class="note-area" placeholder="Add a pinned note...">Customer prefers morning departures. Medical requirements: mild asthma.</textarea>
+                    </div>
+
+                    <div class="rail-section">
+                        <div class="rail-section-title">Tags</div>
+                        <div style="font-size: 12px; color: var(--slate-500); padding: 12px; text-align: center;">No tags added</div>
+                    </div>
+
+                    <div class="rail-section">
+                        <div class="rail-section-title">Quick Actions</div>
+                        <button class="action-btn" onclick="showModal('reminder')">Send Reminder</button>
+                        <button class="action-btn" onclick="showModal('confirmation')">Resend Confirmation</button>
+                        <button class="action-btn" onclick="showModal('link')">Payment Link</button>
+                        <button class="action-btn" onclick="showModal('invoice')">Push Invoice</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Add Payment</div>
+                <button class="modal-close" onclick="closeModal('payment')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Amount (₹)</label>
+                    <input type="number" class="form-input" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Payment Mode</label>
+                    <select class="form-select">
+                        <option>Select payment mode</option>
+                        <option>Cash</option>
+                        <option>UPI</option>
+                        <option>Bank Transfer</option>
+                        <option>Card</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Collected By</label>
+                    <select class="form-select">
+                        <option>Select collector</option>
+                        <option>Sales Team</option>
+                        <option>Guide</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('payment')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('payment')">Add Payment</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Assign Task</div>
+                <button class="modal-close" onclick="closeModal('task')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Task Title</label>
+                    <input type="text" class="form-input" placeholder="Enter task title...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Assign To</label>
+                    <select class="form-select">
+                        <option>Select team member</option>
+                        <option>Sales Admin</option>
+                        <option>Operations</option>
+                        <option>Finance</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Due Date</label>
+                    <input type="date" class="form-input">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal('task')">Cancel</button>
+                <button class="btn btn-primary" onclick="closeModal('task')">Assign Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const links = document.querySelectorAll('.tab-link');
+            
+            tabs.forEach(tab => tab.classList.remove('active'));
+            links.forEach(link => link.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+        }
+
+        function showModal(type) {
+            document.getElementById(type + 'Modal').classList.add('active');
+        }
+
+        function closeModal(type) {
+            document.getElementById(type + 'Modal').classList.remove('active');
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+            }
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+```
