@@ -90,9 +90,6 @@ const ApprovalsHubPage = lazy(
 // ── Finance ──
 const AccountingPage = lazy(() => import("./pages/admin/AccountingPage.tsx"));
 
-// ── Travel Desk ──
-const TravelDeskPage = lazy(() => import("./pages/admin/TravelDeskPage.tsx"));
-
 // ── Business: Trips, Master Database, Website CMS ──
 const TripsPage = lazy(() => import("./pages/admin/TripsPage.tsx"));
 const MasterDatabasePage = lazy(
@@ -388,10 +385,6 @@ const App = () => (
                   }
                 />
                 <Route
-                  path="/admin/travel-desk/train-tickets"
-                  element={<Navigate to="/admin/travel-desk" replace />}
-                />
-                <Route
                   path="/admin/settings/users/:id"
                   element={<LegacyStaffUserRedirect />}
                 />
@@ -550,15 +543,6 @@ const App = () => (
                   }
                 />
 
-                {/* Travel Desk */}
-                <Route
-                  path="/admin/travel-desk"
-                  element={
-                    <AdminRoute>
-                      <TravelDeskPage />
-                    </AdminRoute>
-                  }
-                />
                 <Route
                   path="/admin/train-templates"
                   element={<Navigate to="/admin/bookings" replace />}

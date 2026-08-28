@@ -12,7 +12,8 @@ export function resolveAdminRoute(path: string): string {
     "/admin/dashboard": "/admin",
     "/admin/staff-directory": "/admin/staff-profiles",
     "/admin/approval-center/incoming": "/admin/approvals-hub?tab=payment-approvals",
-    "/admin/travel-desk/train-tickets": "/admin/travel-desk",
+    "/admin/travel-desk": "/admin/bookings",
+    "/admin/travel-desk/train-tickets": "/admin/bookings",
     "/admin/finance-control-center": "/admin/finance",
     "/admin/finance-verification":
       "/admin/approvals-hub?tab=payment-approvals",

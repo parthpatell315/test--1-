@@ -1,6 +1,5 @@
 /**
  * Canonical public website origin for customer-facing links.
- * Ignores leftover .in production URL env values.
  */
 function getPublicSiteBaseUrl() {
   const candidates = [
@@ -14,14 +13,13 @@ function getPublicSiteBaseUrl() {
     if (!raw || typeof raw !== "string") continue;
     let url = raw.trim();
     if (!url) continue;
-    if (/\byouthcamping\.in\b/i.test(url)) continue;
     if (!/^https?:\/\//i.test(url)) {
       url = `https://${url}`;
     }
     return url.replace(/\/+$/, "");
   }
 
-  return "https://youthcamping.online";
+  return "https://youthcamping.in";
 }
 
 module.exports = { getPublicSiteBaseUrl };

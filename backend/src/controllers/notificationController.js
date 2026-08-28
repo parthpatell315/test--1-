@@ -116,7 +116,7 @@ exports.getNotifications = async (req, res, next) => {
             id: `live-ticket-${t.id}`,
             title: "🎫 Train Ticket Queue",
             message: `${t.numberOfPassengers || 1} Pax for ${t.booking?.name || t.trainNumber || "Booking"} awaiting PNR assignment`,
-            link: "/admin/travel-desk/train-tickets",
+            link: "/admin/bookings",
             type: "TICKETING",
             isRead: false,
             createdAt: t.createdAt,

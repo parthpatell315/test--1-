@@ -19,16 +19,15 @@ describe("getPublicSiteBaseUrl", () => {
     return require("../src/utils/publicSiteUrl").getPublicSiteBaseUrl();
   }
 
-  it("prefers PUBLIC_SITE_URL when it is the .online origin", () => {
-    process.env.PUBLIC_SITE_URL = "https://youthcamping.online";
-    process.env.FRONTEND_URL = "https://www.youthcamping.in";
-    expect(load()).toBe("https://youthcamping.online");
+  it("prefers PUBLIC_SITE_URL when set", () => {
+    process.env.PUBLIC_SITE_URL = "https://youthcamping.in";
+    process.env.FRONTEND_URL = "https://youthcamping.online";
+    expect(load()).toBe("https://youthcamping.in");
   });
 
-  it("skips leftover .in env values", () => {
-    process.env.PUBLIC_SITE_URL = "https://www.youthcamping.in";
-    process.env.FRONTEND_URL = "https://youthcamping.online/";
-    expect(load()).toBe("https://youthcamping.online");
+  it("normalizes trailing slashes", () => {
+    process.env.PUBLIC_SITE_URL = "https://www.youthcamping.in/";
+    expect(load()).toBe("https://www.youthcamping.in");
   });
 
   it("falls back to the canonical public site", () => {
@@ -36,6 +35,6 @@ describe("getPublicSiteBaseUrl", () => {
     delete process.env.FRONTEND_URL;
     delete process.env.CLIENT_URL;
     delete process.env.NEXT_PUBLIC_SITE_URL;
-    expect(load()).toBe("https://youthcamping.online");
+    expect(load()).toBe("https://youthcamping.in");
   });
 });

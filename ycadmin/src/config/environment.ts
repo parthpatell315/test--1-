@@ -42,11 +42,11 @@ const IS_DEVELOPMENT = import.meta.env.DEV;
 // Resolve default configuration based on environment
 const defaultApiUrl = IS_DEVELOPMENT
   ? "http://localhost:3001"
-  : "https://api.youthcamping.online";
+  : "https://api.youthcamping.in";
 
 const defaultFrontendUrl = IS_DEVELOPMENT
   ? "http://localhost:3000"
-  : "https://youthcamping.online";
+  : "https://youthcamping.in";
 
 const rawApiUrl = import.meta.env.VITE_API_URL || defaultApiUrl;
 

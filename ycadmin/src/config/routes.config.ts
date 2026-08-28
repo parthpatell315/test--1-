@@ -6,7 +6,6 @@ export type NavigationGroup =
   | "Operations"
   | "Approval Center"
   | "Finance"
-  | "Travel Desk"
   | "People"
   | "Business"
   | "Marketing"
@@ -184,15 +183,6 @@ export const ADMIN_ROUTES: AdminRouteMetadata[] = [
     breadcrumbLabel: "Finance / Ledger",
   },
 
-  // Travel Desk
-  {
-    id: "travel-desk",
-    label: "Travel Desk",
-    path: "/admin/travel-desk",
-    authenticatedOnly: true,
-    navigation: { visible: false, group: "Travel Desk", iconName: "Plane" },
-    breadcrumbLabel: "Travel Desk",
-  },
 
   // Business Module
   {

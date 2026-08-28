@@ -1,12 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const { prisma } = require("../lib/prisma");
-const { optionalAuthenticate } = require("../middleware/auth");
+const { authenticate, requirePermission } = require("../middleware/auth");
+
+const requireOpsView = [authenticate, requirePermission("ops.view")];
+const requireOpsManage = [authenticate, requirePermission("ops.manage")];
+const requireTripsView = [authenticate, requirePermission("trips.view")];
 
 // 2. Admin Dashboard summary for Guide management
-router.get("/admin/dashboard", optionalAuthenticate, async (req, res) => {
+router.get("/admin/dashboard", ...requireOpsView, async (req, res) => {
   try {
-    const tripsCount = await prisma.trip.count().catch(() => 10);
+    const tenantId = req.user?.tenantId || "default";
+    const tripsCount = await prisma.trip
+      .count({ where: { tenantId } })
+      .catch(() => 0);
     res.json({
       activeTrips: tripsCount,
       totalGuides: 5,
@@ -26,42 +33,36 @@ router.get("/admin/dashboard", optionalAuthenticate, async (req, res) => {
 });
 
 // 3. Admin Expenses list for Guide management
-router.get("/admin/expenses", optionalAuthenticate, async (req, res) => {
+router.get("/admin/expenses", ...requireOpsView, async (req, res) => {
   res.json([]);
 });
 
 // 4. Admin Trip Status Recent
-router.get(
-  "/admin/trip-status/recent",
-  optionalAuthenticate,
-  async (req, res) => {
-    res.json([]);
-  },
-);
+router.get("/admin/trip-status/recent", ...requireOpsView, async (req, res) => {
+  res.json([]);
+});
 
 // 5. Admin Guides list
-router.get("/admin/guides", optionalAuthenticate, async (req, res) => {
+router.get("/admin/guides", ...requireOpsView, async (req, res) => {
   res.json([]);
 });
 
 // 6. Admin Attendance Logs
-router.get("/admin/attendance-logs", optionalAuthenticate, async (req, res) => {
+router.get("/admin/attendance-logs", ...requireOpsView, async (req, res) => {
   res.json([]);
 });
 
 // 7. Admin Operations Alerts
-router.get(
-  "/admin/operations/alerts",
-  optionalAuthenticate,
-  async (req, res) => {
-    res.json([]);
-  },
-);
+router.get("/admin/operations/alerts", ...requireOpsView, async (req, res) => {
+  res.json([]);
+});
 
-// 8. Admin Main Trips
-router.get("/admin/main-trips", optionalAuthenticate, async (req, res) => {
+// 8. Admin Main Trips (authenticated staff catalog; tenant-scoped)
+router.get("/admin/main-trips", ...requireTripsView, async (req, res) => {
   try {
+    const tenantId = req.user?.tenantId || "default";
     const trips = await prisma.trip.findMany({
+      where: { tenantId },
       select: { id: true, title: true, price: true, availableDates: true },
     });
     const formatted = trips.map((t) => ({
@@ -352,7 +353,7 @@ let mockDepartureStays = [
 ];
 
 // 9. Get all Hotel Master properties
-router.get("/admin/hotels", optionalAuthenticate, async (req, res) => {
+router.get("/admin/hotels", ...requireOpsView, async (req, res) => {
   if (!isMockDataEnabled) return mockDisabledResponse(res);
   const { city } = req.query;
   const filtered = city
@@ -362,7 +363,7 @@ router.get("/admin/hotels", optionalAuthenticate, async (req, res) => {
 });
 
 // 9b. Create a new Hotel Master property (without vendorId)
-router.post("/admin/hotels", optionalAuthenticate, async (req, res) => {
+router.post("/admin/hotels", ...requireOpsManage, async (req, res) => {
   try {
     const newHotel = {
       id: `HTL-${Date.now()}`,
@@ -383,7 +384,7 @@ router.post("/admin/hotels", optionalAuthenticate, async (req, res) => {
 });
 
 // 10. Get Hotel-Vendor contracts (supports filtering by hotelId or vendorId)
-router.get("/admin/hotel-vendors", optionalAuthenticate, async (req, res) => {
+router.get("/admin/hotel-vendors", ...requireOpsView, async (req, res) => {
   if (!isMockDataEnabled) return mockDisabledResponse(res);
   const { hotelId, vendorId } = req.query;
   let filtered = mockHotelVendors;
@@ -393,7 +394,7 @@ router.get("/admin/hotel-vendors", optionalAuthenticate, async (req, res) => {
 });
 
 // 10b. Create a new Hotel-Vendor Contract mapping
-router.post("/admin/hotel-vendors", optionalAuthenticate, async (req, res) => {
+router.post("/admin/hotel-vendors", ...requireOpsManage, async (req, res) => {
   try {
     const newContract = {
       id: `CTR-${Date.now()}`,
@@ -414,7 +415,7 @@ router.post("/admin/hotel-vendors", optionalAuthenticate, async (req, res) => {
 // 11. Get Departure Stays for a departure
 router.get(
   "/admin/departure-stays/:departureId",
-  optionalAuthenticate,
+  ...requireOpsView,
   async (req, res) => {
     if (!isMockDataEnabled) return mockDisabledResponse(res);
     const { departureId } = req.params;
@@ -426,10 +427,7 @@ router.get(
 );
 
 // 12. Create/Assign a new Departure Stay (from Step 4 Wizard)
-router.post(
-  "/admin/departure-stays",
-  optionalAuthenticate,
-  async (req, res) => {
+router.post("/admin/departure-stays", ...requireOpsManage, async (req, res) => {
     try {
       if (!isMockDataEnabled) return mockDisabledResponse(res);
       const newStay = {
@@ -481,14 +479,10 @@ router.post(
         .status(500)
         .json({ success: false, error: "Failed to create stay assignment" });
     }
-  },
-);
+});
 
 // 13. Update Stay Status or Details
-router.put(
-  "/admin/departure-stays/:id",
-  optionalAuthenticate,
-  async (req, res) => {
+router.put("/admin/departure-stays/:id", ...requireOpsManage, async (req, res) => {
     if (!isMockDataEnabled) return mockDisabledResponse(res);
     const { id } = req.params;
     const idx = mockDepartureStays.findIndex((s) => s.id === id);
@@ -497,7 +491,6 @@ router.put(
 
     mockDepartureStays[idx] = { ...mockDepartureStays[idx], ...req.body };
     res.json({ success: true, data: mockDepartureStays[idx] });
-  },
-);
+});
 
 module.exports = router;

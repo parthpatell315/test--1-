@@ -5,6 +5,7 @@ const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
 const { getAllowedOrigins } = require("../middleware/cors");
+const { authenticate, requirePermission } = require("../middleware/auth");
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -40,6 +41,112 @@ const corsOptions = {
     "Origin",
   ],
 };
+
+const UPLOAD_PERMISSIONS = [
+  "website.edit",
+  "trips.edit",
+  "pagebuilder.edit",
+  "design.edit",
+  "settings.edit",
+  "company_documents.upload",
+];
+const requireUploadAccess = [
+  authenticate,
+  requirePermission(UPLOAD_PERMISSIONS),
+];
+
+const MAX_IMAGE_BYTES = 100 * 1024 * 1024;
+const MAX_VIDEO_BYTES = 100 * 1024 * 1024;
+const MAX_TICKET_BYTES = 10 * 1024 * 1024;
+
+const ALLOWED_IMAGE_MIMES = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/jpg",
+  "image/gif",
+  "image/svg+xml",
+  "image/avif",
+  "image/heic",
+  "image/heif",
+  "image/bmp",
+  "image/tiff",
+]);
+
+const ALLOWED_VIDEO_MIMES = new Set([
+  "video/mp4",
+  "video/webm",
+  "video/quicktime",
+  "video/ogg",
+  "video/x-msvideo",
+  "video/mov",
+  "video/avi",
+  "video/mkv",
+]);
+
+const ALLOWED_TICKET_MIMES = new Set([
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/jpg",
+]);
+
+function validateMediaFile(file, { allowVideo = true, maxBytes = MAX_IMAGE_BYTES } = {}) {
+  if (!file) {
+    return { ok: false, status: 400, message: "No file uploaded" };
+  }
+  if (!file.buffer || file.size <= 0) {
+    return { ok: false, status: 400, message: "Empty file uploaded" };
+  }
+  if (file.size > maxBytes) {
+    return { ok: false, status: 400, message: `File exceeds ${maxBytes} byte limit` };
+  }
+
+  const mime = (file.mimetype || "").toLowerCase();
+  const ext = path.extname(file.originalname || "").toLowerCase();
+  const isVideo =
+    allowVideo &&
+    (ALLOWED_VIDEO_MIMES.has(mime) ||
+      mime.startsWith("video/") ||
+      [".mp4", ".webm", ".mov", ".ogg", ".avi", ".mkv"].includes(ext));
+  const isImage =
+    ALLOWED_IMAGE_MIMES.has(mime) ||
+    mime.startsWith("image/") ||
+    [".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".avif", ".heic", ".heif", ".bmp", ".tiff"].includes(
+      ext,
+    );
+
+  if (!isImage && !isVideo) {
+    return {
+      ok: false,
+      status: 400,
+      message: `Invalid file type: ${mime || ext || "unknown"}`,
+    };
+  }
+
+  return { ok: true };
+}
+
+function validateTicketFile(file) {
+  if (!file) {
+    return { ok: false, status: 400, message: "No ticket uploaded" };
+  }
+  if (file.size > MAX_TICKET_BYTES) {
+    return { ok: false, status: 400, message: "Ticket file exceeds 10MB limit" };
+  }
+
+  const mime = (file.mimetype || "").toLowerCase();
+  const ext = path.extname(file.originalname || "").toLowerCase();
+  if (!ALLOWED_TICKET_MIMES.has(mime) && ![".pdf", ".jpg", ".jpeg", ".png"].includes(ext)) {
+    return {
+      ok: false,
+      status: 400,
+      message: "Only PDF and image tickets are allowed",
+    };
+  }
+
+  return { ok: true };
+}
 
 // Register CORS explicitly at the router level
 router.use(cors(corsOptions));
@@ -134,7 +241,7 @@ async function saveUploadedFile(file, folder = "youthcamping/trips") {
 
 // ── DELETE /api/upload/photo ──
 // Physically removes a file from uploads directory or Cloudinary
-router.delete("/photo", async (req, res) => {
+router.delete("/photo", ...requireUploadAccess, async (req, res) => {
   try {
     const { url } = req.body;
     if (!url) {
@@ -189,7 +296,7 @@ router.delete("/photo", async (req, res) => {
 
 // ── POST /api/upload/single ──
 // Upload a single image and return its persistent URL
-router.post("/single", (req, res) => {
+router.post("/single", ...requireUploadAccess, (req, res) => {
   upload.single("image")(req, res, async (err) => {
     if (err) {
       console.error("[UPLOAD SINGLE] Multer Error:", err.message);
@@ -201,10 +308,11 @@ router.post("/single", (req, res) => {
     }
 
     try {
-      if (!req.file) {
-        return res.status(400).json({
+      const validation = validateMediaFile(req.file, { allowVideo: true });
+      if (!validation.ok) {
+        return res.status(validation.status).json({
           success: false,
-          message: 'No file uploaded. Ensure field name is "image"',
+          message: validation.message,
         });
       }
 
@@ -232,7 +340,7 @@ router.post("/single", (req, res) => {
 
 // ── POST /api/upload/multiple ──
 // Upload multiple images and return their persistent URLs
-router.post("/multiple", (req, res) => {
+router.post("/multiple", ...requireUploadAccess, (req, res) => {
   upload.array("images", 10)(req, res, async (err) => {
     if (err) {
       console.error("[UPLOAD MULTI] Multer Error:", err.message);
@@ -246,6 +354,16 @@ router.post("/multiple", (req, res) => {
         return res
           .status(400)
           .json({ success: false, message: "No files uploaded" });
+      }
+
+      for (const file of req.files) {
+        const validation = validateMediaFile(file, { allowVideo: true });
+        if (!validation.ok) {
+          return res.status(validation.status).json({
+            success: false,
+            message: validation.message,
+          });
+        }
       }
 
       const results = await Promise.all(
@@ -268,11 +386,13 @@ router.post("/multiple", (req, res) => {
 
 // ── POST /api/upload/ticket ──
 const ticketUpload = require("../middleware/ticketUpload");
-router.post("/ticket", ticketUpload.single("ticket"), (req, res) => {
-  if (!req.file) {
-    return res
-      .status(400)
-      .json({ success: false, message: "No ticket uploaded" });
+router.post("/ticket", ...requireUploadAccess, ticketUpload.single("ticket"), (req, res) => {
+  const validation = validateTicketFile(req.file);
+  if (!validation.ok) {
+    return res.status(validation.status).json({
+      success: false,
+      message: validation.message,
+    });
   }
 
   const url = `/uploads/tickets/${req.file.filename}`;
@@ -284,7 +404,11 @@ router.post("/ticket", ticketUpload.single("ticket"), (req, res) => {
 
 // ── GET /api/upload/verify ──
 // Debug endpoint to check if a file exists on disk
-router.get("/verify", (req, res) => {
+router.get(
+  "/verify",
+  authenticate,
+  requirePermission(["trips.view", "website.edit", "pagebuilder.edit"]),
+  (req, res) => {
   const { url } = req.query;
   if (!url) {
     return res
@@ -320,11 +444,11 @@ const videoFilter = (req, file, cb) => {
 };
 const uploadVideo = multer({
   storage: videoStorage,
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
+  limits: { fileSize: MAX_VIDEO_BYTES },
   fileFilter: videoFilter,
 });
 
-router.post("/video", (req, res) => {
+router.post("/video", ...requireUploadAccess, (req, res) => {
   uploadVideo.single("video")(req, res, async (err) => {
     if (err) {
       console.error("[UPLOAD VIDEO] Multer Error:", err.message);
@@ -332,10 +456,15 @@ router.post("/video", (req, res) => {
     }
 
     try {
-      if (!req.file) {
-        return res
-          .status(400)
-          .json({ success: false, message: "No file uploaded" });
+      const validation = validateMediaFile(req.file, {
+        allowVideo: true,
+        maxBytes: MAX_VIDEO_BYTES,
+      });
+      if (!validation.ok) {
+        return res.status(validation.status).json({
+          success: false,
+          message: validation.message,
+        });
       }
 
       const isCloudinaryConfigured = !!(
@@ -396,7 +525,7 @@ router.post("/video", (req, res) => {
 });
 
 // ── DELETE /api/upload/video ──
-router.delete("/video", async (req, res) => {
+router.delete("/video", ...requireUploadAccess, async (req, res) => {
   try {
     const { publicId } = req.body;
     if (!publicId) {

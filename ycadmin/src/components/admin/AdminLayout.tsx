@@ -357,11 +357,6 @@ function AdminSidebar() {
                 ],
                 "/admin/accounting": ["accounting.view", "finance.view", "payments.view"],
                 "/admin/finance": ["accounting.view", "finance.view"],
-                "/admin/travel-desk": [
-                  "tickets.view",
-                  "tickets.create",
-                  "tickets.approve",
-                ],
                 "/admin/trips": ["trips.view"],
                 "/admin/website": [
                   "design.view",
@@ -751,8 +746,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     // Skip checks for login and unauthorized pages
     if (
       currentPath === "/admin/login" ||
-      currentPath === "/admin/unauthorized" ||
-      currentPath === "/admin/travel-desk"
+      currentPath === "/admin/unauthorized"
     )
       return;
 

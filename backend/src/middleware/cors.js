@@ -12,6 +12,7 @@ const cors = require("cors");
 const DEFAULT_ALLOWED_ORIGINS = [
   "https://youthcamping.in",
   "https://www.youthcamping.in",
+  "https://admin.youthcamping.in",
   "https://youthcamping.online",
   "https://www.youthcamping.online",
   "https://admin.youthcamping.online",

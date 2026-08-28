@@ -24,12 +24,43 @@ const collectionAccountController = require("../controllers/collectionAccountCon
 router.use(authenticate);
 
 // Collection Accounts Routes
-router.get("/accounts", collectionAccountController.getAccounts);
-router.post("/accounts", collectionAccountController.createAccount);
-router.put("/accounts/:id", collectionAccountController.updateAccount);
-router.delete("/accounts/:id", collectionAccountController.deleteAccount);
-router.get("/accounts/:id/ledger", collectionAccountController.getAccountLedger);
-router.post("/accounts/:id/submit", collectionAccountController.recordAccountSubmission);
+const viewPaymentAccounts = requirePermission([
+  "payments.view",
+  "accounting.view",
+  "ops.view",
+]);
+const managePaymentAccounts = requirePermission([
+  "station_payments.manage_accounts",
+  "payments.edit",
+  "accounting.approve",
+]);
+
+router.get("/accounts", viewPaymentAccounts, collectionAccountController.getAccounts);
+router.post(
+  "/accounts",
+  managePaymentAccounts,
+  collectionAccountController.createAccount,
+);
+router.put(
+  "/accounts/:id",
+  managePaymentAccounts,
+  collectionAccountController.updateAccount,
+);
+router.delete(
+  "/accounts/:id",
+  managePaymentAccounts,
+  collectionAccountController.deleteAccount,
+);
+router.get(
+  "/accounts/:id/ledger",
+  viewPaymentAccounts,
+  collectionAccountController.getAccountLedger,
+);
+router.post(
+  "/accounts/:id/submit",
+  requirePermission(["ops.manage", "payments.edit", "accounting.approve"]),
+  collectionAccountController.recordAccountSubmission,
+);
 router.post("/accounts/transfer", requirePermission("ops.manage"), collectionAccountController.recordAccountSubmission);
 router.post("/sync-treasury-mappings", requirePermission("ops.manage"), syncTreasuryMappings);
 
@@ -58,7 +89,11 @@ router.patch(
   requirePermission("ops.manage"),
   updatePaymentAccount,
 );
-router.get("/booking/:bookingId", getBookingPayments);
+router.get(
+  "/booking/:bookingId",
+  requirePermission(["payments.view", "bookings.view", "ops.view"]),
+  getBookingPayments,
+);
 
 // Vendor Payables Routes
 router.get("/vendor/:tripId", requirePermission("ops.view"), getVendorPayments);

@@ -267,6 +267,7 @@ exports.addClientPayment = async (req, res) => {
 
     const booking = await prisma.booking.findFirst({
       where: {
+        tenantId,
         OR: [{ id: paramBookingId }, { bookingId: paramBookingId }],
       },
     });
@@ -703,13 +704,20 @@ exports.getBookingPayments = async (req, res) => {
 
     const booking = await prisma.booking.findFirst({
       where: {
+        tenantId,
         OR: [{ id: paramBookingId }, { bookingId: paramBookingId }],
       },
     });
 
-    const possibleBookingIds = booking
-      ? Array.from(new Set([booking.id, booking.bookingId].filter(Boolean)))
-      : [paramBookingId];
+    if (!booking) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
+    }
+
+    const possibleBookingIds = Array.from(
+      new Set([booking.id, booking.bookingId].filter(Boolean)),
+    );
 
     // Load active accounts for auto-resolving missing collection accounts
     const activeAccounts = await prisma.paymentReceivingAccount.findMany({
