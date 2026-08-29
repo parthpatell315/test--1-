@@ -188,6 +188,18 @@ exports.getDashboard = async (req, res) => {
       },
     });
 
+    const allBookingKeyList = bookings
+      .flatMap((b) => [b.id, b.bookingId])
+      .filter(Boolean);
+    const allOpsPayments = await prisma.opsClientPayment.findMany({
+      where: { bookingId: { in: allBookingKeyList } },
+    });
+    const opsByBookingKey = new Map();
+    for (const p of allOpsPayments) {
+      if (!opsByBookingKey.has(p.bookingId)) opsByBookingKey.set(p.bookingId, []);
+      opsByBookingKey.get(p.bookingId).push(p);
+    }
+
     let totalPackageAmount = 0,
       totalPreviouslyPaid = 0,
       totalCashCollected = 0,
@@ -226,18 +238,34 @@ exports.getDashboard = async (req, res) => {
       const verifiedAmt = verifiedUpi.reduce((s, p) => s + p.amount, 0);
       const pendingAmt = pendingUpi.reduce((s, p) => s + p.amount, 0);
 
+      const fromId = opsByBookingKey.get(bk.id) || [];
+      const fromRef =
+        bk.bookingId && bk.bookingId !== bk.id
+          ? opsByBookingKey.get(bk.bookingId) || []
+          : [];
+      const seenOps = new Set();
+      const mergedOps = [];
+      [...(bk.opsClientPayments || []), ...fromId, ...fromRef].forEach((p) => {
+        if (seenOps.has(p.id)) return;
+        seenOps.add(p.id);
+        mergedOps.push(p);
+      });
+
       const stationTotal = sumActiveStationCollections(bk.stationPayments);
       const computed = computeEffectivePaid({
         totalAmount: finalAmount,
-        opsClientPayments: [],
+        opsClientPayments: mergedOps,
         legacyPayments: [],
         stationPayments: bk.stationPayments,
         accountingEntries: bk.accountingEntries || [],
       });
-      // Paid before station = cleared total minus active station collections
-      const prevPaidBeforeStation = Math.max(0, computed.paidAmount - stationTotal);
-      const grandTotal = computed.paidAmount;
-      const remaining = computed.remainingAmount;
+      // Paid before station = cleared receipts before station OR stored advancePaid
+      const prevPaidBeforeStation =
+        computed.opsSum > 0 || computed.accountingSum > 0
+          ? Math.max(0, computed.paidAmount - stationTotal)
+          : Math.max(0, Number(bk.advancePaid || bk.amount || 0));
+      const grandTotal = prevPaidBeforeStation + stationTotal;
+      const remaining = Math.max(0, finalAmount - grandTotal);
 
       totalPackageAmount += finalAmount;
       totalPreviouslyPaid += prevPaidBeforeStation;
