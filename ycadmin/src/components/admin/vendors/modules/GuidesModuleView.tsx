@@ -166,7 +166,7 @@ export function GuidesModuleView({
       {/* Synchronized Pagination Footer */}
       <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-600 font-medium">
         <span>
-          Showing {pagination?.startIndex ?? 0}–{pagination?.endIndex ?? 0} of{" "}
+          Showing {pagination?.startIndex ?? 0} to {pagination?.endIndex ?? 0} of{" "}
           {pagination?.total ?? 0} guide partners
         </span>
         <div className="flex items-center gap-1.5">

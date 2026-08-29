@@ -254,7 +254,7 @@ export function DataTable<T extends Record<string, any>>({
               : filtered.length === 0
                 ? 0
                 : activePage * activePageSize + 1}
-            -
+            {" to "}
             {serverSide
               ? Math.min(activePage * activePageSize, totalItemsCount)
               : Math.min(

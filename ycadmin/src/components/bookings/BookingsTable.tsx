@@ -1,4 +1,4 @@
-﻿import {
+import {
   RotateCw,
   Users,
   CreditCard,
@@ -303,7 +303,7 @@ export function BookingsTable({
       {totalCount > 0 && (
         <div className="flex items-center justify-between border-t border-[#E8EEF4] px-4 py-2 bg-white text-[12px] shrink-0">
           <p className="text-slate-400 font-medium">
-            {totalCount === 0 ? 0 : (page - 1) * pageSize + 1}–{Math.min(page * pageSize, totalCount)} of {totalCount}
+            {totalCount === 0 ? 0 : (page - 1) * pageSize + 1} to {Math.min(page * pageSize, totalCount)} of {totalCount}
           </p>
           <div className="flex items-center gap-3">
             <select

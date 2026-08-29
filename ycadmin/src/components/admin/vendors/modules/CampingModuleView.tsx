@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import {
   MapPin,
   Phone,
@@ -198,7 +198,7 @@ export function CampingModuleView({
 
       <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-600 font-medium">
         <span>
-          Showing {pagination.startIndex}–{pagination.endIndex} of{" "}
+          Showing {pagination.startIndex} to {pagination.endIndex} of{" "}
           {pagination.total} campsite partners
         </span>
         <div className="flex items-center gap-1.5">

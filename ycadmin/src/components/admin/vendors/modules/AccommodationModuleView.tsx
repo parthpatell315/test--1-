@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { Hotel, Plus, Eye, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDisplayVendorCode } from "@/utils/vendorUtils";
@@ -213,7 +213,7 @@ export function AccommodationModuleView({
 
       <div className="flex items-center justify-between rounded-xl border border-[#E8EEF4] bg-white px-4 py-3 text-xs font-medium text-slate-500">
         <span>
-          Showing {pagination?.startIndex ?? 0}–{pagination?.endIndex ?? 0} of{" "}
+          Showing {pagination?.startIndex ?? 0} to {pagination?.endIndex ?? 0} of{" "}
           {pagination?.total ?? 0} vendors
         </span>
         <div className="flex items-center gap-1.5">

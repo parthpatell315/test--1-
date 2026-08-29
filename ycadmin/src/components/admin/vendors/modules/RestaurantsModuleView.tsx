@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { UtensilsCrossed, Plus, Eye, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getDisplayVendorCode } from "@/utils/vendorUtils";
@@ -166,7 +166,7 @@ export function RestaurantsModuleView({
       {/* Synchronized Pagination Footer */}
       <div className="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-600 font-medium">
         <span>
-          Showing {pagination?.startIndex ?? 0}–{pagination?.endIndex ?? 0} of{" "}
+          Showing {pagination?.startIndex ?? 0} to {pagination?.endIndex ?? 0} of{" "}
           {pagination?.total ?? 0} restaurant partners
         </span>
         <div className="flex items-center gap-1.5">
