@@ -30,6 +30,7 @@ import { opsService } from "@/services/ops.service";
 import { bookingsService } from "@/services/bookings.service";
 import { ENV } from "@/config/environment";
 import { formatProofDisplayUrl } from "@/utils/paymentProof";
+import { DocumentViewerModal } from "@/components/admin/DocumentViewerModal";
 
 interface DepartureDocumentsProps {
   tripId: string;
@@ -96,6 +97,17 @@ export default function DepartureDocuments({
   const [search, setSearch] = useState("");
   const [docFilter, setDocFilter] = useState<"all" | "missing_id" | "missing_proof">("all");
   const [showOpsFiles, setShowOpsFiles] = useState(false);
+
+  const [viewerModalOpen, setViewerModalOpen] = useState(false);
+  const [viewerData, setViewerData] = useState<{
+    url: string;
+    title: string;
+    subtitle?: string;
+  }>({
+    url: "",
+    title: "",
+    subtitle: "",
+  });
 
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -201,14 +213,19 @@ export default function DepartureDocuments({
   };
 
   const openIdentityDoc = async (doc: IdentityDoc, passengerName: string) => {
-    const toastId = `view-id-${doc.id}`;
     try {
       if (doc.url) {
         const fullUrl = resolvePublicUrl(doc.url);
-        window.open(fullUrl, "_blank", "noopener,noreferrer");
+        setViewerData({
+          url: fullUrl,
+          title: doc.label || "Identity / Aadhaar Document",
+          subtitle: `${passengerName} • ${doc.fileName || "Aadhaar / ID Proof"}`,
+        });
+        setViewerModalOpen(true);
         return;
       }
       if (doc.source === "booking_document" && doc.bookingId && doc.passengerId) {
+        const toastId = `view-id-${doc.id}`;
         toast.loading("Loading document...", { id: toastId });
         const blob = await bookingsService.downloadDocument(
           doc.bookingId,
@@ -216,30 +233,53 @@ export default function DepartureDocuments({
           doc.id,
         );
         const url = window.URL.createObjectURL(blob);
-        const win = window.open(url, "_blank");
-        if (!win) {
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = doc.fileName || "document";
-          a.click();
-        }
-        toast.success(`Opened ${passengerName}'s document`, { id: toastId });
+        setViewerData({
+          url: url,
+          title: doc.label || "Identity / Aadhaar Document",
+          subtitle: `${passengerName} • ${doc.fileName || "ID Proof"}`,
+        });
+        setViewerModalOpen(true);
+        toast.dismiss(toastId);
         return;
       }
-      toast.error("No file available to view", { id: toastId });
+      toast.error("No file available to view");
     } catch (err) {
       console.error(err);
-      toast.error("Failed to open document", { id: toastId });
+      toast.error("Failed to open document");
     }
   };
 
-  const openPaymentProof = (proof: PaymentProof) => {
+  const openPaymentProof = (proof: PaymentProof, passengerName?: string) => {
     const fullUrl = resolvePublicUrl(proof.url);
     if (!fullUrl) {
       toast.error("No payment proof URL");
       return;
     }
-    window.open(fullUrl, "_blank", "noopener,noreferrer");
+    const metaParts = [];
+    if (passengerName) metaParts.push(passengerName);
+    if (proof.fileName) metaParts.push(proof.fileName);
+    if (proof.amount != null) metaParts.push(`₹${Number(proof.amount).toLocaleString("en-IN")}`);
+    if (proof.paymentMode) metaParts.push(proof.paymentMode);
+
+    setViewerData({
+      url: fullUrl,
+      title: "Payment Receipt / Proof",
+      subtitle: metaParts.join(" • ") || "Verified Payment Receipt",
+    });
+    setViewerModalOpen(true);
+  };
+
+  const openOperationalDoc = (d: any) => {
+    if (!d.fileUrl) {
+      toast.error("No file URL to view");
+      return;
+    }
+    setViewerData({
+      url: d.fileUrl,
+      title: d.originalFileName || "Operational Document",
+      subtitle: `${(d.category || "").replace(/_/g, " ")} • Uploaded by ${d.uploadedBy?.name || "Staff"}`,
+    });
+    setViewerModalOpen(true);
   };
 
   const filteredPassengers = useMemo(() => {
@@ -589,10 +629,10 @@ export default function DepartureDocuments({
                                   </div>
                                   <button
                                     type="button"
-                                    onClick={() => openPaymentProof(proof)}
+                                    onClick={() => openPaymentProof(proof, p.name)}
                                     className="shrink-0 border border-slate-200 hover:bg-slate-50 text-slate-700 text-[9.5px] font-bold px-2 py-1 rounded flex items-center gap-1"
                                   >
-                                    <ExternalLink className="w-3 h-3 text-slate-400" />{" "}
+                                    <Eye className="w-3 h-3 text-slate-400" />{" "}
                                     View
                                   </button>
                                 </li>
@@ -722,14 +762,13 @@ export default function DepartureDocuments({
                     </td>
                     <td className="p-3 text-center">
                       <div className="flex gap-1.5 justify-center">
-                        <a
-                          href={d.fileUrl}
-                          target="_blank"
-                          rel="noreferrer"
+                        <button
+                          type="button"
+                          onClick={() => openOperationalDoc(d)}
                           className="border border-slate-200 hover:bg-slate-50 text-slate-700 text-[9.5px] font-bold px-2 py-1 rounded flex items-center gap-1"
                         >
                           <Eye className="w-3 h-3 text-slate-400" /> View
-                        </a>
+                        </button>
                         <button
                           type="button"
                           onClick={() => {
@@ -932,6 +971,15 @@ export default function DepartureDocuments({
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* In-App Document & Proof Preview Modal */}
+      <DocumentViewerModal
+        isOpen={viewerModalOpen}
+        onClose={() => setViewerModalOpen(false)}
+        url={viewerData.url}
+        title={viewerData.title}
+        subtitle={viewerData.subtitle}
+      />
     </div>
   );
 }
