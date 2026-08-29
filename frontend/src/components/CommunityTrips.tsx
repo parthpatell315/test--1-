@@ -104,7 +104,7 @@ export default function CommunityTrips({
   trips: propTrips = [],
   backgroundImage,
   backgroundImages,
-  tagline = "â€¢ EXPLORE. CONNECT. BELONG.",
+  tagline = "EXPLORE. CONNECT. BELONG.",
   headline = "Trips for the",
   headlinePrefix,
   strikethroughWord = "Ordinary",
@@ -403,7 +403,7 @@ export default function CommunityTrips({
               className="font-extrabold text-xs sm:text-sm tracking-[2.5px] uppercase mb-2 drop-shadow-xs"
               style={{ color: accentColor }}
             >
-              {tagline}
+              {(tagline || "").replace(/^[Ââ€¢\s•-]+/, "").trim() || "EXPLORE. CONNECT. BELONG."}
             </p>
 
             <h2

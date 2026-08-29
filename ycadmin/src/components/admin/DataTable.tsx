@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -254,7 +254,7 @@ export function DataTable<T extends Record<string, any>>({
               : filtered.length === 0
                 ? 0
                 : activePage * activePageSize + 1}
-            â€“
+            -
             {serverSide
               ? Math.min(activePage * activePageSize, totalItemsCount)
               : Math.min(
