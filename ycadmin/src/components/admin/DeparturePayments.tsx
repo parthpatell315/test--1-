@@ -786,12 +786,23 @@ export default function DeparturePayments({
       // Merge direct Hotel Bookings from OpsHotelBooking into mergedVendors
       const rawHotels = Array.isArray(hotelsRes) ? hotelsRes : (hotelsRes?.data || []);
       (rawHotels || []).forEach((h: any) => {
+        const rawHName = String(h.hotelName || h.name || "").toLowerCase().trim();
         const hName = formatVendorName(h.hotelName || h.name);
-        if (!hName || hName === "NO_STAY" || hName === "NO STAY" || hName === "—" || hName.toLowerCase().includes("night journey")) {
-          return;
-        }
         const agreed = Number(h.totalAmount || 0);
         const paid = Number(h.advancePaid || 0);
+        if (
+          !hName ||
+          rawHName === "no_stay" ||
+          rawHName === "nostay" ||
+          rawHName === "no stay" ||
+          rawHName === "none" ||
+          rawHName === "—" ||
+          rawHName.includes("night journey") ||
+          rawHName.includes("train journey") ||
+          (agreed === 0 && paid === 0)
+        ) {
+          return;
+        }
         const balance = Math.max(0, agreed - paid);
         const status = paid >= agreed && agreed > 0 ? "Paid" : paid > 0 ? "Advance Paid" : "Pending";
 
@@ -1127,6 +1138,20 @@ export default function DeparturePayments({
       // Pending-approval misc must not appear as PAID (or at all) under Vendor Payables —
       // they stay on the Miscellaneous Expenses tab until Approve.
       const vendorPayables = mergedVendors.filter((v: any) => {
+        const name = String(v.vendorName || "").toLowerCase().trim();
+        if (
+          !name ||
+          name === "no_stay" ||
+          name === "nostay" ||
+          name === "no stay" ||
+          name === "none" ||
+          name === "—" ||
+          name.includes("night journey") ||
+          name.includes("train journey") ||
+          (Number(v.agreedAmount || 0) === 0 && Number(v.advancePaid || 0) === 0)
+        ) {
+          return false;
+        }
         if (!isMiscellaneousVendorCategory(v.category)) return true;
         return isMiscExpenseApproved(v);
       });
