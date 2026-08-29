@@ -69,7 +69,12 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
     },
     icons: {
-      icon: "/favicon.ico",
+      icon: [
+        { url: "/favicon.ico" },
+        { url: "/favicon.png", type: "image/png" },
+        { url: "/logo.png", type: "image/png" },
+      ],
+      apple: "/apple-touch-icon.png",
     },
     openGraph: {
       title: "YouthCamping — Adventure Tours for Young India",
