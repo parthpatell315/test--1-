@@ -399,15 +399,8 @@ export default function CommunityTrips({
         {/* HERO CONTENT */}
         <div className="relative z-10 max-w-[1440px] w-full mx-auto px-6 sm:px-8 md:px-12">
           <div className="max-w-[720px]">
-            <p
-              className="font-extrabold text-[11px] sm:text-xs tracking-[2px] uppercase mb-1.5 drop-shadow-xs"
-              style={{ color: accentColor }}
-            >
-              {(tagline || "").replace(/^[Ââ€¢\s•-]+/, "").trim() || "EXPLORE. CONNECT. BELONG."}
-            </p>
-
             <h2
-              className={`font-montserrat font-extrabold leading-[1.18] tracking-tight mb-2 text-[24px] sm:text-[34px] md:text-[42px] lg:text-[48px] ${isWhiteOverlay ? "text-[#0B1528]" : "text-white drop-shadow-md"}`}
+              className={`font-montserrat font-extrabold leading-[1.18] tracking-tight text-[26px] sm:text-[36px] md:text-[44px] lg:text-[50px] ${isWhiteOverlay ? "text-[#0B1528]" : "text-white drop-shadow-md"}`}
             >
               <span className="block">{activeHeadlinePrefix}</span>
               {(Boolean(activeStrikethroughWord) ||
@@ -439,7 +432,7 @@ export default function CommunityTrips({
 
                   {activeRotatingWords.length > 0 && (
                     <span
-                      className="inline-flex relative h-[30px] sm:h-[42px] md:h-[52px] items-center whitespace-nowrap pr-2 sm:pr-3"
+                      className="inline-flex relative h-[32px] sm:h-[44px] md:h-[54px] items-center whitespace-nowrap pr-2 sm:pr-3"
                       style={{ overflow: "hidden", minWidth: "max-content" }}
                     >
                       <AnimatePresence initial={false}>
@@ -475,12 +468,6 @@ export default function CommunityTrips({
                 </span>
               )}
             </h2>
-
-            <p
-              className={`text-xs sm:text-[13px] md:text-sm font-semibold leading-relaxed max-w-[500px] ${isWhiteOverlay ? "text-[#1B2A4A]" : "text-zinc-200 drop-shadow-sm"}`}
-            >
-              {subheadline}
-            </p>
           </div>
         </div>
       </div>
