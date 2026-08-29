@@ -9,13 +9,42 @@ const { logAction } = require("../utils/auditLogger");
 exports.createInquiry = async (req, res, next) => {
   try {
     const tenantId = req.headers["x-tenant-id"] || "default";
-    const { phone, tripId, sourceBookingLinkId } = req.body;
+    const phone = String(req.body.phone || req.body.mobile || "").trim();
+    let tripId = req.body.tripId || req.body.destinationId || null;
+    let tripTitle =
+      req.body.tripTitle ||
+      req.body.destinationName ||
+      req.body.destination ||
+      req.body.tripName ||
+      null;
+    const sourceBookingLinkId = req.body.sourceBookingLinkId || null;
+
+    // If tripId is provided but no tripTitle, or vice versa, try finding trip details
+    if (tripId && !tripTitle) {
+      const trip = await prisma.trip.findFirst({
+        where: { OR: [{ id: tripId }, { tripCode: tripId }, { slug: tripId }] },
+        select: { id: true, title: true, tripCode: true },
+      });
+      if (trip) {
+        tripTitle = trip.title;
+        tripId = trip.tripCode || trip.id;
+      }
+    } else if (!tripId && tripTitle) {
+      const trip = await prisma.trip.findFirst({
+        where: { OR: [{ title: { equals: tripTitle, mode: "insensitive" } }, { slug: tripTitle.toLowerCase().replace(/\s+/g, "-") }] },
+        select: { id: true, title: true, tripCode: true },
+      });
+      if (trip) {
+        tripId = trip.tripCode || trip.id;
+        tripTitle = trip.title;
+      }
+    }
 
     // Check for duplicates in the last 48 hours
     const duplicate = await prisma.inquiry.findFirst({
       where: {
-        phone,
-        tripId,
+        phone: phone || undefined,
+        tripId: tripId || undefined,
         tenantId,
         createdAt: { gte: new Date(Date.now() - 48 * 60 * 60 * 1000) },
       },
@@ -38,20 +67,34 @@ exports.createInquiry = async (req, res, next) => {
       }
     }
 
+    const date = req.body.date || req.body.preferredDate || null;
+    const count = req.body.count
+      ? parseInt(req.body.count)
+      : req.body.numberOfTravelers
+        ? parseInt(req.body.numberOfTravelers)
+        : req.body.pax
+          ? parseInt(req.body.pax)
+          : undefined;
+    const city = req.body.city || "";
+    let message = req.body.message || "";
+    if (city && !message.toLowerCase().includes(city.toLowerCase())) {
+      message = message ? `City: ${city}\n${message}` : `City: ${city}`;
+    }
+
     const inquiry = await prisma.inquiry.create({
       data: {
-        name: req.body.name,
-        email: req.body.email,
-        phone: req.body.phone,
-        message: req.body.message,
-        tripId: req.body.tripId,
-        tripTitle: req.body.tripTitle,
-        date: req.body.date,
-        source: req.body.source,
-        adminNotes: `Source: ${req.body.source || "Unknown"}`,
+        name: req.body.name || "Website Lead",
+        email: req.body.email || null,
+        phone: phone || null,
+        message: message || null,
+        tripId: tripId || null,
+        tripTitle: tripTitle || null,
+        date: date || null,
+        source: req.body.source || "Website Inquiry",
+        adminNotes: `Source: ${req.body.source || "Website"}${city ? ` · City: ${city}` : ""}`,
         tenantId,
         salesAdminId,
-        count: req.body.count ? parseInt(req.body.count) : undefined,
+        count: isNaN(count) ? undefined : count,
       },
     });
 
@@ -62,7 +105,7 @@ exports.createInquiry = async (req, res, next) => {
       actorUserId: salesAdminId || "system",
       actorName: req.body.name || "System",
       title: `New Inquiry Created`,
-      description: `Inquiry for trip ${req.body.tripTitle || req.body.tripId}`,
+      description: `Inquiry for ${tripTitle || "Tour"} from ${req.body.name || phone || "Lead"}`,
       moduleName: "Sales",
       priority: "Medium",
       actionUrl: `/admin/inquiries`,

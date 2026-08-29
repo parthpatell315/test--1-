@@ -35,7 +35,9 @@ export default function ContactPage() {
       const result = await submitInquiry({
         name: formData.name,
         phone: formData.mobile,
+        mobile: formData.mobile,
         email: formData.email,
+        tripTitle: formData.destination,
         destinationName: formData.destination,
         message: formData.message,
         source: "contact_page_form",

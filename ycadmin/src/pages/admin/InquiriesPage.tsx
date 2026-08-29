@@ -849,10 +849,46 @@ function InquiryDetailsDrawer({
                   <span className="text-slate-400 font-medium">
                     Requested Tour:
                   </span>
-                  <span className="font-bold text-slate-900 text-right truncate max-w-[180px]">
-                    {selected.tripTitle || "General Package"}
+                  <span className="font-bold text-slate-900 text-right max-w-[200px] leading-tight">
+                    {selected.tripTitle || selected.tripId || "General Tour Inquiry"}
                   </span>
                 </div>
+
+                {selected.phone && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400 font-medium">
+                      Phone Number:
+                    </span>
+                    <div className="flex items-center gap-1.5 font-bold font-mono text-slate-900">
+                      <a href={`tel:${selected.phone}`} className="hover:text-[#FF4D00] hover:underline">
+                        {selected.phone}
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {selected.email && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400 font-medium">
+                      Email Address:
+                    </span>
+                    <a href={`mailto:${selected.email}`} className="font-bold text-slate-900 hover:underline max-w-[180px] truncate text-right">
+                      {selected.email}
+                    </a>
+                  </div>
+                )}
+
+                {selected.count && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400 font-medium">
+                      Group Size:
+                    </span>
+                    <span className="font-bold text-slate-900">
+                      {selected.count} {selected.count === 1 ? "Traveler" : "Travelers"}
+                    </span>
+                  </div>
+                )}
+
                 {selected.date && (
                   <div className="flex justify-between items-center">
                     <span className="text-slate-400 font-medium">
@@ -863,6 +899,14 @@ function InquiryDetailsDrawer({
                     </span>
                   </div>
                 )}
+
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-400 font-medium">Source:</span>
+                  <span className="font-semibold text-slate-700 bg-slate-100 px-2 py-0.5 rounded text-[11px]">
+                    {selected.source || "Website Inquiry"}
+                  </span>
+                </div>
+
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 font-medium">Received:</span>
                   <span className="font-bold text-slate-700">

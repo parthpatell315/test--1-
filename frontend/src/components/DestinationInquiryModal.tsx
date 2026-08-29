@@ -122,14 +122,19 @@ export default function DestinationInquiryModal({
       const result = await submitInquiry({
         name: formData.name,
         phone: formData.mobile,
+        mobile: formData.mobile,
         email: formData.email,
         city: formData.city,
+        date: formData.date,
         preferredDate: formData.date,
+        count: formData.count ? parseInt(formData.count) : undefined,
         numberOfTravelers: formData.count
           ? parseInt(formData.count)
           : undefined,
         message: formData.message,
+        tripId: destination.id,
         destinationId: destination.id,
+        tripTitle: destination.name,
         destinationName: destination.name,
         source: source,
       });
