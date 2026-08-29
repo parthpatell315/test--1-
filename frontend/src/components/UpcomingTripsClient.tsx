@@ -197,7 +197,7 @@ export default function UpcomingTripsClient({ trips: propTrips = [] }: Props) {
               {[
                 { label: "Destinations", value: locationKeys.length || "8+" },
                 { label: "Active Trips", value: totalTrips || "20+" },
-                { label: "Travellers", value: "5000+" },
+                { label: "Travellers", value: "10K+" },
               ].map((s) => (
                 <div key={s.label} className="flex flex-col">
                   <span className="text-white font-black text-2xl leading-none">{s.value}</span>
