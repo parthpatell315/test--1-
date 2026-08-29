@@ -554,10 +554,58 @@ exports.deleteUser = async (req, res, next) => {
         .json({ success: false, message: "User profile not found" });
     }
 
-    // Delete user from database
-    await prisma.admin.delete({
-      where: { id: targetUserId },
-    });
+    // Unlink / clean up foreign key references in a transaction before deleting
+    await prisma.$transaction([
+      // Unlink sales references
+      prisma.booking.updateMany({ where: { salesAdminId: targetUserId }, data: { salesAdminId: null } }),
+      prisma.bookingLink.updateMany({ where: { salesAdminId: targetUserId }, data: { salesAdminId: null } }),
+      prisma.inquiry.updateMany({ where: { salesAdminId: targetUserId }, data: { salesAdminId: null } }),
+      prisma.quotation.updateMany({ where: { salesAdminId: targetUserId }, data: { salesAdminId: null } }),
+      
+      // Unlink accounting entries
+      prisma.accountingEntry.updateMany({ where: { salespersonId: targetUserId }, data: { salespersonId: null } }),
+      prisma.accountingEntry.updateMany({ where: { actionedByUserId: targetUserId }, data: { actionedByUserId: null } }),
+      
+      // Unlink station payments
+      prisma.stationPaymentCollection.updateMany({ where: { collectedByAdminId: targetUserId }, data: { collectedByAdminId: null } }),
+      prisma.stationPaymentCollection.updateMany({ where: { reversedByAdminId: targetUserId }, data: { reversedByAdminId: null } }),
+      prisma.stationPaymentCollection.updateMany({ where: { verifiedByAdminId: targetUserId }, data: { verifiedByAdminId: null } }),
+      
+      // Unlink cash handovers
+      prisma.stationCashHandover.updateMany({ where: { collectorAdminId: targetUserId }, data: { collectorAdminId: null } }),
+      prisma.stationCashHandover.updateMany({ where: { recipientAdminId: targetUserId }, data: { recipientAdminId: null } }),
+      prisma.stationCashHandover.updateMany({ where: { financeConfirmAdminId: targetUserId }, data: { financeConfirmAdminId: null } }),
+      prisma.stationCashHandover.updateMany({ where: { reconcilerAdminId: targetUserId }, data: { reconcilerAdminId: null } }),
+      
+      // Unlink employee collection submissions
+      prisma.employeeCollectionSubmission.updateMany({ where: { employeeAdminId: targetUserId }, data: { employeeAdminId: null } }),
+      prisma.employeeCollectionSubmission.updateMany({ where: { recordedByAdminId: targetUserId }, data: { recordedByAdminId: null } }),
+      prisma.collectionAccountSubmission.updateMany({ where: { recordedByAdminId: targetUserId }, data: { recordedByAdminId: null } }),
+
+      // Unlink receiving accounts
+      prisma.paymentReceivingAccount.updateMany({ where: { createdByAdminId: targetUserId }, data: { createdByAdminId: null } }),
+      prisma.paymentReceivingAccount.updateMany({ where: { approvedByAdminId: targetUserId }, data: { approvedByAdminId: null } }),
+      prisma.paymentReceivingAccount.updateMany({ where: { linkedAdminId: targetUserId }, data: { linkedAdminId: null } }),
+
+      // Unlink tasks & tickets
+      prisma.bookingTask.updateMany({ where: { assignedToId: targetUserId }, data: { assignedToId: null } }),
+      prisma.bookingTask.updateMany({ where: { assignedById: targetUserId }, data: { assignedById: null } }),
+      prisma.taskAllotment.updateMany({ where: { assignedToId: targetUserId }, data: { assignedToId: null } }),
+      prisma.taskAllotment.updateMany({ where: { createdById: targetUserId }, data: { createdById: null } }),
+      prisma.taskComment.updateMany({ where: { authorId: targetUserId }, data: { authorId: null } }),
+      
+      // Delete user specific auxiliary records
+      prisma.notification.deleteMany({ where: { userId: targetUserId } }),
+      prisma.userNavState.deleteMany({ where: { adminId: targetUserId } }),
+      prisma.userRoleAssignment.deleteMany({ where: { userId: targetUserId } }),
+      prisma.userCustomPermission.deleteMany({ where: { userId: targetUserId } }),
+      prisma.tripAssignment.deleteMany({ where: { adminId: targetUserId } }),
+      
+      // Delete user from database
+      prisma.admin.delete({
+        where: { id: targetUserId },
+      }),
+    ]);
 
     await cache.del(`auth:${targetUserId}`);
     usersCache.delete(req.user.tenantId || "default");
