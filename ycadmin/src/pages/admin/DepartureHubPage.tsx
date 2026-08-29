@@ -1333,9 +1333,33 @@ export default function DepartureHubPage() {
             vendorType: "guide",
             category: "Guides",
             vendorId: {
-              id: g.vendorId || g.guide?.id,
+              id: g.vendorId || g.guide?.id || g.id,
               name: g.guideName || g.guide?.name || "Lead Guide",
               location: "Guide Partner",
+            },
+            paymentStatus: opsRecordedPaymentStatus(
+              Number(g.advancePaid || 0),
+              Number(g.agreedAmount || 0),
+            ),
+            financeVerified: false,
+            agreedCost: g.agreedAmount,
+            paidAmount: g.advancePaid,
+            balanceDue: g.balanceAmount,
+            rawAssignment: g,
+          })),
+        ...(guides || [])
+          .filter((g: any) => isGuideExpenseType(g.assignmentType) && !isGuideAssignmentCancelled(g))
+          .map((g: any) => ({
+            id: g.id,
+            sourceId: g.id,
+            sourceType: "guide_expense",
+            name: g.guideName || "Trip Expense / Allowance",
+            vendorType: "other",
+            category: "Other",
+            vendorId: {
+              id: g.id,
+              name: g.guideName || "Trip Expense",
+              location: "Guide Allowance",
             },
             paymentStatus: opsRecordedPaymentStatus(
               Number(g.advancePaid || 0),

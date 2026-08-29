@@ -50,6 +50,10 @@ import {
   hotelServiceLine,
   refineServiceAgainstVendor,
 } from "@/utils/vendorDisplayText";
+import {
+  isGuideExpenseType,
+  isGuideAssignmentCancelled,
+} from "@/utils/departure/guideAssignments";
 
 import {
   isMiscExpenseApproved,
@@ -593,7 +597,7 @@ export default function DeparturePayments({
   // Fetch API data and merge cleanly with defaults if API is empty
   const fetchData = async () => {
     try {
-      const [clientRes, vendorRes, vendorsDirRes, expensesRes, trainSummaryRes, accountsRes, depActivitiesRes, hotelsRes] = await Promise.all([
+      const [clientRes, vendorRes, vendorsDirRes, expensesRes, trainSummaryRes, accountsRes, depActivitiesRes, hotelsRes, guidesRes] = await Promise.all([
         opsService
           .getClientPayments(tripId, departureDateStr)
           .catch(() => ({ bookings: [], receipts: [] })),
@@ -608,6 +612,7 @@ export default function DeparturePayments({
           .catch(() => ({ data: [], summary: { totalCollected: 0, totalSubmitted: 0, totalPending: 0 } })),
         api.get(`/ops/activities/${tripId}`, { params: { departureDate: departureDateStr } }).catch(() => ({ data: { data: [] } })),
         opsService.getHotelBookings(tripId, departureDateStr).catch(() => []),
+        opsService.getGuidePayments(tripId, departureDateStr).catch(() => []),
       ]);
 
       if (accountsRes.data && accountsRes.data.length > 0) {
@@ -853,6 +858,69 @@ export default function DeparturePayments({
                       amount: paid,
                       method: "Bank Transfer",
                       txnId: "HOTEL-ADVANCE",
+                      type: "ADVANCE",
+                      status: status,
+                    },
+                  ]
+                : [],
+          });
+        }
+      });
+
+      // Merge direct Guide assignments & Guide Expenses from OpsGuidePayment into mergedVendors
+      const rawGuides = Array.isArray(guidesRes) ? guidesRes : (guidesRes?.data || []);
+      (rawGuides || []).forEach((g: any) => {
+        const isCancelled = isGuideAssignmentCancelled(g);
+        if (isCancelled) return;
+
+        const isExpense = isGuideExpenseType(g.assignmentType);
+        const gName = formatVendorName(g.guideName || g.name || (isExpense ? "Trip Expense / Allowance" : "Lead Guide"));
+        const agreed = Number(g.agreedAmount || 0);
+        const paid = Number(g.advancePaid || 0);
+        const balance = Math.max(0, agreed - paid);
+        const status = paid >= agreed && agreed > 0 ? "Paid" : paid > 0 ? "Advance Paid" : "Pending";
+        const vCat = isExpense ? "Other" : "Guides";
+
+        const existingIdx = mergedVendors.findIndex((v) => {
+          if (g.id && v.id && g.id === v.id) return true;
+          return v.vendorName?.toLowerCase().trim() === gName.toLowerCase().trim() && (v.category === vCat || v.category === "Guides" || v.category === "Other");
+        });
+
+        if (existingIdx >= 0) {
+          mergedVendors[existingIdx].agreedAmount = Math.max(mergedVendors[existingIdx].agreedAmount || 0, agreed);
+          mergedVendors[existingIdx].advancePaid = Math.max(mergedVendors[existingIdx].advancePaid || 0, paid);
+          mergedVendors[existingIdx].balanceAmount = Math.max(0, (mergedVendors[existingIdx].agreedAmount || 0) - (mergedVendors[existingIdx].advancePaid || 0));
+          mergedVendors[existingIdx].status =
+            mergedVendors[existingIdx].advancePaid >= mergedVendors[existingIdx].agreedAmount && mergedVendors[existingIdx].agreedAmount > 0
+              ? "Paid"
+              : mergedVendors[existingIdx].advancePaid > 0
+                ? "Advance Paid"
+                : "Pending";
+          if (!mergedVendors[existingIdx].serviceDescription) {
+            mergedVendors[existingIdx].serviceDescription = isExpense ? "Trip Expense / Allowance" : `${g.daysWorked || 1} days crew assignment`;
+          }
+        } else {
+          mergedVendors.push({
+            id: g.id || `guide-${gName}`,
+            vendorName: gName,
+            category: vCat,
+            serviceDescription: isExpense ? "Trip Expense / Allowance" : `${g.daysWorked || 1} days crew assignment`,
+            invoiceNumber: "",
+            agreedAmount: agreed,
+            advancePaid: paid,
+            balanceAmount: balance,
+            status: status,
+            paymentDate: new Date().toISOString().substring(0, 10),
+            paymentMode: "BANK_TRANSFER",
+            rawAssignment: g,
+            history:
+              paid > 0
+                ? [
+                    {
+                      date: new Date().toISOString().substring(0, 10),
+                      amount: paid,
+                      method: "Bank Transfer",
+                      txnId: "GUIDE-ADVANCE",
                       type: "ADVANCE",
                       status: status,
                     },
