@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { adminUsersService } from "@/services/adminUsers.service";
 import { Admin, AdminRole } from "@/types";
 import {
@@ -384,6 +384,14 @@ const PERMISSION_GROUPS = [
       { key: "bookings.view_all", label: "View All Company Bookings" },
       { key: "bookings.create", label: "Create Manual Booking" },
       { key: "bookings.edit", label: "Edit Booking & Passengers" },
+      {
+        key: "bookings.financial_edit",
+        label: "Modify Financials & Pricing (Total, Advance, Remaining, Base)",
+      },
+      {
+        key: "bookings.refund",
+        label: "Process Refunds & Cancellation Charges",
+      },
       { key: "bookings.approve", label: "Approve & Confirm Bookings" },
       { key: "bookings.reject", label: "Reject / Cancel Bookings" },
       { key: "bookings.verify", label: "Verify Documents & ID Proofs" },
