@@ -21,7 +21,7 @@ export async function getQuotationSmartResult(
     console.warn(
       "[db-smart] Stale Render URL detected. Forcing fallback to Hostinger VPS.",
     );
-    CRM_BASE = "https://api.youthcamping.online/api";
+    CRM_BASE = "https://api.youthcamping.in/api";
   }
   // Ensure it ends with /api for consistency with backend routes
   if (!CRM_BASE.endsWith("/api")) {

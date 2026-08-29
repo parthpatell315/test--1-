@@ -58,7 +58,7 @@ const formatUrl = (url: any): string => {
     url.startsWith("blob:")
   )
     return url;
-  const apiBase = api.defaults.baseURL || "https://api.youthcamping.online/api";
+  const apiBase = api.defaults.baseURL || "https://api.youthcamping.in/api";
   const serverBase = apiBase.replace("/api", "");
   return `${serverBase}${url.startsWith("/") ? "" : "/"}${url}`;
 };

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, useCallback, useRef, useMemo } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { inquiriesService } from "@/services/inquiries.service";
 import type { Inquiry } from "@/types";
@@ -47,7 +47,6 @@ const STATUS_TABS = [
   { key: "contacted", label: "Contacted" },
   { key: "follow-up", label: "Follow-up" },
   { key: "interested", label: "Interested" },
-  { key: "payment-pending", label: "Payment Pending" },
   { key: "converted", label: "Booked" },
   { key: "closed", label: "Lost" },
 ];
@@ -107,7 +106,6 @@ export default function InquiriesPage() {
         if (activeTab === "all") apiStatus = "all";
         if (activeTab === "follow-up") apiStatus = "contacted";
         if (activeTab === "interested") apiStatus = "contacted";
-        if (activeTab === "payment-pending") apiStatus = "new";
 
         const res = await inquiriesService.getAll({
           status: apiStatus,
@@ -124,24 +122,22 @@ export default function InquiriesPage() {
           return;
         }
 
-        const list = res.data || [];
+        setInquiries(res.data || []);
+        setTotalCount(res.pagination?.total || (res.data || []).length);
         setLoadFailed(false);
-        setInquiries(list);
-        setTotalCount(res.pagination?.totalCount ?? list.length);
-        setTotalPages(currentTotalPages || Math.ceil(list.length / pageSize) || 0);
-
-        if (list.length > 0 && !selected) {
-          setSelected(list[0]);
-        }
-      } catch (error) {
+      } catch {
         if (requestId !== loadRequestRef.current) return;
+        setInquiries([]);
+        setTotalCount(0);
         setLoadFailed(true);
         toast.error("Failed to load inquiries");
       } finally {
-        if (requestId === loadRequestRef.current) setLoading(false);
+        if (requestId === loadRequestRef.current) {
+          setLoading(false);
+        }
       }
     },
-    [activeTab, searchQuery, page, pageSize, selected],
+    [activeTab, searchQuery, page, pageSize],
   );
 
   useEffect(() => {
@@ -155,7 +151,6 @@ export default function InquiriesPage() {
       contacted: 0,
       followUp: 0,
       interested: 0,
-      paymentPending: 0,
       booked: 0,
       lost: 0,
     };
@@ -191,12 +186,6 @@ export default function InquiriesPage() {
       {
         label: "Interested",
         count: loadFailed ? null : counts.interested,
-        color: "text-[#FF4D00]",
-        bg: "bg-[#FF4D00]/5",
-      },
-      {
-        label: "Payment Pending",
-        count: loadFailed ? null : counts.paymentPending,
         color: "text-[#FF4D00]",
         bg: "bg-[#FF4D00]/5",
       },

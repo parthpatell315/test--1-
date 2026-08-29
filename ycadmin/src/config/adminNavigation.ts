@@ -65,6 +65,7 @@ export const MOBILE_BOTTOM_NAV: AdminNavItem[] = [
 /** Full module list in the “More” drawer */
 export const MOBILE_DRAWER_NAV: AdminNavItem[] = [
   { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+  { title: "Inquiries & Leads", url: "/admin/inquiries", icon: Users },
   { title: "Bookings", url: "/admin/bookings", icon: Ticket },
   { title: "Booking Links", url: "/admin/booking-forms", icon: Link2 },
   { title: "Quotations", url: "/admin/quotations", icon: FilePlus },
@@ -90,11 +91,6 @@ export const MOBILE_DRAWER_NAV: AdminNavItem[] = [
   },
   { title: "Trips", url: "/admin/trips", icon: MapPin },
   { title: "Vendors", url: "/admin/vendors", icon: Building2 },
-  {
-    title: "Company Documents",
-    url: "/admin/company-documents",
-    icon: FileText,
-  },
   { title: "Website", url: "/admin/website", icon: Globe },
   { title: "Email Templates", url: "/admin/email-templates", icon: Mail },
   { title: "Settings", url: "/admin/settings", icon: Settings },

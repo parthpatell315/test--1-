@@ -12,7 +12,7 @@ export type { PublicResult };
 const DEFAULT_API =
   process.env.NODE_ENV !== "production"
     ? "http://localhost:3001/api"
-    : "https://api.youthcamping.online/api";
+    : "https://api.youthcamping.in/api";
 let apiURL = process.env.NEXT_PUBLIC_API_URL || DEFAULT_API;
 
 if (!apiURL || apiURL.includes("onrender.com")) {

@@ -100,7 +100,7 @@ const sendBookingEmail = async (req, res) => {
           const buffer = Buffer.from(cleanContent, "base64");
           fs.writeFileSync(filePath, buffer);
           tempFilePaths.push(filePath);
-          const fileUrl = `https://api.youthcamping.online/uploads/tickets/${safeName}`;
+          const fileUrl = `https://api.youthcamping.in/uploads/tickets/${safeName}`;
           overflowDownloadLinks.push({ name, url: fileUrl });
         } catch (saveErr) {
           console.error(

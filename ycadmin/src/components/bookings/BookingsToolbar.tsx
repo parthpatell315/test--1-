@@ -1,4 +1,4 @@
-﻿import {
+import {
   Search,
   RotateCw,
   Filter,
@@ -47,10 +47,8 @@ const CHIPS: {
   icon: typeof LayoutList;
 }[] = [
   { label: "All", value: "all", icon: LayoutList },
-  { label: "Attention", value: "needs_attention", icon: HelpCircle },
   { label: "Payment due", value: "payment_pending", icon: Wallet },
   { label: "Tickets", value: "ticket_pending", icon: Ticket },
-  { label: "Operations", value: "ops_pending", icon: ShieldAlert },
   { label: "Today", value: "today_departure", icon: Compass },
   { label: "Refunds", value: "refund_approval", icon: AlertCircle },
   { label: "Completed", value: "completed_bookings", icon: CheckCircle2 },

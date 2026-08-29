@@ -21,7 +21,7 @@ cd ..
 
 echo "🌐 [3/5] Building Next.js Public Website (frontend)..."
 cd frontend
-export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL:-https://api.youthcamping.online/api}"
+export NEXT_PUBLIC_API_URL="${NEXT_PUBLIC_API_URL:-https://api.youthcamping.in/api}"
 npm install --no-audit
 npm run build
 cd ..

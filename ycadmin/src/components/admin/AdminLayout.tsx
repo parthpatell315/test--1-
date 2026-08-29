@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
 import { ROLE_PERMISSIONS } from "@/lib/permissions";
@@ -111,6 +111,7 @@ const sidebarModules: SidebarModule[] = [
     icon: ShoppingBag,
     hasSubItems: true,
     subItems: [
+      { title: "Inquiries", url: "/admin/inquiries" },
       { title: "Bookings", url: "/admin/bookings" },
       { title: "Booking Links", url: "/admin/booking-forms" },
       { title: "Quotations", url: "/admin/quotations" },
@@ -131,7 +132,6 @@ const sidebarModules: SidebarModule[] = [
       { title: "Daily tasks", url: "/admin/operations/daily-tasks" },
       { title: "SOP & checklists", url: "/admin/operations/sops" },
       { title: "Vendors", url: "/admin/vendors" },
-      { title: "Company docs", url: "/admin/company-documents" },
     ],
   },
   {
@@ -1104,10 +1104,6 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                     { title: "Bookings Ledger", path: "/admin/bookings" },
                     { title: "Finance Control Center", path: "/admin/finance" },
                     { title: "Staff Directory", path: "/admin/staff-profiles" },
-                    {
-                      title: "Company Legal Documents",
-                      path: "/admin/company-documents",
-                    },
                   ].map((item, idx) => (
                     <div
                       key={idx}

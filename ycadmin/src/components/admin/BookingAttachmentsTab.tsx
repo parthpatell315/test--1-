@@ -332,7 +332,7 @@ export default function BookingAttachmentsTab({
   const handlePreview = (att: BookingAttachment) => {
     const rawUrl = att.fileUrl.startsWith("http")
       ? att.fileUrl
-      : `https://youthcamping.online${att.fileUrl}`;
+      : `https://youthcamping.in${att.fileUrl}`;
     setPreviewUrl(rawUrl);
     setPreviewFileType(att.fileType || "");
     setPreviewTitle(att.title || att.originalName);

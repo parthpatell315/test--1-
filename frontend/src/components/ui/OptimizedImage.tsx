@@ -66,7 +66,7 @@ export function OptimizedImage({
     finalSrc = fallbackSrc;
   } else if (finalSrc.startsWith("/uploads/")) {
     const apiBase = (
-      process.env.NEXT_PUBLIC_API_URL || "https://api.youthcamping.online"
+      process.env.NEXT_PUBLIC_API_URL || "https://api.youthcamping.in"
     ).replace(/\/api$/, "");
     finalSrc = `${apiBase}${finalSrc}`;
   } else if (

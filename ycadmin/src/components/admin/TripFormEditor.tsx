@@ -463,7 +463,7 @@ export default function TripFormEditor({
     const cleanUrl = url.split("|")[0];
     if (cleanUrl.startsWith("http")) return cleanUrl;
     const apiBase =
-      api.defaults.baseURL || "https://api.youthcamping.online/api";
+      api.defaults.baseURL || "https://api.youthcamping.in/api";
     const serverBase = apiBase.split("/api")[0];
     return `${serverBase}${cleanUrl}`;
   };
