@@ -294,6 +294,57 @@ router.delete("/photo", ...requireUploadAccess, async (req, res) => {
   }
 });
 
+// ── POST /api/upload/public-doc ──
+// Customer ID proof / Aadhaar / document upload for public booking flow (no admin auth required)
+router.post("/public-doc", (req, res) => {
+  upload.single("image")(req, res, async (err) => {
+    if (err) {
+      console.error("[UPLOAD PUBLIC DOC] Multer Error:", err.message);
+      return res.status(400).json({
+        success: false,
+        message: `Upload failed: ${err.message}`,
+        error: err.code || "UPLOAD_ERROR",
+      });
+    }
+
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: "No document file uploaded",
+        });
+      }
+
+      const validation = validateMediaFile(req.file, { allowVideo: false });
+      if (!validation.ok) {
+        return res.status(validation.status).json({
+          success: false,
+          message: validation.message,
+        });
+      }
+
+      console.log(
+        "[UPLOAD PUBLIC DOC] Document received:",
+        req.file.originalname,
+        `(${req.file.size} bytes)`
+      );
+
+      const saved = await saveUploadedFile(req.file, "youthcamping/documents");
+
+      res.status(200).json({
+        success: true,
+        url: saved.url,
+        size: saved.size,
+        filename: saved.filename,
+        publicId: saved.publicId,
+      });
+    } catch (innerErr) {
+      console.error("[UPLOAD PUBLIC DOC] Processing Error:", innerErr.message);
+      res.status(500).json({ success: false, message: innerErr.message });
+    }
+  });
+});
+
 // ── POST /api/upload/single ──
 // Upload a single image and return its persistent URL
 router.post("/single", ...requireUploadAccess, (req, res) => {

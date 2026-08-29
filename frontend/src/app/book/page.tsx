@@ -561,7 +561,7 @@ function BookingForm() {
       const formDataUpload = new FormData();
       formDataUpload.append("image", file);
 
-      const res = await fetch(`${API_BASE_URL}/upload/single`, {
+      const res = await fetch(`${API_BASE_URL}/upload/public-doc`, {
         method: "POST",
         body: formDataUpload,
       });
@@ -1182,14 +1182,6 @@ function BookingForm() {
                       <span className="capitalize truncate font-bold text-slate-800">
                         {joiningLabel}
                       </span>
-                      <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapsQuery)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#D4541A] hover:underline font-bold shrink-0"
-                      >
-                        Map
-                      </a>
                     </span>
                   </div>
                 </div>
@@ -1272,13 +1264,20 @@ function BookingForm() {
                     {formData.participants} pax
                   </span>
                 </span>
-                <div className="flex items-center gap-1">
-                  <span className="text-[#D4541A] font-mono text-xs">
-                    ₹{pricing.finalTotal.toLocaleString()}
-                  </span>
+                <div className="flex items-center gap-1.5">
+                  <div className="text-right">
+                    <span className="text-[#D4541A] font-mono text-xs font-black block">
+                      ₹{pricing.finalTotal.toLocaleString()}
+                    </span>
+                    {paymentMode === "Partial Payment" && (
+                      <span className="text-[9px] text-slate-400 font-semibold block -mt-0.5">
+                        Total ₹{pricing.fullPackageTotal.toLocaleString()}
+                      </span>
+                    )}
+                  </div>
                   <ChevronDown
                     className={cn(
-                      "w-3.5 h-3.5 transition-transform duration-200",
+                      "w-3.5 h-3.5 transition-transform duration-200 text-slate-400",
                       isMobileSummaryOpen && "rotate-180",
                     )}
                   />
@@ -2206,6 +2205,7 @@ function BookingForm() {
                   <div />
                 )}
 
+                {/* On desktop (lg+), show in-card buttons. On mobile (<lg), the sticky bottom bar handles Continue/Submit */}
                 {currentStep < 4 ? (
                   <button
                     onClick={handleNext}
@@ -2216,7 +2216,7 @@ function BookingForm() {
                         ? "Upload Aadhaar / Govt ID for every traveler"
                         : undefined
                     }
-                    className="bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs flex items-center gap-1.5 shadow-md shadow-[#D4541A]/15 transition-all active:scale-95 min-h-[48px] disabled:opacity-45 disabled:cursor-not-allowed disabled:active:scale-100"
+                    className="hidden lg:flex bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs items-center gap-1.5 shadow-md shadow-[#D4541A]/15 transition-all active:scale-95 min-h-[48px] disabled:opacity-45 disabled:cursor-not-allowed disabled:active:scale-100"
                   >
                     Continue <ChevronRight size={14} strokeWidth={3} />
                   </button>
@@ -2225,7 +2225,7 @@ function BookingForm() {
                     onClick={handleFinalSubmit}
                     disabled={loading}
                     type="button"
-                    className="bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs flex items-center gap-1.5 shadow-md shadow-[#D4541A]/25 transition-all active:scale-95 disabled:opacity-50 min-h-[48px]"
+                    className="hidden lg:flex bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs items-center gap-1.5 shadow-md shadow-[#D4541A]/25 transition-all active:scale-95 disabled:opacity-50 min-h-[48px]"
                   >
                     {loading ? (
                       <Loader2 className="animate-spin w-4 h-4" />
@@ -2282,8 +2282,13 @@ function BookingForm() {
               <span className="text-lg font-black text-slate-900 tracking-tight">
                 ₹{pricing.finalTotal.toLocaleString()}
               </span>
+              {paymentMode === "Partial Payment" && (
+                <span className="text-[10px] text-slate-500 font-bold">
+                  (Total: ₹{pricing.fullPackageTotal.toLocaleString()})
+                </span>
+              )}
               <span className="text-[10px] text-slate-500 font-bold truncate">
-                {formData.participants} pax
+                · {formData.participants} pax
               </span>
             </div>
           </div>
