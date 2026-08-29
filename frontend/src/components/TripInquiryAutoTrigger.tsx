@@ -49,7 +49,7 @@ export default function TripInquiryAutoTrigger({
       onClose={() => setIsOpen(false)}
       title={popupTitle}
       description={popupDesc}
-      source="Trip Detail Popup"
+      source={`Trip Detail Popup: ${trip.title}`}
       destination={{
         id: trip.id || (trip as any)._id,
         name: trip.title,
