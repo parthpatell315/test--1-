@@ -7,6 +7,7 @@ import { ArrowRight, X, ChevronLeft, ChevronRight, Camera } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { normalizeImageUrl } from "@/lib/api";
 import { useWheelPassThrough } from "@/lib/useWheelPassThrough";
+import { cn } from "@/lib/utils";
 
 interface RecentPhoto {
   id: string;
@@ -51,58 +52,7 @@ export default function RecentPhotosSection({
     [basePhotos],
   );
 
-  // High-performance smooth continuous scroll loop only when in viewport
-  useEffect(() => {
-    if (isHovered || isDragging || selectedIndex !== null) return;
-    const el = scrollRef.current;
-    if (!el) return;
-
-    let isVisible = true;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
-      { threshold: 0.1 },
-    );
-    observer.observe(el);
-
-    let isWindowScrolling = false;
-    let scrollTimeout: any = null;
-    const onWindowScroll = () => {
-      isWindowScrolling = true;
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        isWindowScrolling = false;
-      }, 100);
-    };
-    window.addEventListener("scroll", onWindowScroll, { passive: true });
-
-    let animationId: number;
-    let lastTime = performance.now();
-
-    const step = (time: number) => {
-      const delta = time - lastTime;
-      lastTime = time;
-
-      if (isVisible && !isWindowScrolling && el) {
-        // Move proportionally to elapsed time (approx 60px/sec)
-        const move = (delta / 1000) * 60;
-        el.scrollLeft += move;
-        if (el.scrollLeft >= el.scrollWidth / 2) {
-          el.scrollLeft = 0;
-        }
-      }
-      animationId = requestAnimationFrame(step);
-    };
-
-    animationId = requestAnimationFrame(step);
-    return () => {
-      cancelAnimationFrame(animationId);
-      observer.disconnect();
-      window.removeEventListener("scroll", onWindowScroll);
-      clearTimeout(scrollTimeout);
-    };
-  }, [isHovered, isDragging, selectedIndex]);
+  // No JS scroll loop needed — powered 100% by GPU compositor CSS marquee
 
   const handlePrevModal = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -147,40 +97,43 @@ export default function RecentPhotosSection({
           </Link>
         </div>
 
-        {/* AUTOMATIC SMOOTH CINEMATIC PHOTO MARQUEE SLIDER */}
+        {/* AUTOMATIC SMOOTH GPU-ACCELERATED PHOTO MARQUEE */}
         <div
-          ref={scrollRef}
           onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => {
-            setIsHovered(false);
-            setIsDragging(false);
-          }}
-          onMouseDown={() => setIsDragging(true)}
-          onMouseUp={() => setIsDragging(false)}
-          onTouchStart={() => setIsDragging(true)}
-          onTouchEnd={() => setIsDragging(false)}
-          className="w-full max-w-full flex gap-3 sm:gap-4 overflow-x-auto no-scrollbar py-2.5 cursor-grab active:cursor-grabbing select-none"
+          onMouseLeave={() => setIsHovered(false)}
+          className="w-full max-w-full overflow-hidden py-2.5 select-none"
         >
-          {marqueePhotos.map((photo, idx) => {
-            const actualIndex = idx % displayPhotos.length;
-            return (
-              <div
-                key={`${photo.id}-${idx}`}
-                onClick={() => setSelectedIndex(actualIndex)}
-                className="group relative shrink-0 flex-none w-[130px] sm:w-[155px] md:w-[175px] aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-zinc-100 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer isolate"
-              >
-                <img
-                  src={photo.url}
-                  alt={photo.caption || "YouthCamping photo"}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-              </div>
-            );
-          })}
+          <div
+            className={cn(
+              "flex gap-3 sm:gap-4 w-max",
+              !isHovered && "animate-marquee-smooth",
+            )}
+            style={{
+              animationPlayState: isHovered ? "paused" : "running",
+              willChange: "transform",
+            }}
+          >
+            {marqueePhotos.map((photo, idx) => {
+              const actualIndex = idx % displayPhotos.length;
+              return (
+                <div
+                  key={`${photo.id}-${idx}`}
+                  onClick={() => setSelectedIndex(actualIndex)}
+                  className="group relative shrink-0 flex-none w-[130px] sm:w-[155px] md:w-[175px] aspect-[4/3] rounded-xl sm:rounded-2xl overflow-hidden bg-zinc-100 shadow-2xs hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer isolate"
+                >
+                  <img
+                    src={photo.url}
+                    alt={photo.caption || "YouthCamping photo"}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* BOTTOM HASHTAG FEATURE BAR - FITS ON ONE SINGLE LINE */}
