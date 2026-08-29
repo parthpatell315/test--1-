@@ -184,7 +184,7 @@ export default function Destinations({
                   className="relative flex-none snap-start min-w-0 w-[46vw] max-w-[210px] sm:w-[188px] md:w-[210px]"
                 >
                   {item.href ? (
-                    <Link href={item.href} className={cardClass}>
+                    <Link href={item.href} prefetch={false} className={cardClass}>
                       {inner}
                     </Link>
                   ) : (

@@ -101,6 +101,7 @@ export default function BlogSection({
 
           <Link
             href="/blogs"
+            prefetch={false}
             className="group inline-flex items-center gap-1.5 text-xs sm:text-[15px] font-bold text-[#0B1528] hover:text-[#D4541A] transition-colors shrink-0"
           >
             <span>View All</span>
@@ -127,6 +128,7 @@ export default function BlogSection({
               <div className="relative w-full aspect-[16/10.5] bg-zinc-100 overflow-hidden">
                 <Link
                   href={`/blogs/${story.slug}`}
+                  prefetch={false}
                   className="absolute inset-0 z-10"
                   aria-label={story.title}
                 />
@@ -159,7 +161,9 @@ export default function BlogSection({
                   {/* TITLE & FOOTER META */}
                   <div className="flex-1 min-w-0 flex flex-col justify-between">
                     <h3 className="text-[#1B2A4A] font-montserrat font-bold text-xs sm:text-sm leading-snug line-clamp-2 mb-1.5 group-hover:text-[#D4541A] transition-colors">
-                      <Link href={`/blogs/${story.slug}`}>{story.title}</Link>
+                      <Link href={`/blogs/${story.slug}`} prefetch={false}>
+                        {story.title}
+                      </Link>
                     </h3>
 
                     {/* AUTHOR NAME & READING TIME ROW */}

@@ -1,37 +1,17 @@
 import { useEffect, RefObject } from "react";
 
 /**
- * Custom hook to allow seamless vertical mouse wheel scrolling
- * when the mouse cursor is centered over horizontal carousel elements.
+ * Custom hook to ensure horizontal carousel elements do not trap vertical wheel scrolling.
  */
 export function useWheelPassThrough(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
 
+    // Allow Shift+Wheel to scroll horizontally
     const handleWheel = (e: WheelEvent) => {
-      const absX = Math.abs(e.deltaX);
-      const absY = Math.abs(e.deltaY);
-
-      // Shift+wheel: scroll the carousel horizontally.
-      if (e.shiftKey && absY > 0) {
+      if (e.shiftKey && Math.abs(e.deltaY) > 0) {
         element.scrollLeft += e.deltaY;
-        return;
-      }
-
-      // Vertical-dominant: never preventDefault. If the overflow-x
-      // container swallowed the wheel without moving the page, forward it.
-      if (absY > absX && absY > 2) {
-        const deltaY = e.deltaY;
-        const before = window.scrollY;
-        requestAnimationFrame(() => {
-          if (window.scrollY === before) {
-            window.scrollBy({
-              top: deltaY,
-              behavior: "instant" as ScrollBehavior,
-            });
-          }
-        });
       }
     };
 
@@ -41,3 +21,4 @@ export function useWheelPassThrough(ref: RefObject<HTMLElement | null>) {
     };
   }, [ref]);
 }
+

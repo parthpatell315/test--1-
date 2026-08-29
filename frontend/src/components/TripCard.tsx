@@ -195,6 +195,7 @@ export default function TripCard({
     >
       <Link
         href={`/trips/${trip.slug}`}
+        prefetch={false}
         onClick={onClick}
         className="trip-card group relative flex flex-col w-full block text-inherit no-underline cursor-pointer"
       >

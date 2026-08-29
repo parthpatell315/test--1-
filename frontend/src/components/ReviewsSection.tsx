@@ -105,6 +105,7 @@ export default function ReviewsSection({
 
           <Link
             href="/reviews"
+            prefetch={false}
             className="group inline-flex items-center gap-1 sm:gap-2 text-xs sm:text-[15px] font-bold text-[#0B1528] hover:text-[#D4541A] transition-colors whitespace-nowrap shrink-0"
           >
             <span>View All</span>

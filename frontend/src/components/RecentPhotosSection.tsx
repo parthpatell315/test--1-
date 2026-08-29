@@ -51,23 +51,57 @@ export default function RecentPhotosSection({
     [basePhotos],
   );
 
-  // Hardware-accelerated smooth continuous scroll loop
+  // High-performance smooth continuous scroll loop only when in viewport
   useEffect(() => {
     if (isHovered || isDragging || selectedIndex !== null) return;
+    const el = scrollRef.current;
+    if (!el) return;
+
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(el);
+
+    let isWindowScrolling = false;
+    let scrollTimeout: any = null;
+    const onWindowScroll = () => {
+      isWindowScrolling = true;
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isWindowScrolling = false;
+      }, 100);
+    };
+    window.addEventListener("scroll", onWindowScroll, { passive: true });
 
     let animationId: number;
-    const step = () => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollLeft += 1.2;
-        if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth / 2) {
-          scrollRef.current.scrollLeft = 0;
+    let lastTime = performance.now();
+
+    const step = (time: number) => {
+      const delta = time - lastTime;
+      lastTime = time;
+
+      if (isVisible && !isWindowScrolling && el) {
+        // Move proportionally to elapsed time (approx 60px/sec)
+        const move = (delta / 1000) * 60;
+        el.scrollLeft += move;
+        if (el.scrollLeft >= el.scrollWidth / 2) {
+          el.scrollLeft = 0;
         }
       }
       animationId = requestAnimationFrame(step);
     };
 
     animationId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animationId);
+    return () => {
+      cancelAnimationFrame(animationId);
+      observer.disconnect();
+      window.removeEventListener("scroll", onWindowScroll);
+      clearTimeout(scrollTimeout);
+    };
   }, [isHovered, isDragging, selectedIndex]);
 
   const handlePrevModal = (e: React.MouseEvent) => {
@@ -105,6 +139,7 @@ export default function RecentPhotosSection({
 
           <Link
             href="/trips"
+            prefetch={false}
             className="group shrink-0 inline-flex items-center gap-1.5 text-xs sm:text-[15px] font-bold text-[#0B1528] hover:text-[#D4541A] transition-colors whitespace-nowrap"
           >
             <span>View All</span>
