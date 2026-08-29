@@ -566,12 +566,24 @@ export default function InquiriesPage() {
                             </span>
                           </td>
 
-                          {/* Date */}
+                          {/* Date & Time */}
                           <td className="px-3 py-2 text-slate-500 font-medium text-xs whitespace-nowrap">
-                            {safeFormatDate(inq.createdAt, {
-                              day: "2-digit",
-                              month: "short",
-                            })}
+                            <div className="flex flex-col">
+                              <span className="font-semibold text-slate-800">
+                                {safeFormatDate(inq.createdAt, {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                })}
+                              </span>
+                              <span className="text-[10px] text-slate-400 font-mono">
+                                {new Date(inq.createdAt).toLocaleTimeString("en-IN", {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                  hour12: true,
+                                })}
+                              </span>
+                            </div>
                           </td>
 
                           {/* Actions */}
@@ -909,13 +921,22 @@ function InquiryDetailsDrawer({
 
                 <div className="flex justify-between items-center">
                   <span className="text-slate-400 font-medium">Received:</span>
-                  <span className="font-bold text-slate-700">
-                    {safeFormatDate(selected.createdAt, {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}
-                  </span>
+                  <div className="text-right">
+                    <span className="font-bold text-slate-700 block">
+                      {safeFormatDate(selected.createdAt, {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-mono block">
+                      {new Date(selected.createdAt).toLocaleTimeString("en-IN", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
