@@ -398,28 +398,28 @@ export default function CommunityTrips({
 
         {/* HERO CONTENT */}
         <div className="relative z-10 max-w-[1440px] w-full mx-auto px-6 sm:px-8 md:px-12">
-          <div className="max-w-[850px]">
+          <div className="max-w-[720px]">
             <p
-              className="font-extrabold text-xs sm:text-sm tracking-[2.5px] uppercase mb-2 drop-shadow-xs"
+              className="font-extrabold text-[11px] sm:text-xs tracking-[2px] uppercase mb-1.5 drop-shadow-xs"
               style={{ color: accentColor }}
             >
               {(tagline || "").replace(/^[Ââ€¢\s•-]+/, "").trim() || "EXPLORE. CONNECT. BELONG."}
             </p>
 
             <h2
-              className={`font-montserrat font-extrabold leading-[1.15] tracking-tight mb-2 text-[32px] sm:text-5xl md:text-6xl lg:text-7xl ${isWhiteOverlay ? "text-[#0B1528]" : "text-white drop-shadow-md"}`}
+              className={`font-montserrat font-extrabold leading-[1.18] tracking-tight mb-2 text-[24px] sm:text-[34px] md:text-[42px] lg:text-[48px] ${isWhiteOverlay ? "text-[#0B1528]" : "text-white drop-shadow-md"}`}
             >
               <span className="block">{activeHeadlinePrefix}</span>
               {(Boolean(activeStrikethroughWord) ||
                 activeRotatingWords.length > 0) && (
-                <span className="flex items-center gap-2 sm:gap-3.5 flex-nowrap mt-0.5 whitespace-nowrap">
+                <span className="flex items-center gap-2 sm:gap-3 flex-nowrap mt-0.5 whitespace-nowrap">
                   {Boolean(activeStrikethroughWord) && (
                     <span
                       className={`relative inline-block whitespace-nowrap ${isWhiteOverlay ? "text-[#0B1528]" : "text-white"}`}
                     >
                       {activeStrikethroughWord}
                       <svg
-                        className="absolute -left-2 top-1/2 -translate-y-1/2 w-[114%] h-[18px] sm:h-[30px] md:h-[38px] pointer-events-none overflow-visible"
+                        className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-[114%] h-[14px] sm:h-[22px] md:h-[28px] pointer-events-none overflow-visible"
                         style={{ color: accentColor }}
                         viewBox="0 0 120 30"
                         fill="none"
@@ -439,7 +439,7 @@ export default function CommunityTrips({
 
                   {activeRotatingWords.length > 0 && (
                     <span
-                      className="inline-flex relative h-[38px] sm:h-[56px] md:h-[72px] items-center whitespace-nowrap pr-2 sm:pr-3"
+                      className="inline-flex relative h-[30px] sm:h-[42px] md:h-[52px] items-center whitespace-nowrap pr-2 sm:pr-3"
                       style={{ overflow: "hidden", minWidth: "max-content" }}
                     >
                       <AnimatePresence initial={false}>
@@ -449,11 +449,11 @@ export default function CommunityTrips({
                               wordIdx % activeRotatingWords.length
                             ]
                           }
-                          initial={{ y: 35, opacity: 0 }}
+                          initial={{ y: 25, opacity: 0 }}
                           animate={{ y: 0, opacity: 1 }}
-                          exit={{ y: -35, opacity: 0 }}
+                          exit={{ y: -25, opacity: 0 }}
                           transition={{
-                            duration: 0.45,
+                            duration: 0.4,
                             ease: [0.25, 0.1, 0.25, 1.0],
                           }}
                           className="font-black inline-block whitespace-nowrap absolute"
@@ -477,7 +477,7 @@ export default function CommunityTrips({
             </h2>
 
             <p
-              className={`text-xs sm:text-sm md:text-base font-semibold leading-relaxed max-w-[580px] ${isWhiteOverlay ? "text-[#1B2A4A]" : "text-zinc-200 drop-shadow-sm"}`}
+              className={`text-xs sm:text-[13px] md:text-sm font-semibold leading-relaxed max-w-[500px] ${isWhiteOverlay ? "text-[#1B2A4A]" : "text-zinc-200 drop-shadow-sm"}`}
             >
               {subheadline}
             </p>
