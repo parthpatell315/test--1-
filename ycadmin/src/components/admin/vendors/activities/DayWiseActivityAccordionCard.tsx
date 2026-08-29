@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import {
   ChevronDown,
   ChevronUp,
@@ -233,6 +233,7 @@ export default function DayWiseActivityAccordionCard({
         vendorCost,
         gstPercent,
         bookedCount: optedCount,
+        maxParticipants: optedCount,
       });
       toast.success("Activity details updated successfully");
     } catch (err: any) {

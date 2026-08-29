@@ -336,7 +336,12 @@ export default function DepartureActivities({
         status: (a.status?.toUpperCase() as any) || "CONFIRMED",
         vendorName: a.vendorName || "Contracted Supplier",
         maxCapacity: Number(a.maxParticipants) || totalPaxCount,
-        bookedCount: a.bookedCount !== undefined ? Number(a.bookedCount) : totalPaxCount,
+        bookedCount:
+          a.bookedCount !== undefined && Number(a.bookedCount) > 0
+            ? Number(a.bookedCount)
+            : a.maxParticipants !== undefined && Number(a.maxParticipants) > 0
+              ? Number(a.maxParticipants)
+              : totalPaxCount,
         isIncluded:
           a.isIncluded !== undefined
             ? a.isIncluded
@@ -411,8 +416,15 @@ export default function DepartureActivities({
     id: string,
     updated: Partial<DepartureActivityItem>,
   ) => {
+    const paxCount =
+      updated.bookedCount !== undefined
+        ? Number(updated.bookedCount)
+        : updated.maxParticipants !== undefined
+          ? Number(updated.maxParticipants)
+          : undefined;
+
     const nextList = currentActivities.map((item) =>
-      item.id === id ? { ...item, ...updated } : item,
+      item.id === id ? { ...item, ...updated, bookedCount: paxCount ?? item.bookedCount } : item,
     );
     setActivitiesList(nextList);
     const depKey = `yc_activities_${tripId}_${departureDateStr}`;
@@ -431,6 +443,8 @@ export default function DepartureActivities({
         vendorId: updated.vendorId,
         remarks: updated.notes !== undefined ? updated.notes : updated.remarks,
         status: updated.status,
+        maxParticipants: paxCount,
+        bookedCount: paxCount,
       });
       if (typeof fetchPageData === "function") {
         fetchPageData();

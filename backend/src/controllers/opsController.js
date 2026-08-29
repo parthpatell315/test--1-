@@ -3044,28 +3044,44 @@ exports.updateActivity = async (req, res) => {
       order
     } = req.body;
 
+    const participants =
+      req.body.maxParticipants !== undefined
+        ? Number(req.body.maxParticipants)
+        : req.body.bookedCount !== undefined
+          ? Number(req.body.bookedCount)
+          : req.body.pax !== undefined
+            ? Number(req.body.pax)
+            : undefined;
+
+    const vendorCostVal =
+      req.body.estimatedCost !== undefined
+        ? Number(req.body.estimatedCost)
+        : req.body.vendorCost !== undefined
+          ? Number(req.body.vendorCost)
+          : undefined;
+
     const activity = await prisma.opsActivity.update({
       where: { id },
       data: {
         dayNumber: dayNumber !== undefined ? Number(dayNumber) : undefined,
         date: date !== undefined ? (date ? new Date(date) : null) : undefined,
-        name,
-        type,
-        startTime,
-        endTime,
-        location,
-        description,
+        name: req.body.name,
+        type: req.body.type || req.body.category,
+        startTime: req.body.startTime || req.body.scheduledTime,
+        endTime: req.body.endTime,
+        location: req.body.location,
+        description: req.body.description || req.body.notes,
         responsibleGuideId: responsibleGuideId !== undefined ? (responsibleGuideId || null) : undefined,
-        responsibleStaff,
+        responsibleStaff: req.body.responsibleStaff || req.body.guideName,
         vendorId: vendorId !== undefined ? (vendorId || null) : undefined,
-        vendorName,
-        estimatedCost: estimatedCost !== undefined ? Number(estimatedCost) : undefined,
+        vendorName: req.body.vendorName,
+        estimatedCost: vendorCostVal,
         actualCost: actualCost !== undefined ? Number(actualCost) : undefined,
-        maxParticipants: maxParticipants !== undefined ? Number(maxParticipants) : undefined,
-        safetyInstructions,
-        requiredEquipment,
-        status,
-        remarks,
+        maxParticipants: participants,
+        safetyInstructions: req.body.safetyInstructions,
+        requiredEquipment: req.body.requiredEquipment,
+        status: req.body.status,
+        remarks: req.body.remarks !== undefined ? req.body.remarks : req.body.notes,
         order: order !== undefined ? Number(order) : undefined
       }
     });
