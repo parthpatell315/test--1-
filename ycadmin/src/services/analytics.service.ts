@@ -9,6 +9,7 @@ export interface AnalyticsRealtimeData {
 
 export interface AnalyticsOverviewData {
   propertyId: string;
+  domain: string;
   range: string;
   summary: {
     realtimeActiveUsers: number;
@@ -19,6 +20,13 @@ export interface AnalyticsOverviewData {
     avgDurationSec: number;
     bounceRatePercentage: number;
   };
+  changes?: {
+    users: number | null;
+    pageViews: number | null;
+    sessions: number | null;
+    avgDuration: number | null;
+    bounceRate: number | null;
+  };
   trend: {
     date: string;
     users: number;
@@ -27,14 +35,15 @@ export interface AnalyticsOverviewData {
   }[];
   pages: {
     path: string;
-    title: string;
+    humanTitle: string;
     views: number;
     users: number;
   }[];
   sources: {
     channel: string;
-    sessions: number;
     users: number;
+    sessions: number;
+    percentage: number;
   }[];
   devices: {
     category: string;
@@ -46,6 +55,22 @@ export interface AnalyticsOverviewData {
     country: string;
     users: number;
   }[];
+  topTrips?: {
+    tripId: string;
+    title: string;
+    slug: string;
+    views: number;
+    enquiries: number;
+    bookings: number;
+  }[];
+  funnel?: {
+    visitors: number;
+    tripViews: number;
+    enquiries: number;
+    bookingRequests: number;
+    confirmedBookings: number;
+    revenue: number;
+  };
   updatedAt: string;
 }
 
