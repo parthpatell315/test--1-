@@ -49,45 +49,32 @@ interface FooterProps {
 
 const DEFAULT_COLUMNS: ColumnItem[] = [
   {
-    id: "quick",
-    title: "Quick links",
+    id: "explore",
+    title: "Explore",
     visible: true,
     links: [
-      { id: "q1", label: "Trips", href: "/trips", visible: true },
-      { id: "q2", label: "About Us", href: "/about", visible: true },
-      { id: "q3", label: "Stories", href: "/stories", visible: true },
-      { id: "q4", label: "Contact Us", href: "/contact", visible: true },
+      { id: "e1", label: "All Trips", href: "/trips", visible: true },
+      { id: "e2", label: "Blogs & Stories", href: "/blogs", visible: true },
+      { id: "e3", label: "FAQs & Support", href: "/questions", visible: true },
     ],
   },
   {
-    id: "useful",
-    title: "Useful links",
+    id: "company",
+    title: "Company",
     visible: true,
     links: [
-      { id: "u1", label: "How It Works", href: "/how-it-works", visible: true },
-      { id: "u2", label: "FAQs", href: "/questions", visible: true },
+      { id: "c1", label: "About Us", href: "/about", visible: true },
+      { id: "c2", label: "Contact Us", href: "/contact", visible: true },
       {
-        id: "u3",
+        id: "c3",
         label: "Terms & Conditions",
         href: "/terms-and-conditions",
         visible: true,
       },
       {
-        id: "u4",
+        id: "c4",
         label: "Privacy Policy",
         href: "/privacy-policy",
-        visible: true,
-      },
-      {
-        id: "u5",
-        label: "Cancellation Policy",
-        href: "/cancellation-policy",
-        visible: true,
-      },
-      {
-        id: "u6",
-        label: "Sitemap",
-        href: "/sitemap",
         visible: true,
       },
     ],
@@ -215,10 +202,16 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
       ? cfg.socialLinks
       : DEFAULT_SOCIAL;
 
-  const columns =
+  const rawColumns =
     Array.isArray(cfg.columns) && cfg.columns.length > 0
-      ? cfg.columns.filter((c) => c.visible)
+      ? cfg.columns.filter((c) => c.visible && c.links && c.links.some((l) => l.visible))
       : DEFAULT_COLUMNS;
+
+  // Cap visible links per column to max 5 to maintain a clean, minimal footer
+  const columns = rawColumns.map((col) => ({
+    ...col,
+    links: (col.links || []).filter((l) => l.visible).slice(0, 5),
+  }));
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -232,9 +225,9 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
   return (
     <footer className="relative z-20 border-t border-white/10 bg-[#0B1528] font-montserrat text-white">
       <div className="mx-auto max-w-[1280px] min-w-0 px-6 pt-10 pb-6 sm:px-10 sm:pt-12 sm:pb-8">
-        <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-8 lg:gap-y-0">
-          {/* Brand */}
-          <div className="min-w-0 space-y-4 lg:col-span-4">
+        <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
+          {/* Brand Column */}
+          <div className="min-w-0 space-y-4 lg:col-span-5">
             <Link href="/" className="inline-flex items-center">
               <img
                 src={logoUrl}
@@ -244,7 +237,7 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
             </Link>
 
             {showAddress && address && (
-              <p className="max-w-[320px] text-[13px] font-medium leading-relaxed text-white/50 whitespace-pre-line">
+              <p className="max-w-[340px] text-[13px] font-medium leading-relaxed text-white/50 whitespace-pre-line">
                 {address}
               </p>
             )}
@@ -272,7 +265,7 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
             )}
 
             {showSocial && socialLinks.length > 0 && (
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2.5 pt-1">
                 {socialLinks.map((s) => (
                   <a
                     key={s.platform}
@@ -291,10 +284,10 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
             )}
           </div>
 
-          {/* Link columns */}
+          {/* Link Columns */}
           <div
             className={cn(
-              "grid min-w-0 gap-x-8 gap-y-8 sm:gap-x-10 lg:col-span-8",
+              "grid min-w-0 gap-x-8 gap-y-8 sm:gap-x-10 lg:col-span-7",
               columns.length <= 2
                 ? "grid-cols-2"
                 : columns.length === 3
@@ -306,15 +299,13 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
               <div key={col.id} className="min-w-0 space-y-3">
                 <FooterHeading>{col.title}</FooterHeading>
                 <ul className="space-y-2">
-                  {col.links
-                    .filter((l) => l.visible)
-                    .map((item) => (
-                      <li key={item.id} className="min-w-0">
-                        <Link href={item.href} className={linkClass}>
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
+                  {col.links.map((item) => (
+                    <li key={item.id} className="min-w-0">
+                      <Link href={item.href} className={linkClass}>
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             ))}
