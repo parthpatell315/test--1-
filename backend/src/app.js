@@ -107,6 +107,7 @@ app.use("/api/settings", require("./routes/settingsRoutes"));
 app.use("/api/announcements", require("./routes/announcementRoutes"));
 app.use("/api/attractions", require("./routes/attractionRoutes"));
 app.use("/api/seo", require("./routes/seoRoutes"));
+app.use("/api/analytics", require("./routes/analyticsRoutes"));
 app.use("/api/booking-forms", require("./routes/bookingFormRoutes"));
 app.use("/api/dynamic-forms", require("./routes/dynamicFormRoutes"));
 app.use("/api/page-builder", require("./routes/pageBuilderRoutes"));

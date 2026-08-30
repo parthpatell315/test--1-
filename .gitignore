@@ -25,3 +25,6 @@ backend/uploads/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+*service-account*.json
+*google-key*.json
+backend/config/*.json
