@@ -152,11 +152,6 @@ exports.getInquiries = async (req, res, next) => {
       }
     }
 
-    // Apply sales constraint
-    if (req.user?.role === "sales") {
-      where.salesAdminId = req.user.id;
-    }
-
     // Search query map
     if (search) {
       where.OR = [
