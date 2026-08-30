@@ -114,6 +114,7 @@ const ReviewsPage = lazy(() => import("./pages/admin/ReviewsPage.tsx"));
 const AttractionsPage = lazy(() => import("./pages/admin/AttractionsPage.tsx"));
 const MediaPage = lazy(() => import("./pages/admin/MediaPage.tsx"));
 const QuestionsPage = lazy(() => import("./pages/admin/QuestionsPage.tsx"));
+const AnalyticsPage = lazy(() => import("./pages/admin/AnalyticsPage.tsx"));
 
 // ── Administration ──
 const UserManagementPage = lazy(
@@ -618,6 +619,14 @@ const App = () => (
                   element={
                     <AdminRoute requiredPermission="seo.view">
                       <SeoCenterPage />
+                    </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/admin/analytics"
+                  element={
+                    <AdminRoute requiredPermission="dashboard.view">
+                      <AnalyticsPage />
                     </AdminRoute>
                   }
                 />

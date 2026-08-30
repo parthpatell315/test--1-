@@ -165,6 +165,7 @@ const sidebarModules: SidebarModule[] = [
       { title: "Blogs", url: "/admin/blogs" },
       { title: "Reviews", url: "/admin/reviews" },
       { title: "SEO", url: "/admin/seo" },
+      { title: "Analytics", url: "/admin/analytics" },
       { title: "Footer", url: "/admin/footer-management" },
     ],
   },
