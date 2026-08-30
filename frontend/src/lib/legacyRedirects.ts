@@ -42,4 +42,6 @@ export const LEGACY_PATH_REDIRECTS: { source: string; destination: string }[] = 
   { source: "/contact-us", destination: "/contact" },
   { source: "/tour-packages", destination: "/trips" },
   { source: "/about", destination: "/about-us" },
+  { source: "/privacy", destination: "/privacy-policy" },
+  { source: "/terms", destination: "/terms-and-conditions" },
 ];
