@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
 import { Metadata, Viewport } from "next";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -137,6 +138,7 @@ export default async function RootLayout({
         suppressHydrationWarning
         className="min-h-full w-full flex flex-col font-montserrat relative"
       >
+        <GoogleAnalytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
