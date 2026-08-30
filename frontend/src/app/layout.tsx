@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
 import { Metadata, Viewport } from "next";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import MetaPixel from "@/components/MetaPixel";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -139,6 +140,9 @@ export default async function RootLayout({
         className="min-h-full w-full flex flex-col font-montserrat relative"
       >
         <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <MetaPixel />
+        </Suspense>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
