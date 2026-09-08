@@ -18,24 +18,21 @@ const sections = [
 
 export function PrivacyPolicyDocument() {
   return (
-    <div className="bg-white min-h-screen pt-24 font-montserrat pb-20">
-      <section className="bg-[#0B1528] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
-        <div className="max-w-4xl mx-auto space-y-3 relative z-10">
-          <span className="bg-white/10 text-[#D4541A] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
-            Data privacy & security
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            Privacy <span className="text-[#D4541A]">Policy</span>
-          </h1>
-          <div className="w-16 h-1.5 bg-[#D4541A] rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-zinc-300 font-semibold max-w-xl mx-auto leading-relaxed">
-            This privacy policy describes what information we collect from you,
-            how it is used, and what security measures we take to protect it.
-          </p>
-        </div>
+    <div className="bg-[#F5F6F8] min-h-screen pt-24 sm:pt-28 font-sans pb-24">
+      {/* 1. HEADER (Avian Style) */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 text-center pt-6 pb-8">
+        <span className="text-xs font-bold uppercase tracking-widest text-[#EC1D24] bg-red-50 px-3.5 py-1.5 rounded-full inline-block mb-3">
+          Security & Protection
+        </span>
+        <h1 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight mb-2">
+          Privacy <span className="text-[#EC1D24]">Policy</span>
+        </h1>
+        <p className="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto leading-relaxed font-normal">
+          This privacy policy describes what information we collect from you, how it is used, and what security measures we take to protect it.
+        </p>
       </section>
 
-      <div className="max-w-4xl mx-auto px-5 sm:px-8 py-12 space-y-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 space-y-6">
         <nav
           aria-label="Privacy policy sections"
           className="flex flex-wrap gap-2 justify-center sm:justify-start"
@@ -44,14 +41,14 @@ export function PrivacyPolicyDocument() {
             <a
               key={s.id}
               href={`#${s.id}`}
-              className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wide px-3 py-1.5 rounded-full border border-zinc-200 text-[#0B1528] hover:border-[#D4541A] hover:text-[#D4541A] transition-colors"
+              className="text-xs font-bold px-4 py-1.5 rounded-full border border-gray-200 bg-white text-gray-700 hover:border-[#EC1D24] hover:text-[#EC1D24] transition-colors shadow-xs"
             >
               {s.label}
             </a>
           ))}
         </nav>
 
-        <div className="bg-white border border-zinc-200/90 rounded-[28px] p-6 sm:p-10 space-y-10">
+        <div className="bg-white border border-gray-200/90 rounded-3xl p-6 sm:p-10 shadow-md space-y-10">
           <section id="about" className="space-y-3 border-b border-zinc-100 pb-8 scroll-mt-28">
             <SectionHeading n="01" title="About this policy" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
@@ -459,10 +456,10 @@ export function PrivacyPolicyDocument() {
 function SectionHeading({ n, title }: { n: string; title: string }) {
   return (
     <div className="flex items-center gap-2.5">
-      <span className="w-7 h-7 rounded-lg bg-orange-50 text-[#D4541A] font-black text-xs flex items-center justify-center shrink-0">
+      <span className="w-7 h-7 rounded-lg bg-red-50 text-[#EC1D24] font-black text-xs flex items-center justify-center shrink-0 border border-red-200/60">
         {n}
       </span>
-      <h2 className="text-lg sm:text-xl font-black text-[#0B1528] uppercase tracking-tight">
+      <h2 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight">
         {title}
       </h2>
     </div>

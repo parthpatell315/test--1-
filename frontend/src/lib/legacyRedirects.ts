@@ -3,6 +3,8 @@
  * Used by Next.js (new host) and documented for the old origin.
  */
 export const LEGACY_PATH_REDIRECTS: { source: string; destination: string }[] = [
+  { source: "/tours/spiti-valley-bike-trip", destination: "/trips/spiti-valley-road-trip" },
+  { source: "/trips/spiti-valley-bike-trip", destination: "/trips/spiti-valley-road-trip" },
   { source: "/tours/spiti-valley-road-trip-137856", destination: "/trips/spiti-valley-road-trip" },
   { source: "/tours/winter-spiti-156526", destination: "/trips/winter-spiti-road-trip" },
   { source: "/tours/kerala-getaway-165724", destination: "/trips/kerala-trip" },

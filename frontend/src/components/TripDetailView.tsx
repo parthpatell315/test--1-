@@ -39,6 +39,33 @@ export default function TripDetailView({ trip }: TripDetailViewProps) {
         />
       </div>
 
+      {/* Avian Signature No Cost EMI Banner */}
+      <div
+        className="border-2 border-[#EC1D24] rounded-3xl shadow-sm my-6 overflow-hidden p-5 sm:p-6 md:px-8 md:py-6 flex flex-col md:flex-row items-center justify-between gap-4 transition-all"
+        style={{
+          background: "linear-gradient(90deg, #FCE7E6 0%, #FFFFFF 55%, #FCE7E6 100%)",
+        }}
+      >
+        <div className="space-y-1 text-center md:text-left">
+          <p className="text-xl sm:text-2xl font-black text-gray-900 leading-tight">
+            Your Dream Trip
+          </p>
+          <p className="text-sm sm:text-base text-gray-700 font-medium">
+            with <span className="font-black text-[#EC1D24]">No Cost EMI</span> available on major bank credit cards
+          </p>
+          <p className="text-xs text-gray-500 font-medium">
+            Starting from just ₹{Math.round((trip.price || 15000) / 6).toLocaleString("en-IN")}/month · 0% interest · 1-minute approval
+          </p>
+        </div>
+
+        <a
+          href="#booking-card"
+          className="bg-[#EC1D24] hover:bg-[#D0171E] text-white font-bold rounded-xl px-6 py-3 text-sm md:text-base transition-all shadow-md shadow-red-500/20 shrink-0 active:scale-95 text-center w-full md:w-auto"
+        >
+          Book with EMI
+        </a>
+      </div>
+
       <div id="inclusions" className="scroll-mt-[124px] md:scroll-mt-[128px]">
         <InclusionsExclusions
           inclusions={trip.inclusions || []}

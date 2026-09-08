@@ -53,6 +53,34 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/tours",
+        destination: "/trips",
+      },
+      {
+        source: "/tours/:slug*",
+        destination: "/trips/:slug*",
+      },
+      {
+        source: "/group-trips",
+        destination: "/trips?type=group",
+      },
+      {
+        source: "/tour-packages",
+        destination: "/trips?type=packages",
+      },
+      {
+        source: "/offers",
+        destination: "/sale-of-season",
+      },
+      {
+        source: "/gift-voucher",
+        destination: "/sale-of-season",
+      },
+    ];
+  },
   async redirects() {
     return [
       ...LEGACY_PATH_REDIRECTS.map((rule) => ({

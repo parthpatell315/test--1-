@@ -2,84 +2,102 @@ import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { RefundSchedule } from "@/components/legal/RefundSchedule";
-
 import { pageMetadata } from "@/lib/seo";
+import { brandConfig } from "@/config/brand.config";
+import { ShieldCheck, Mail, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Cancellation Policy | YouthCamping",
-  description:
-    "Official cancellation and refund terms for YouthCamping adventure trips.",
+  title: `Cancellation Policy | ${brandConfig.name}`,
+  description: `Official cancellation and refund terms for ${brandConfig.name} adventure trips and expeditions.`,
   path: "/cancellation-policy",
 });
 
 export default function CancellationPolicyPage() {
   return (
-    <div className="bg-white min-h-screen pt-24 font-montserrat pb-20">
-      <section className="bg-[#0B1528] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
-        <div className="max-w-4xl mx-auto space-y-3 relative z-10">
-          <span className="bg-white/10 text-[#D4541A] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
-            Transparent refund timelines
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            Cancellation & <span className="text-[#D4541A]">Refund Policy</span>
-          </h1>
-          <div className="w-16 h-1.5 bg-[#D4541A] rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-zinc-300 font-semibold max-w-xl mx-auto leading-relaxed">
-            Cancellation policy is mentioned on every trip page. If not mentioned
-            specifically, this policy is considered final.
-          </p>
-        </div>
+    <div className="bg-[#F5F6F8] min-h-screen pt-24 sm:pt-28 font-sans pb-24">
+      {/* 1. HEADER (Avian Style) */}
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 text-center pt-6 pb-8">
+        <span className="text-xs font-bold uppercase tracking-widest text-[#EC1D24] bg-red-50 px-3.5 py-1.5 rounded-full inline-block mb-3">
+          Transparent Refund Timelines
+        </span>
+        <h1 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tight mb-2">
+          Cancellation & <span className="text-[#EC1D24]">Refund Policy</span>
+        </h1>
+        <p className="text-xs sm:text-sm text-gray-600 max-w-xl mx-auto leading-relaxed font-normal">
+          Clear, transparent cancellation terms for every trip. If not mentioned specifically on a custom package, this policy applies.
+        </p>
       </section>
 
-      <div className="max-w-4xl mx-auto px-5 sm:px-8 py-12">
-        <div className="bg-white border border-zinc-200/90 rounded-[28px] p-6 sm:p-10 space-y-8">
-          <section className="space-y-3 border-b border-zinc-100 pb-8">
-            <h2 className="text-lg sm:text-xl font-black text-[#0B1528] uppercase tracking-tight">
-              How cancellation is granted
-            </h2>
-            <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed">
+      {/* 2. MAIN DOCUMENT CONTAINER */}
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4">
+        <div className="bg-white border border-gray-200/90 rounded-3xl p-6 sm:p-10 shadow-md space-y-8">
+          
+          {/* Section 1: How cancellation is granted */}
+          <section className="space-y-3 border-b border-gray-100 pb-8">
+            <div className="flex items-center gap-2.5">
+              <span className="w-7 h-7 rounded-lg bg-red-50 text-[#EC1D24] font-black text-xs flex items-center justify-center shrink-0 border border-red-200/60">
+                01
+              </span>
+              <h2 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight">
+                How Cancellation is Granted
+              </h2>
+            </div>
+            <div className="space-y-3 text-xs sm:text-sm text-gray-600 font-normal leading-relaxed pl-9">
               <p>
-                Cancellation would be granted by the Higher Authorities on
-                receiving a cancellation request through registered mail ID
-                only. The cancellation amount below mentioned will be counted on
-                total fees only.
+                Cancellation requests must be submitted via registered email to{" "}
+                <a
+                  href="mailto:contact@trrabb.com"
+                  className="text-[#EC1D24] font-bold underline underline-offset-2"
+                >
+                  contact@trrabb.com
+                </a>
+                . The cancellation charge is calculated based on the total tour booking fee.
               </p>
               <p>
-                The refund amount will be paid in 7 to 12 working days through a
-                bank transfer.
+                Approved refund amounts are processed within 7 to 12 working days directly to the original payment source or via bank transfer.
               </p>
             </div>
           </section>
 
-          <section className="space-y-4 border-b border-zinc-100 pb-8">
-            <h2 className="text-lg sm:text-xl font-black text-[#0B1528] uppercase tracking-tight">
-              Refund schedule
-            </h2>
-            <RefundSchedule />
-            <ul className="list-disc space-y-2 pl-5 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed">
-              <li>The above charges will be applied on the total package cost.</li>
-              <li>
-                Full payment has to be done before 15 days of trip departure. If
-                not paid, participation will be cancelled.
-              </li>
-              <li>
-                If the trip is called off by management due to a natural
-                calamity or unforeseen circumstances, we will issue a refund of
-                fees after deducting train tickets cancellation charges.
-              </li>
-            </ul>
+          {/* Section 2: Refund Schedule Table */}
+          <section className="space-y-4 border-b border-gray-100 pb-8">
+            <div className="flex items-center gap-2.5">
+              <span className="w-7 h-7 rounded-lg bg-red-50 text-[#EC1D24] font-black text-xs flex items-center justify-center shrink-0 border border-red-200/60">
+                02
+              </span>
+              <h2 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight">
+                Standard Refund Schedule
+              </h2>
+            </div>
+            <div className="pl-9">
+              <RefundSchedule />
+              <ul className="list-disc space-y-2 pl-5 text-xs sm:text-sm text-gray-600 font-normal leading-relaxed mt-4">
+                <li>Cancellation percentages apply to the total contracted trip cost.</li>
+                <li>Train, flight, and third-party transit ticket cancellation charges follow IRCTC and airline cancellation rules.</li>
+                <li>In case of government-mandated travel restrictions or severe force majeure events, credit vouchers may be issued for future departures.</li>
+              </ul>
+            </div>
           </section>
 
-          <p className="text-xs sm:text-sm text-zinc-600 font-medium">
-            These rules form part of our{" "}
-            <Link
-              href="/terms-and-conditions"
-              className="text-[#D4541A] font-bold underline underline-offset-2"
-            >
-              Terms &amp; Conditions
-            </Link>
-            .
-          </p>
+          {/* Section 3: Contact for cancellations */}
+          <section className="space-y-3 pl-9">
+            <div className="bg-red-50/60 border border-red-100 rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h4 className="text-sm font-bold text-gray-900">
+                  Need Help with an Existing Booking?
+                </h4>
+                <p className="text-xs text-gray-600 mt-0.5">
+                  Reach out to Trrabb operations concierge with your booking reference.
+                </p>
+              </div>
+              <a
+                href="mailto:contact@trrabb.com?subject=Cancellation%20Request"
+                className="px-5 py-2.5 bg-[#EC1D24] hover:bg-[#D0171E] text-white text-xs font-bold rounded-xl shadow-xs transition-colors shrink-0"
+              >
+                Email Concierge
+              </a>
+            </div>
+          </section>
         </div>
       </div>
     </div>

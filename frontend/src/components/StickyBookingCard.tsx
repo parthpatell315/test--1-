@@ -64,12 +64,13 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
 
   const handleExpertChat = () => {
     const formatted = activeDate ? new Date(activeDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" }) : "Upcoming";
-    const msg = encodeURIComponent(`Hi, I need assistance with booking the "${trip.title}" tour for ${formatted}. Please help me with the itinerary and details.`);
-    window.open(`https://wa.me/919924246267?text=${msg}`, "_blank");
+    const subject = encodeURIComponent(`Inquiry for ${trip.title} (${formatted})`);
+    const body = encodeURIComponent(`Hi Trrabb Concierge,\n\nI would like assistance with booking the "${trip.title}" tour for ${formatted}.\n\nPlease connect with me regarding itinerary details, room sharing, and availability.\n\nThank you!`);
+    window.location.href = `mailto:contact@trrabb.com?subject=${subject}&body=${body}`;
   };
 
   return (
-    <div className="sticky top-[92px] z-20 space-y-5 hidden lg:block">
+    <div id="booking-card" className="lg:sticky lg:top-[92px] z-20 space-y-5">
       {/* MAIN AVIAN EXPERIENCES BOOKING CARD */}
       <div className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-200/90 p-6 xl:p-7">
         
@@ -233,6 +234,25 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
         >
           <MessageCircle className="w-4 h-4 text-[#EC1D24]" />
           <span>Connect with Expert</span>
+        </button>
+      </div>
+
+      {/* MOBILE FLOATING BOTTOM BAR (Avian Style) */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200/90 px-5 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] flex items-center justify-between">
+        <div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-xl font-black text-[#1A1A1A]">₹{finalPrice.toLocaleString("en-IN")}</span>
+            {originalPrice > basePrice && (
+              <span className="text-xs text-gray-400 line-through">₹{originalPrice.toLocaleString("en-IN")}</span>
+            )}
+          </div>
+          <p className="text-[11px] font-semibold text-emerald-600">No Cost EMI from ₹{emiPrice.toLocaleString("en-IN")}/mo</p>
+        </div>
+        <button
+          onClick={handleBooking}
+          className="px-6 py-2.5 bg-[#EC1D24] hover:bg-[#D0171E] text-white font-bold text-sm rounded-full shadow-md active:scale-95 transition-all"
+        >
+          Book Now
         </button>
       </div>
     </div>
