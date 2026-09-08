@@ -85,10 +85,9 @@ const DEFAULT_COLUMNS: ColumnItem[] = [
 ];
 
 const DEFAULT_SOCIAL: SocialLink[] = [
-  { platform: "instagram", url: "https://instagram.com" },
-  { platform: "facebook", url: "https://facebook.com" },
-  { platform: "youtube", url: "https://youtube.com" },
-  { platform: "whatsapp", url: "https://wa.me/919924246267" },
+  { platform: "instagram", url: "https://instagram.com/trrabb" },
+  { platform: "facebook", url: "https://facebook.com/trrabb" },
+  { platform: "youtube", url: "https://youtube.com/trrabb" },
 ];
 
 const LEGAL_LINKS = [

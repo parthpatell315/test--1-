@@ -161,10 +161,14 @@ export default function BookingOptions({
     }
   }, [months, activeMonth]);
 
-  const phone = settings?.contactPhone || "99242 46267";
+  const phone = settings?.contactPhone || "";
   const whatsappNumber = phone.replace(/\D/g, "");
 
   const handleWhatsAppBooking = () => {
+    if (!whatsappNumber) {
+      window.location.href = "/contact";
+      return;
+    }
     const selectedLocation = variants[selectedVariant]?.location || "";
     const message = encodeURIComponent(
       `Hi! I want to book the "${trip.title}" expedition from ${selectedLocation} starting at ₹${currentPrice.toLocaleString()}. Please help me with the booking.`,

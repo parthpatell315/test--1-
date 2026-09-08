@@ -134,13 +134,13 @@ export function TermsAndConditionsDocument() {
             <SectionHeading n="04" title="Communication" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
               <p>
-                Enquiry and registration helplines are active between 10 AM and
-                7 PM on all days excluding public holidays on{" "}
+                Enquiry and registration channels are active via our official
+                email concierge at{" "}
                 <a
-                  href="tel:+919924246267"
+                  href="mailto:contact@trrabb.com"
                   className="text-[#2563EB] font-bold underline underline-offset-2"
                 >
-                  +91 9924246267
+                  contact@trrabb.com
                 </a>
                 .
               </p>

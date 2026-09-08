@@ -32,10 +32,14 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const phone = settings?.contactPhone || "99242 46267";
+  const phone = settings?.contactPhone || "";
   const whatsappNumber = phone.replace(/\D/g, "");
 
   const handleWhatsAppBooking = () => {
+    if (!whatsappNumber) {
+      window.location.href = "/contact";
+      return;
+    }
     const formattedDate = selectedDate
       ? new Date(selectedDate).toLocaleDateString("en-GB", {
           day: "numeric",

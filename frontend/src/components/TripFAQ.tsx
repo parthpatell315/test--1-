@@ -70,21 +70,20 @@ export default function TripFAQ({ faqs }: TripFAQProps) {
   };
 
   const handleWhatsAppClick = () => {
-    const whatsappUrl = `https://wa.me/919924246267?text=${encodeURIComponent("Hi Trrabb! I have a question regarding trip details.")}`;
-    window.open(whatsappUrl, "_blank");
+    window.location.href = "/contact";
   };
 
   return (
     <section className="space-y-6 scroll-mt-[140px]" id="faq">
       {/* Header System with Expand All Toggle */}
       <div className="flex items-center justify-between border-b border-zinc-100/90 pb-3">
-        <h2 className="text-2xl sm:text-3xl font-black text-[#0B1528] tracking-tight font-montserrat leading-none">
+        <h2 className="text-2xl sm:text-3xl font-black text-[#0B1528] tracking-tight font-sans leading-none">
           Frequently Asked{" "}
           <span className="text-[#D4541A] font-caveat italic">Questions</span>
         </h2>
         <button
           onClick={toggleExpandAll}
-          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-[#0B1528] transition-all font-montserrat cursor-pointer shrink-0"
+          className="flex items-center gap-1.5 text-xs font-semibold text-zinc-500 hover:text-[#0B1528] transition-all font-sans cursor-pointer shrink-0"
         >
           <ChevronDown
             className={cn(
@@ -97,57 +96,52 @@ export default function TripFAQ({ faqs }: TripFAQProps) {
       </div>
 
       {/* Accordion List */}
-      <div className="space-y-3 pt-2">
-        {displayFaqs.map((faq, i) => {
-          const isOpen = openIndices.includes(i);
-
+      <div className="space-y-3">
+        {displayFaqs.map((faq, index) => {
+          const isOpen = openIndices.includes(index);
           return (
             <div
-              key={i}
+              key={index}
               className={cn(
-                "bg-white border rounded-[20px] p-4 sm:p-5 transition-all duration-300 shadow-2xs cursor-pointer",
+                "rounded-[18px] border transition-all duration-200 overflow-hidden",
                 isOpen
-                  ? "border-[#D4541A]/60 shadow-xs"
-                  : "border-zinc-200/90 hover:border-zinc-300",
+                  ? "bg-white border-zinc-200 shadow-sm"
+                  : "bg-zinc-50/50 hover:bg-zinc-50 border-zinc-100",
               )}
-              onClick={() => toggleFaq(i)}
             >
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3.5 flex-1 min-w-0">
-                  <div
+              <button
+                onClick={() => toggleFaq(index)}
+                className="w-full flex items-center justify-between p-4.5 sm:p-5 text-left transition-colors cursor-pointer gap-4"
+              >
+                <div className="flex items-center gap-3">
+                  <span
                     className={cn(
-                      "w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors",
+                      "w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 transition-colors",
                       isOpen
                         ? "bg-[#D4541A] text-white"
-                        : "bg-orange-50 text-[#D4541A]",
+                        : "bg-zinc-200/70 text-zinc-600",
                     )}
                   >
-                    <HelpCircle className="w-4 h-4" />
-                  </div>
-                  <h3 className="text-xs sm:text-sm md:text-base font-bold text-[#0B1528] font-montserrat leading-snug">
+                    Q{index + 1}
+                  </span>
+                  <span className="font-extrabold text-[#0B1528] text-sm sm:text-base font-sans tracking-tight leading-snug">
                     {faq.question}
-                  </h3>
+                  </span>
                 </div>
-
                 <div
                   className={cn(
-                    "w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
+                    "w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200",
                     isOpen
-                      ? "bg-orange-50 text-[#D4541A] rotate-180"
-                      : "bg-zinc-100 text-zinc-500",
+                      ? "rotate-180 bg-[#D4541A]/10 text-[#D4541A]"
+                      : "bg-white border border-zinc-200 text-zinc-400",
                   )}
                 >
-                  {isOpen ? (
-                    <Minus className="w-4 h-4 stroke-[2.5]" />
-                  ) : (
-                    <Plus className="w-4 h-4 stroke-[2.5]" />
-                  )}
+                  <ChevronDown className="w-4 h-4" />
                 </div>
-              </div>
+              </button>
 
-              {/* Answer Content */}
               {isOpen && (
-                <div className="mt-3.5 pt-3.5 border-t border-zinc-100 text-xs sm:text-sm text-zinc-600 font-montserrat leading-relaxed animate-fade-in">
+                <div className="mt-3.5 pt-3.5 border-t border-zinc-100 text-xs sm:text-sm text-zinc-600 font-sans leading-relaxed animate-fade-in px-4.5 sm:px-5 pb-4.5 sm:pb-5">
                   {faq.answer}
                 </div>
               )}
@@ -163,17 +157,17 @@ export default function TripFAQ({ faqs }: TripFAQProps) {
             <MessageCircle className="w-5 h-5 fill-current" />
           </div>
           <div>
-            <h4 className="font-extrabold text-sm sm:text-base font-montserrat leading-tight">
+            <h4 className="font-extrabold text-sm sm:text-base font-sans leading-tight">
               Have more questions?
             </h4>
-            <p className="text-zinc-400 text-xs font-montserrat mt-0.5">
-              Chat directly with our trip experts 24/7 on WhatsApp.
+            <p className="text-zinc-400 text-xs font-sans mt-0.5">
+              Contact our trip concierge directly for personalized assistance.
             </p>
           </div>
         </div>
         <button
           onClick={handleWhatsAppClick}
-          className="w-full sm:w-auto px-6 py-2.5 bg-[#D4541A] hover:bg-[#c24813] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all font-montserrat shrink-0 shadow-lg shadow-orange-500/20 active:scale-95 cursor-pointer"
+          className="w-full sm:w-auto px-6 py-2.5 bg-[#D4541A] hover:bg-[#c24813] text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all font-sans shrink-0 shadow-lg shadow-orange-500/20 active:scale-95 cursor-pointer"
         >
           Ask an Expert
         </button>

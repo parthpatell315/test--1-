@@ -14,8 +14,10 @@ export default function FloatingWhatsApp({
   const isBookPage = pathname?.startsWith("/book");
   const isQuotePage = pathname?.startsWith("/quote");
 
-  const phone = settings?.contactPhone || "99242 46267";
+  const phone = settings?.contactPhone || "";
   const whatsappNumber = phone.replace(/[^0-9]/g, "");
+
+  if (!whatsappNumber) return null;
 
   return (
     <a

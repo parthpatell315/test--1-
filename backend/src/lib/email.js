@@ -47,14 +47,14 @@ const getBaseTemplate = (content, previewText) => `
       ${content}
     </div>
     <div class="footer">
-      <p style="font-weight: 900; color: #0f172a; margin-bottom: 6px; font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase;">YOUTHCAMPING EXPERIENCES</p>
-      <p style="margin: 4px 0;">&copy; ${new Date().getFullYear()} YouthCamping. All rights reserved.</p>
+      <p style="font-weight: 900; color: #0f172a; margin-bottom: 6px; font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase;">TRRABB EXPERIENCES</p>
+      <p style="margin: 4px 0;">&copy; ${new Date().getFullYear()} Trrabb. All rights reserved.</p>
       <p style="margin-top: 10px; margin-bottom: 10px;">
         <a href="${getPublicSiteBaseUrl()}/terms-and-conditions" style="color: #ff5722; text-decoration: underline; font-weight: 600;" target="_blank">Terms &amp; Conditions</a>
         <span style="margin: 0 6px; color: #cbd5e1;">|</span>
         <a href="${getPublicSiteBaseUrl()}/cancellation-policy" style="color: #ff5722; text-decoration: underline; font-weight: 600;" target="_blank">Cancellation Policy</a>
       </p>
-      <p style="color: #94a3b8; font-size: 11px;">Delhi, India | Support: youthcampingmedia@gmail.com | +91 9924246267</p>
+      <p style="color: #94a3b8; font-size: 11px;">Support: contact@trrabb.com | trrabb.com</p>
     </div>
   </div>
 </body>

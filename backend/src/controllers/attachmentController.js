@@ -457,9 +457,9 @@ exports.sendBookingAttachments = async (req, res) => {
             </ul>
           </div>
 
-          <p style="font-size: 13px; color: #64748b; margin-top: 24px;">If you have any questions, feel free to reply directly to this email or reach us on WhatsApp at +91 9924246267.</p>
+          <p style="font-size: 13px; color: #64748b; margin-top: 24px;">If you have any questions, feel free to reply directly to this email at contact@trrabb.com.</p>
           <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
-          <p style="font-size: 11px; color: #94a3b8; text-align: center;">YouthCamping OS • Team Operations</p>
+          <p style="font-size: 11px; color: #94a3b8; text-align: center;">Trrabb • Team Operations</p>
         </div>
       `;
 

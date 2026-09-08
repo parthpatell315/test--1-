@@ -150,8 +150,8 @@ const defaultTheme = {
   tourCardStyle: "modular",
   collectionCardStyle: "default",
   headerStylePreset: "default",
-  supportPhone: "+919924246267",
-  supportEmail: "youthcampingmedia@gmail.com",
+  supportPhone: "",
+  supportEmail: "contact@trrabb.com",
   supportText: "We are available 10AM to 07PM",
   navbarLinks: [
     { title: "Home", link: "/" },

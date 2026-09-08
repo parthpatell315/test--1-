@@ -296,7 +296,7 @@ export default function LuxuryQuotationUI({ q }: { q: Quotation }) {
     return () => clearInterval(interval);
   }, [q.expiryTime]);
 
-  const phone = settings?.contactPhone || "99242 46267";
+  const phone = settings?.contactPhone || "";
   const whatsappNumber = phone.replace(/\D/g, "");
   const pax = q.paxCount || q.pax || 2;
   const travelDate = getDayDate(q.travelDates?.from, 0);
@@ -315,7 +315,7 @@ export default function LuxuryQuotationUI({ q }: { q: Quotation }) {
     q.expert?.whatsapp ||
     q.expert?.phone ||
     whatsappNumber ||
-    "918866699409"
+    ""
   ).replace(/\D/g, "");
 
   const expertTargetNumber =
