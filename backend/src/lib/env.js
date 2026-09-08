@@ -73,6 +73,11 @@ if (!process.env.ALLOW_PRODUCTION_DATABASE) {
   process.env.ALLOW_PRODUCTION_DATABASE = "true";
 }
 
+// If DIRECT_URL is not set, fallback to DATABASE_URL
+if (!process.env.DIRECT_URL && process.env.DATABASE_URL) {
+  process.env.DIRECT_URL = process.env.DATABASE_URL;
+}
+
 for (const variableName of ["DATABASE_URL", "DIRECT_URL"]) {
   let value = String(process.env[variableName] || "").trim();
   // Strip leading/trailing quotes, backslashes, and variable name prefixes if present in raw env value
