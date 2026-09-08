@@ -6,22 +6,25 @@
 :root {
   --font-sans: var(--font-jakarta), var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-heading: var(--font-jakarta), system-ui, sans-serif;
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
-  --primary-light: #EFF6FF;
-  --secondary: #0F172A;
-  --accent: #F59E0B;
+  --primary: #EC1D24;
+  --primary-hover: #D0171E;
+  --primary-light: #FEF2F2;
+  --primary-subtle: #FEE2E2;
+  --secondary: #1A1A1A;
+  --accent: #EC1D24;
   --background: #FFFFFF;
-  --foreground: #0F172A;
-  --muted: #64748B;
-  --canvas-subtle: #F8FAFC;
-  --border-subtle: #E2E8F0;
+  --foreground: #1A1A1A;
+  --muted: #7E7E7E;
+  --canvas-subtle: #F5F6F8;
+  --border-subtle: #E5E7EB;
 }
 
 body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FFFFFF;
+  color: #1A1A1A;
 }
 
 @custom-variant dark (&:is(.dark *));

@@ -16,6 +16,10 @@ import PhotoSlider from "./PhotoSlider";
 import VideoSection from "./VideoSection";
 import CTASlider from "./CTASlider";
 import VibeSection from "./VibeSection";
+import TrendingTrips from "./TrendingTrips";
+import InternationalDestinations from "./InternationalDestinations";
+import WhyChooseSection from "./WhyChooseSection";
+import SaleBanner from "./SaleBanner";
 
 interface PageRendererProps {
   sections: any[];
@@ -124,6 +128,12 @@ export default function PageRenderer({
             }
             case "destinations":
               return <Destinations key={index} {...commonProps} />;
+            case "international_destinations":
+              return <InternationalDestinations key={index} />;
+            case "why_choose":
+              return <WhyChooseSection key={index} />;
+            case "sale_banner":
+              return <SaleBanner key={index} />;
             case "reality":
               return <RealitySection key={index} {...commonProps} />;
             case "blogs":

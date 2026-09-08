@@ -111,15 +111,15 @@ const socialClass = cn(
   "inline-flex h-9 w-9 items-center justify-center",
   "rounded-xl border border-white/10 bg-white/5 text-slate-300",
   "transition-[color,border-color,background-color] duration-200 ease-out",
-  "hover:border-blue-500 hover:bg-blue-500/15 hover:text-blue-400",
-  "focus-visible:outline-none focus-visible:border-blue-500 focus-visible:text-blue-400",
+  "hover:border-[#EC1D24] hover:bg-red-500/15 hover:text-[#EC1D24]",
+  "focus-visible:outline-none focus-visible:border-[#EC1D24] focus-visible:text-[#EC1D24]",
   "motion-reduce:transition-none",
 );
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
   return (
     <h3 className="flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-200">
-      <span className="h-px w-3.5 shrink-0 bg-blue-500" aria-hidden />
+      <span className="h-px w-3.5 shrink-0 bg-[#EC1D24]" aria-hidden />
       {children}
     </h3>
   );
@@ -293,7 +293,7 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
           <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
             <div className="min-w-0 max-w-md space-y-1.5">
               <h3 className="flex items-center gap-2.5 text-[13px] font-semibold tracking-wide text-white">
-                <span className="h-px w-3.5 shrink-0 bg-blue-500" aria-hidden />
+                <span className="h-px w-3.5 shrink-0 bg-[#EC1D24]" aria-hidden />
                 {newsletterHeading}
               </h3>
               <p className="text-[13px] font-medium leading-snug text-slate-400">
@@ -322,7 +322,7 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
                     "text-[13px] font-medium text-white outline-none",
                     "placeholder:text-slate-400",
                     "transition-colors duration-200",
-                    "focus-visible:border-blue-500 focus-visible:bg-slate-800",
+                    "focus-visible:border-[#EC1D24] focus-visible:bg-slate-800",
                     "motion-reduce:transition-none",
                   )}
                 />
@@ -330,9 +330,9 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
                   type="submit"
                   className={cn(
                     "inline-flex min-h-[44px] shrink-0 items-center justify-center cursor-pointer",
-                    "rounded-xl bg-blue-600 px-6 text-[13px] font-bold text-white shadow-md shadow-blue-600/20",
-                    "transition-all duration-200 hover:bg-blue-700",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+                    "rounded-xl bg-[#EC1D24] px-6 text-[13px] font-bold text-white shadow-md shadow-red-600/20",
+                    "transition-all duration-200 hover:bg-[#D0171E]",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500",
                     "active:scale-95 motion-reduce:transition-none",
                   )}
                 >

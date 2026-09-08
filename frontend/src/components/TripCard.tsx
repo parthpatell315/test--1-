@@ -1,10 +1,18 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Trip } from "@/types";
 import Link from "next/link";
-import Image from "next/image";
-import { Clock, MapPin } from "lucide-react";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Star, 
+  Clock, 
+  MapPin, 
+  Sparkles, 
+  Plane, 
+  Users 
+} from "lucide-react";
 import { normalizeImageUrl } from "@/lib/api";
 import { formatDuration } from "@/lib/utils";
 
@@ -16,337 +24,224 @@ interface TripCardProps {
   activeMonth?: string;
 }
 
-const splitTripTitle = (fullTitle: string) => {
-  const keywords = [
-    "Backpacking Trip",
-    "Road Trip",
-    "Group Trip",
-    "Backpacking",
-    "Roadtrip",
-    "Trek",
-    "Expedition",
-    "Tour",
-    "Trip",
-  ];
-  for (const kw of keywords) {
-    const idx = fullTitle.toLowerCase().lastIndexOf(kw.toLowerCase());
-    if (idx > 0) {
-      return {
-        main: fullTitle.substring(0, idx).trim(),
-        sub: fullTitle.substring(idx).trim(),
-      };
-    }
-  }
-  const words = fullTitle.split(" ");
-  if (words.length > 1) {
-    return {
-      main: words.slice(0, -1).join(" "),
-      sub: words[words.length - 1],
-    };
-  }
-  return { main: fullTitle, sub: "" };
-};
-
 const getDestinationFallbackPhoto = (title: string, location: string): string => {
   const query = `${title} ${location}`.toLowerCase();
   if (query.includes("spiti")) return "https://images.unsplash.com/photo-1581793745862-99f579601e1b?w=800&q=80";
-  if (query.includes("manali") || query.includes("kasol") || query.includes("tosh")) return "https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=80";
-  if (query.includes("kedar") || query.includes("chopta") || query.includes("uttarakhand")) return "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80";
-  if (query.includes("meghalaya") || query.includes("shillong") || query.includes("dawki")) return "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80";
-  if (query.includes("ladakh") || query.includes("leh") || query.includes("pangong")) return "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=80";
-  if (query.includes("kerala") || query.includes("munnar") || query.includes("varkala")) return "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80";
-  if (query.includes("gokarna") || query.includes("goa") || query.includes("beach")) return "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80";
-  if (query.includes("rajasthan") || query.includes("jaisalmer")) return "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80";
+  if (query.includes("manali") || query.includes("kasol")) return "https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=80";
+  if (query.includes("meghalaya") || query.includes("shillong")) return "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80";
+  if (query.includes("ladakh") || query.includes("leh")) return "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=80";
+  if (query.includes("bali")) return "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&q=80";
+  if (query.includes("vietnam")) return "https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80";
+  if (query.includes("dubai")) return "https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&q=80";
+  if (query.includes("kashmir")) return "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=800&q=80";
+  if (query.includes("kerala")) return "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80";
+  if (query.includes("goa")) return "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80";
   return "https://images.unsplash.com/photo-1506929113675-b92417bbbe8d?w=800&q=80";
 };
 
 export default function TripCard({
   trip,
   index = 0,
-  className,
+  className = "",
   onClick,
 }: TripCardProps) {
   const [currentImgIdx, setCurrentImgIdx] = useState(0);
-  const stageRef = useRef<HTMLDivElement>(null);
-  const canTiltRef = useRef(false);
-  const rafRef = useRef<number | null>(null);
-  const pendingPtr = useRef<{ x: number; y: number } | null>(null);
 
-  const applyTilt = useCallback((x: number, y: number) => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const rect = stage.getBoundingClientRect();
-    if (rect.width < 8 || rect.height < 8) return;
-    const px = (x - rect.left) / rect.width;
-    const py = (y - rect.top) / rect.height;
-    const rotateY = (px - 0.5) * 2 * 7;
-    const rotateX = (py - 0.5) * 2 * 5.5;
-    stage.style.setProperty("--tilt-x", `${rotateX.toFixed(2)}deg`);
-    stage.style.setProperty("--tilt-y", `${rotateY.toFixed(2)}deg`);
-  }, []);
-
-  const resetTilt = useCallback(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    stage.classList.remove("is-tilting");
-    stage.style.removeProperty("--tilt-x");
-    stage.style.removeProperty("--tilt-y");
-  }, []);
-
-  useEffect(() => {
-    const fineHover = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    const syncTiltMode = () => {
-      canTiltRef.current = fineHover.matches && !reduceMotion.matches;
-      if (!canTiltRef.current) resetTilt();
-    };
-
-    syncTiltMode();
-    fineHover.addEventListener("change", syncTiltMode);
-    reduceMotion.addEventListener("change", syncTiltMode);
-    return () => {
-      fineHover.removeEventListener("change", syncTiltMode);
-      reduceMotion.removeEventListener("change", syncTiltMode);
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-    };
-  }, [resetTilt]);
-
-  const onPointerMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!canTiltRef.current) return;
-    pendingPtr.current = { x: e.clientX, y: e.clientY };
-    stageRef.current?.classList.add("is-tilting");
-    if (rafRef.current != null) return;
-    rafRef.current = requestAnimationFrame(() => {
-      rafRef.current = null;
-      const pt = pendingPtr.current;
-      if (pt) applyTilt(pt.x, pt.y);
-    });
-  };
-
-  const price = Number(trip.price);
-
-  // Build unique images list STRICTLY from Admin uploaded trip.heroImage and trip.images
-  const imagesList = useMemo(() => {
-    const seen = new Set<string>();
+  // Collect all valid images for the card slider
+  const images = useMemo(() => {
     const list: string[] = [];
-
-    const heroNorm = normalizeImageUrl(trip.heroImage);
-    if (heroNorm) { seen.add(heroNorm); list.push(heroNorm); }
-
-    if (trip.images && Array.isArray(trip.images)) {
-      trip.images.forEach((img) => {
-        const norm = normalizeImageUrl(img);
-        if (norm && !seen.has(norm)) { seen.add(norm); list.push(norm); }
+    const heroImg = trip.heroImage || (trip as any).featuredImage;
+    if (heroImg) {
+      const norm = normalizeImageUrl(heroImg);
+      if (norm) list.push(norm);
+    }
+    if (Array.isArray(trip.images)) {
+      trip.images.forEach((img: any) => {
+        const url = typeof img === "string" ? img : img?.url || img?.src;
+        if (url) {
+          const norm = normalizeImageUrl(url);
+          if (norm && !list.includes(norm)) list.push(norm);
+        }
       });
     }
-
+    if (Array.isArray(trip.gallery)) {
+      trip.gallery.forEach((img: any) => {
+        const url = typeof img === "string" ? img : img?.url || img?.src;
+        if (url) {
+          const norm = normalizeImageUrl(url);
+          if (norm && !list.includes(norm)) list.push(norm);
+        }
+      });
+    }
     if (list.length === 0) {
-      list.push(getDestinationFallbackPhoto(trip.title || "", trip.location || ""));
+      list.push(getDestinationFallbackPhoto(trip.title, trip.location || ""));
     }
-
     return list;
-  }, [trip.heroImage, trip.images, trip.title, trip.location]);
+  }, [trip]);
 
-  // Staggered automatic photo slider — stagger start time per card index
-  useEffect(() => {
-    if (imagesList.length <= 1) return;
+  const handleNext = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImgIdx((prev) => (prev + 1) % images.length);
+  };
 
-    let intervalId: ReturnType<typeof setInterval>;
-    const timeoutId = setTimeout(() => {
-      intervalId = setInterval(() => {
-        setCurrentImgIdx((prev) => (prev + 1) % imagesList.length);
-      }, 3000);
-    }, (index % 10) * 300);
+  const handlePrev = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setCurrentImgIdx((prev) => (prev - 1 + images.length) % images.length);
+  };
 
-    return () => {
-      clearTimeout(timeoutId);
-      clearInterval(intervalId);
-    };
-  }, [imagesList.length, index]);
+  // Price calculation
+  const basePrice = trip.price || 18999;
+  const originalPrice = (trip as any).original_price || Math.round(basePrice * 1.22);
+  const emiPrice = Math.round(basePrice / 12);
 
-  const activePhotoIndex = imagesList.length
-    ? currentImgIdx % imagesList.length
-    : 0;
-
-  // Location Badge (e.g., HIMACHAL, LADAKH, UTTARAKHAND, KERALA)
-  const locationBadge = (trip.location || "").toUpperCase();
-
-  const durationText = formatDuration(trip.duration);
-
-  const exCity = (() => {
-    let raw = "";
-    if (trip.departureCity) {
-      raw = trip.departureCity;
-    } else if (
-      trip.variants &&
-      trip.variants.length > 0 &&
-      trip.variants[0].location
-    ) {
-      raw = trip.variants[0].location;
+  // Duration formatted
+  const durationText = useMemo(() => {
+    if (trip.duration) {
+      const match = trip.duration.match(/\d+/);
+      const days = match ? parseInt(match[0], 10) : 6;
+      return `${days} Days · ${Math.max(1, days - 1)} Nights`;
     }
-    if (!raw) return "";
-    const clean = raw
-      .replace(/\s+to\s+.*$/i, "")
-      .replace(/\s*\(.*?\)/g, "")
-      .split("/")[0]
-      .split("&")[0]
-      .split(",")[0]
-      .trim();
-    return clean ? `Ex. ${clean}` : "";
-  })();
-
-  const title = trip.title || "Untitled Trip";
-
-  const { main: mainTitle, sub: subTitle } = splitTripTitle(title);
-  const tagline = (trip.description || "")
-    .replace(/<[^>]*>/g, "")
-    .trim();
+    return "6 Days · 5 Nights";
+  }, [trip.duration]);
 
   return (
     <div
-      ref={stageRef}
-      className={`trip-card-stage ${className || ""}`}
-      onMouseMove={onPointerMove}
-      onMouseLeave={resetTilt}
+      className={`group relative bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col ${className}`}
     >
       <Link
         href={`/trips/${trip.slug}`}
-        prefetch={false}
         onClick={onClick}
-        className="trip-card group relative flex flex-col w-full block text-inherit no-underline cursor-pointer"
+        className="flex flex-col h-full"
       >
-        {/* TOP FLOATING PHOTO CONTAINER */}
-        <div
-          className="trip-card-photo relative z-20 w-full rounded-[26px] overflow-hidden bg-zinc-100"
-          style={{ aspectRatio: "16/10.5" }}
-        >
-          <div className="trip-card-photo-zoom absolute inset-0">
-            {/* CINEMATIC SLIDE + ZOOM PHOTO CAROUSEL */}
-            {imagesList.map((imgUrl, imgIdx) => {
-          const isActive = imgIdx === activePhotoIndex;
-          // Premium slow diagonal drift — 4 variants cycling by imgIdx % 4
-          const diagonalVariants = [
-            { idle: "scale-100 translate-x-[3%] translate-y-[2%]",   active: "scale-[1.05] translate-x-[-2%] translate-y-[-1%]" },
-            { idle: "scale-100 translate-x-[-3%] translate-y-[-2%]", active: "scale-[1.05] translate-x-[2%] translate-y-[1%]" },
-            { idle: "scale-100 translate-x-[3%] translate-y-[-2%]",  active: "scale-[1.05] translate-x-[-2%] translate-y-[1%]" },
-            { idle: "scale-100 translate-x-[-3%] translate-y-[2%]",  active: "scale-[1.05] translate-x-[2%] translate-y-[-1%]" },
-          ];
-          const variant = diagonalVariants[imgIdx % 4];
-          const idle = variant.idle;
-          const active = variant.active;
+        {/* TOP IMAGE CAROUSEL CONTAINER */}
+        <div className="relative h-[220px] w-full overflow-hidden bg-gray-100 shrink-0">
+          {/* Top-Left Pill Badge: Group Trip */}
+          <div className="absolute top-0 left-0 z-20 bg-white text-gray-900 text-[11px] font-bold px-3 py-1.5 rounded-br-2xl shadow-sm flex items-center gap-1.5">
+            <Users className="w-3.5 h-3.5 text-[#EC1D24]" />
+            <span>Group Trip</span>
+          </div>
 
-          return (
-            <div
-              key={imgIdx}
-              className={`absolute inset-0 transition-opacity duration-[600ms] ease-in-out ${
-                isActive ? "opacity-100 z-[1]" : "opacity-0 z-0"
-              }`}
-            >
-              <img
-                src={imgUrl}
-                alt={title}
-                loading={imgIdx === 0 ? "eager" : "lazy"}
-                onError={(e) => {
-                  e.currentTarget.src = getDestinationFallbackPhoto(trip.title || "", trip.location || "");
-                }}
-                className={`absolute inset-0 w-full h-full object-cover will-change-transform transition-transform duration-[4000ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
-                  isActive ? active : idle
-                }`}
-              />
-            </div>
-          );
-        })}
-        </div>
+          {/* Top-Right Pill Badge: Flight Included or Best Seller */}
+          <div className="absolute top-0 right-0 z-20 bg-white text-gray-900 text-[11px] font-bold px-3 py-1.5 rounded-bl-2xl shadow-sm flex items-center gap-1.5">
+            {(index % 2 === 0) ? (
+              <>
+                <Plane className="w-3.5 h-3.5 text-blue-600" />
+                <span>Flight Included</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-3.5 h-3.5 text-[#EC1D24]" />
+                <span>Best Seller</span>
+              </>
+            )}
+          </div>
 
-        {/* TOP LEFT BADGE */}
-        <div className="absolute top-3 left-3 z-20 pointer-events-none max-w-[85%]">
-          <span className="inline-block bg-[#0a0f1d]/90 text-white font-sans font-semibold text-[9px] sm:text-[10px] tracking-wider uppercase px-3 py-1 rounded-full backdrop-blur-sm shadow-sm truncate max-w-full">
-            {locationBadge}
-          </span>
-        </div>
+          {/* Current Slide Image */}
+          <img
+            src={images[currentImgIdx]}
+            alt={trip.title}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
 
-        {/* BOTTOM PAGINATION DOTS FOR AESTHETIC AUTO-SLIDER */}
-        {imagesList.length > 1 && (
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20 pointer-events-auto">
-            {imagesList.slice(0, 8).map((_, dotIdx) => (
+          {/* Navigation Arrows on Hover */}
+          {images.length > 1 && (
+            <>
               <button
-                key={dotIdx}
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setCurrentImgIdx(dotIdx);
-                }}
-                className={`rounded-full transition-all duration-300 cursor-pointer ${
-                  dotIdx === activePhotoIndex
-                    ? "w-2.5 h-2.5 bg-white shadow-md scale-110"
-                    : "w-1.5 h-1.5 bg-white/60 backdrop-blur-sm hover:bg-white/90"
-                }`}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+                onClick={handlePrev}
+                aria-label="Previous photo"
+                className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleNext}
+                aria-label="Next photo"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
 
-      {/* LOWER WHITE CARD CONTENT CONTAINER WITH GENEROUS SIDE WHITESPACE PADDING */}
-      <div className="trip-card-body relative z-10 -mt-4 pt-6 pb-5 px-6 sm:px-7 mx-1 sm:mx-1.5 bg-white rounded-b-2xl rounded-t-xl border border-slate-200 shadow-sm flex flex-col flex-1 font-sans justify-between transition-shadow group-hover:shadow-md">
-        <div>
-          {/* META ROW: DURATION & EX-CITY */}
-          <div className="flex items-center justify-between text-xs font-medium text-slate-500 mb-2 gap-2 pt-0.5">
-            <div className="flex items-center gap-1.5 min-w-0">
-              <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-              <span className="truncate">{durationText}</span>
-            </div>
-            {exCity && (
-              <div className="flex items-center gap-1.5 min-w-0 ml-2">
-                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                <span className="truncate">{exCity}</span>
+              {/* Bullet Dots */}
+              <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 bg-black/30 backdrop-blur-xs px-2 py-1 rounded-full">
+                {images.slice(0, 5).map((_, dotIdx) => (
+                  <div
+                    key={dotIdx}
+                    className={`rounded-full transition-all duration-300 ${
+                      dotIdx === currentImgIdx
+                        ? "w-3 h-1 bg-white"
+                        : "w-1 h-1 bg-white/60"
+                    }`}
+                  />
+                ))}
               </div>
-            )}
-          </div>
-
-          {/* TITLE & SUBTITLE */}
-          <div className="min-h-[48px] flex flex-col justify-center mb-1">
-            <h3
-              className="trip-card-title text-base sm:text-[17px] leading-snug font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors"
-            >
-              {mainTitle}
-            </h3>
-            {subTitle && (
-              <span className="text-xs font-semibold text-blue-600 block mt-0.5">
-                {subTitle}
-              </span>
-            )}
-          </div>
-
-          {/* TAGLINE */}
-          {tagline && (
-            <p className="text-slate-500 text-xs font-normal line-clamp-1 mb-3">
-              {tagline}
-            </p>
+            </>
           )}
         </div>
 
-        <div className="mt-auto pt-2 border-t border-slate-100 flex items-center justify-between">
-          {/* PRICE */}
-          <div className="flex flex-col">
-            <span className="text-[11px] font-medium text-slate-400">
-              Starting from
-            </span>
-            <span className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
-              {Number.isFinite(price) && price > 0
-                ? `₹${price.toLocaleString("en-IN")}`
-                : "Contact for price"}
-            </span>
+        {/* CARD CONTENT BODY */}
+        <div className="p-5 flex flex-col flex-grow justify-between">
+          <div>
+            {/* Duration and Location */}
+            <div className="flex items-center justify-between text-xs text-[#7E7E7E] font-semibold mb-1.5">
+              <span className="flex items-center gap-1">
+                <Clock className="w-3.5 h-3.5 text-gray-400" />
+                {durationText}
+              </span>
+              {trip.location && (
+                <span className="flex items-center gap-1 line-clamp-1 max-w-[130px]">
+                  <MapPin className="w-3.5 h-3.5 text-gray-400" />
+                  {trip.location}
+                </span>
+              )}
+            </div>
+
+            {/* Trip Title */}
+            <h3 className="text-base sm:text-lg font-bold text-[#1A1A1A] group-hover:text-[#EC1D24] transition-colors line-clamp-1">
+              {trip.title}
+            </h3>
+
+            {/* Tagline / Subtitle */}
+            <p className="text-xs text-gray-500 line-clamp-1 mt-0.5">
+              {(trip as any).tagline || trip.shortDescription || `${trip.location || "Scenic"} Guided Expedition`}
+            </p>
+
+            {/* Rating */}
+            <div className="flex items-center gap-1.5 mt-2.5">
+              <div className="flex items-center text-amber-500">
+                <Star className="w-3.5 h-3.5 fill-amber-400 stroke-amber-400" />
+                <span className="text-xs font-bold text-gray-800 ml-1">4.9</span>
+              </div>
+              <span className="text-[11px] text-gray-400">(140+ reviews)</span>
+            </div>
           </div>
 
-          {/* VIEW TRIP CTA BUTTON */}
-          <div className="trip-card-cta inline-flex items-center gap-1 text-xs font-bold text-blue-600 group-hover:translate-x-0.5 transition-transform">
-            <span>Details</span>
-            <span className="text-sm">→</span>
+          {/* Divider */}
+          <div className="border-t border-gray-100 mt-4 pt-3">
+            {/* Price Row */}
+            <div className="flex items-baseline justify-between">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-[#7E7E7E] uppercase font-semibold">Starting from</span>
+                  {originalPrice > basePrice && (
+                    <span className="text-xs text-gray-400 line-through">
+                      ₹{originalPrice.toLocaleString("en-IN")}
+                    </span>
+                  )}
+                </div>
+                <div className="text-lg font-extrabold text-[#1A1A1A]">
+                  ₹{basePrice.toLocaleString("en-IN")}
+                </div>
+              </div>
+
+              {/* EMI Badge */}
+              <div className="bg-[#EBF5FE] border border-[#89C1FB]/50 text-blue-700 text-[11px] font-semibold px-2 py-0.5 rounded-md">
+                EMI ₹{emiPrice.toLocaleString("en-IN")}/mo
+              </div>
+            </div>
           </div>
-        </div>
         </div>
       </Link>
     </div>

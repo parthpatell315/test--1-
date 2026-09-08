@@ -77,7 +77,7 @@ function destinationHref(d: any): string | undefined {
 }
 
 export default function Destinations({
-  title = "Popular Destinations",
+  title = "Perfect Getaways",
   titlePrimary,
   titleAccent,
   destinations,
@@ -113,13 +113,13 @@ export default function Destinations({
   const primaryWord = (
     titlePrimary ||
     title.split(" ")[0] ||
-    "Popular"
-  ).toLowerCase();
+    "Perfect"
+  );
   const accentWord = (
     titleAccent ||
     title.split(" ").slice(1).join(" ") ||
-    "Destinations"
-  ).toLowerCase();
+    "Getaways"
+  );
 
   const nudge = (dir: "l" | "r") => {
     if (!scrollRef.current) return;
@@ -134,17 +134,19 @@ export default function Destinations({
 
   return (
     <section
-      className="popular-destinations popular-section destinations-grid w-full pt-8 pb-8 sm:pt-10 sm:pb-10 font-sans overflow-hidden border-0 outline-none shadow-none bg-slate-50/80"
+      className="popular-destinations popular-section destinations-grid w-full py-12 md:py-16 font-sans overflow-hidden bg-white"
     >
-      <div className="max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12 min-w-0 w-full">
-        <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-nowrap">
-          <div className="flex items-baseline gap-2 min-w-0 overflow-hidden whitespace-nowrap">
-            <h2 className="text-slate-900 font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight capitalize leading-tight">
-              {primaryWord}
-            </h2>
-            <span className="font-extrabold text-blue-600 text-2xl sm:text-3xl md:text-4xl leading-tight shrink-0 capitalize pr-2 sm:pr-3">
-              {accentWord}
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 min-w-0 w-full">
+        <div className="flex items-center justify-between mb-8 gap-3 flex-nowrap">
+          <div>
+            <span className="text-xs md:text-sm font-bold text-[#EC1D24] uppercase tracking-wider block mb-1">
+              Top Domestic Circuits
             </span>
+            <div className="flex items-baseline gap-2 min-w-0 overflow-hidden">
+              <h2 className="text-[#1A1A1A] font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight">
+                {primaryWord} {accentWord}
+              </h2>
+            </div>
           </div>
 
           <div className="flex md:hidden items-center gap-2 shrink-0">

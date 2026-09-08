@@ -42,8 +42,8 @@ export const brandConfig: BrandConfig = {
   whatsappPhone: "",
   address: "",
   currencySymbol: "₹",
-  primaryColor: "#2563EB",
-  secondaryColor: "#0F172A",
+  primaryColor: "#EC1D24",
+  secondaryColor: "#1A1A1A",
   socialLinks: [
     { platform: "instagram", url: "https://instagram.com" },
     { platform: "facebook", url: "https://facebook.com" },
@@ -65,8 +65,8 @@ export function BrandLogo({
   textColor?: string;
 }) {
   return (
-    <div className="flex items-center gap-2.5 select-none">
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-md shadow-blue-500/20">
+    <div className="flex items-center gap-2 select-none">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#EC1D24] to-[#B91C1C] shadow-md shadow-red-500/20">
         <svg
           viewBox="0 0 24 24"
           className="h-5 w-5 fill-none stroke-white stroke-2"

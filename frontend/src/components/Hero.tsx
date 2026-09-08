@@ -1,14 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Search, 
+  MapPin, 
+  Calendar, 
+  Sparkles, 
+  ChevronLeft, 
+  ChevronRight,
+  ShieldCheck,
+  Compass
+} from "lucide-react";
 
 interface HeroProps {
   tagline?: string;
   headlinePrefix?: string;
   headline?: string;
-  strikethroughWord?: string;
   rotatingWords?: string[] | string;
   subheadline?: string;
   subtitle?: string;
@@ -18,33 +27,79 @@ interface HeroProps {
 }
 
 const DEFAULT_ROTATING_WORDS = [
-  "Curious",
-  "Adventurous",
-  "Wanderlust-Struck",
+  "Travellers",
+  "Explorers",
+  "Adventurers",
+  "Friends",
+  "Families",
   "Colleagues",
-  "Strangers",
-  "Restless",
 ];
 
 const DEFAULT_HERO_SLIDES = [
-  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=85",
-  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=85",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=85",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=85", // Dramatic mountains
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=85", // Peak adventure
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=85", // Starry night alpine
+  "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1920&q=85", // Bali tropical
+  "https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=1920&q=85", // Dubai skyline desert
+];
+
+const DESTINATIONS_LIST = [
+  "All Destinations",
+  "Spiti Valley",
+  "Ladakh",
+  "Meghalaya",
+  "Vietnam",
+  "Bali",
+  "Thailand",
+  "Kashmir",
+  "Manali",
+  "Goa",
+  "Maldives",
+  "Dubai",
+  "Kerala",
+  "Rajasthan",
+  "Uttarakhand",
+];
+
+const MONTHS_LIST = [
+  "Any Month",
+  "October 2024",
+  "November 2024",
+  "December 2024",
+  "January 2025",
+  "February 2025",
+  "March 2025",
+  "April 2025",
+  "May 2025",
+  "June 2025",
+];
+
+const TRIP_TYPES_LIST = [
+  "All Types",
+  "Group Trip",
+  "Custom Trip",
+  "Flight Included",
+  "Weekend Getaway",
 ];
 
 export default function Hero({
   tagline,
   headlinePrefix,
   headline,
-  strikethroughWord,
   rotatingWords,
   subheadline,
   subtitle,
   backgroundImage,
   backgroundImages,
 }: HeroProps) {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [wordIdx, setWordIdx] = useState(0);
+
+  // Search filter states
+  const [selectedDestination, setSelectedDestination] = useState("All Destinations");
+  const [selectedMonth, setSelectedMonth] = useState("Any Month");
+  const [selectedType, setSelectedType] = useState("All Types");
 
   const imagesList: string[] = (() => {
     if (Array.isArray(backgroundImages) && backgroundImages.length > 0) {
@@ -63,7 +118,6 @@ export default function Hero({
         .map((s) => s.trim())
         .filter(Boolean);
     }
-    if (rotatingWords === null || rotatingWords === undefined) return [];
     return DEFAULT_ROTATING_WORDS;
   })();
 
@@ -79,166 +133,166 @@ export default function Hero({
     if (rotWords.length <= 1) return;
     const wordTimer = setInterval(() => {
       setWordIdx((prev) => (prev + 1) % rotWords.length);
-    }, 2200);
+    }, 2400);
     return () => clearInterval(wordTimer);
   }, [rotWords.length]);
 
-  const activeImg = imagesList.length
-    ? imagesList[currentSlide % imagesList.length]
-    : "";
-  const displayTagline = tagline || "EXPLORE. CONNECT. BELONG.";
-  const displayHeadline = headlinePrefix || headline || "Trips for the";
-  const displaySubheadline =
-    subheadline ||
-    subtitle ||
-    "Pick a month and explore group adventures that bring stories to life.";
-
-  const nextSlide = () => {
-    if (imagesList.length <= 1) return;
-    setCurrentSlide((prev) => (prev + 1) % imagesList.length);
-  };
-  const prevSlide = () => {
-    if (imagesList.length <= 1) return;
-    setCurrentSlide(
-      (prev) => (prev - 1 + imagesList.length) % imagesList.length,
-    );
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (selectedDestination !== "All Destinations") {
+      params.set("destination", selectedDestination.toLowerCase().replace(/\s+/g, "-"));
+    }
+    if (selectedMonth !== "Any Month") {
+      params.set("month", selectedMonth);
+    }
+    if (selectedType !== "All Types") {
+      params.set("type", selectedType.toLowerCase().replace(/\s+/g, "-"));
+    }
+    const query = params.toString();
+    router.push(query ? `/trips?${query}` : "/trips");
   };
 
   return (
-    <div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[78vh] min-h-[440px] md:min-h-[540px] max-h-[720px] overflow-hidden bg-zinc-900 font-sans flex items-center">
-      {/* BACKGROUND IMAGE SLIDE */}
-      <div className="absolute inset-0 z-0">
-        {activeImg ? (
+    <div className="relative w-full mb-20 md:mb-16">
+      {/* HERO BANNER CONTAINER */}
+      <div className="relative w-full h-[460px] sm:h-[500px] md:h-[560px] lg:h-[600px] overflow-hidden bg-gray-900 font-sans flex items-center">
+        {/* Background Image Carousel */}
+        <div className="absolute inset-0 z-0">
           <img
-            src={activeImg}
-            alt=""
+            src={imagesList[currentSlide % imagesList.length]}
+            alt="Hero Expedition"
             fetchPriority="high"
             loading="eager"
-            className="w-full h-full object-cover transition-opacity duration-1000"
+            className="w-full h-full object-cover transition-all duration-1000 scale-105"
           />
-        ) : (
-          <div className="w-full h-full bg-[#0B1528]" />
-        )}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to right, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.65) 55%, rgba(0, 0, 0, 0.35) 100%)",
-          }}
-        />
-      </div>
+          {/* Subtle Dark Gradient Overlay (Avian Look) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/30" />
+        </div>
 
-      {/* CHEVRONS */}
-      {imagesList.length > 1 && (
-        <>
-          <button
-            onClick={prevSlide}
-            aria-label="Previous Slide"
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-blue-600 text-white flex items-center justify-center transition-all border border-white/20 shadow-lg cursor-pointer active:scale-95"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-
-          <button
-            onClick={nextSlide}
-            aria-label="Next Slide"
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-blue-600 text-white flex items-center justify-center transition-all border border-white/20 shadow-lg cursor-pointer active:scale-95"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </>
-      )}
-
-      {/* HERO CONTENT OVERLAY */}
-      <div className="relative z-20 max-w-[1440px] w-full mx-auto px-6 sm:px-10 md:px-14">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="max-w-[760px] text-left"
-        >
-          {/* TOP TAGLINE */}
-          {displayTagline && (
-            <p className="text-blue-400 font-extrabold text-xs sm:text-sm tracking-[2.5px] uppercase mb-3 font-sans flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-blue-400 inline-block animate-pulse" />
-              {displayTagline}
-            </p>
-          )}
-
-          {/* HEADLINE */}
-          <h1 className="text-white font-extrabold text-[32px] sm:text-[44px] md:text-[54px] lg:text-[60px] leading-[1.15] tracking-tight font-sans mb-3 drop-shadow-xl">
-            <span className="block">{displayHeadline}</span>
-            {(Boolean(strikethroughWord) || rotWords.length > 0) && (
-              <span className="flex items-center gap-2.5 sm:gap-3.5 flex-nowrap mt-0.5 whitespace-nowrap">
-                {strikethroughWord ? (
-                  <span className="relative inline-block text-white whitespace-nowrap">
-                    {strikethroughWord}
-                    <svg
-                      className="absolute -left-2 top-1/2 -translate-y-1/2 w-[114%] h-[24px] sm:h-[34px] md:h-[42px] text-blue-400 pointer-events-none overflow-visible"
-                      viewBox="0 0 120 30"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M 3 17 C 35 4, 85 24, 117 11"
-                        stroke="currentColor"
-                        strokeWidth="4.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                ) : null}
-
-                {rotWords.length > 0 && (
-                  <span className="inline-flex relative overflow-hidden h-[42px] sm:h-[58px] md:h-[72px] items-center whitespace-nowrap pr-2 sm:pr-3">
-                    <AnimatePresence initial={false}>
-                      <motion.span
-                        key={rotWords[wordIdx % rotWords.length]}
-                        initial={{ y: 35, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ y: -35, opacity: 0 }}
-                        transition={{
-                          duration: 0.45,
-                          ease: [0.25, 0.1, 0.25, 1.0],
-                        }}
-                        className="text-blue-400 font-black inline-block whitespace-nowrap"
-                      >
-                        {rotWords[wordIdx % rotWords.length]}
-                      </motion.span>
-                    </AnimatePresence>
-                  </span>
-                )}
-              </span>
-            )}
-          </h1>
-
-          {/* SUBTITLE */}
-          {displaySubheadline && (
-            <p className="text-slate-200 text-sm sm:text-base md:text-lg font-sans font-medium leading-relaxed max-w-[580px] drop-shadow-md mt-2">
-              {displaySubheadline}
-            </p>
-          )}
-        </motion.div>
-
-        {/* BOTTOM PAGINATION DOTS */}
+        {/* Carousel Control Arrows */}
         {imagesList.length > 1 && (
-          <div className="flex items-center gap-2.5 mt-8">
-            {imagesList.map((_, dotIdx) => (
-              <button
-                key={dotIdx}
-                onClick={() => setCurrentSlide(dotIdx)}
-                aria-label={`Go to slide ${dotIdx + 1}`}
-                className={`rounded-full transition-all duration-300 cursor-pointer ${
-                  dotIdx === currentSlide
-                    ? "w-8 h-2.5 bg-blue-500"
-                    : "w-2.5 h-2.5 bg-white/60 hover:bg-white"
-                }`}
-              />
-            ))}
+          <div className="hidden sm:block">
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev - 1 + imagesList.length) % imagesList.length)}
+              aria-label="Previous image"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center transition-all cursor-pointer"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => setCurrentSlide((prev) => (prev + 1) % imagesList.length)}
+              aria-label="Next image"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md text-white flex items-center justify-center transition-all cursor-pointer"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         )}
+
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-[1440px] w-full mx-auto px-6 sm:px-10 md:px-14 pb-20 md:pb-24">
+          <div className="max-w-2xl">
+            {/* Avian Signature Heading: Experiences for [Rotating word] */}
+            <h1 className="text-white font-extrabold text-3xl sm:text-5xl md:text-6xl tracking-tight font-sans leading-tight">
+              <span>Experiences for </span>
+              <span className="inline-block relative overflow-hidden h-[1.25em] align-top text-[#EC1D24] font-black">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={rotWords[wordIdx % rotWords.length]}
+                    initial={{ y: 30, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -30, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="inline-block whitespace-nowrap"
+                  >
+                    {rotWords[wordIdx % rotWords.length]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+            </h1>
+
+            <p className="text-gray-200 text-sm sm:text-base md:text-lg mt-3 md:mt-4 leading-relaxed font-normal max-w-xl">
+              Curated itineraries, certified local trip leaders, and unforgettable group adventures across India and worldwide.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* FLOATING SIGNATURE SEARCH CARD (Avian Style) */}
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 relative z-30 -mt-16 sm:-mt-20 md:-mt-22">
+        <form
+          onSubmit={handleSearch}
+          className="bg-white rounded-2xl md:rounded-3xl shadow-2xl p-4 sm:p-5 md:p-6 border border-gray-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-center"
+        >
+          {/* 1. Destination Field */}
+          <div className="flex flex-col gap-1 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors">
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-[#EC1D24]" />
+              Where to?
+            </span>
+            <select
+              value={selectedDestination}
+              onChange={(e) => setSelectedDestination(e.target.value)}
+              className="bg-transparent text-sm md:text-[15px] font-bold text-gray-900 outline-none cursor-pointer"
+            >
+              {DESTINATIONS_LIST.map((dest) => (
+                <option key={dest} value={dest}>
+                  {dest}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 2. Month Field */}
+          <div className="flex flex-col gap-1 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors border-t sm:border-t-0 sm:border-l border-gray-200">
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5 text-[#EC1D24]" />
+              When?
+            </span>
+            <select
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              className="bg-transparent text-sm md:text-[15px] font-bold text-gray-900 outline-none cursor-pointer"
+            >
+              {MONTHS_LIST.map((month) => (
+                <option key={month} value={month}>
+                  {month}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 3. Trip Type Field */}
+          <div className="flex flex-col gap-1 px-3 py-2 rounded-xl hover:bg-gray-50 transition-colors border-t lg:border-t-0 lg:border-l border-gray-200">
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-[#EC1D24]" />
+              Trip Type
+            </span>
+            <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="bg-transparent text-sm md:text-[15px] font-bold text-gray-900 outline-none cursor-pointer"
+            >
+              {TRIP_TYPES_LIST.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* 4. Action Search Button */}
+          <div className="pt-2 sm:pt-0">
+            <button
+              type="submit"
+              className="w-full py-4 px-6 bg-[#EC1D24] hover:bg-[#D0171E] text-white font-bold text-sm md:text-base rounded-2xl shadow-lg shadow-red-500/30 flex items-center justify-center gap-2.5 transition-all hover:scale-[1.02] active:scale-95 cursor-pointer"
+            >
+              <Search className="w-5 h-5" />
+              <span>Search Experiences</span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

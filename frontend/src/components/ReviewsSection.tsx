@@ -42,7 +42,7 @@ export default function ReviewsSection({
     title === "New reviews" ||
     title === "Reviews" ||
     title.toLowerCase().includes("review")
-      ? "What Travelers Say"
+      ? "Traveller Experiences"
       : title;
   const scrollRef = useRef<HTMLDivElement>(null);
   useWheelPassThrough(scrollRef);
