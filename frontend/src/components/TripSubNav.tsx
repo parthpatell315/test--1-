@@ -237,21 +237,21 @@ export default function TripSubNav({ sections }: TripSubNavProps) {
                     scrollToSection(section.id);
                   }}
                   className={cn(
-                    "group relative shrink-0 whitespace-nowrap pb-2 pt-1.5 font-montserrat text-[11px] sm:text-xs font-semibold tracking-[0.1em] transition-colors cursor-pointer",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
+                    "group relative shrink-0 whitespace-nowrap pb-2 pt-1.5 font-sans text-xs sm:text-sm font-bold tracking-tight transition-colors cursor-pointer",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EC1D24]",
                     isActive
-                      ? "text-blue-600"
-                      : "text-slate-400 hover:text-slate-900",
+                      ? "text-[#EC1D24]"
+                      : "text-gray-500 hover:text-gray-900",
                   )}
                 >
                   {section.label}
                   <span
                     aria-hidden="true"
                     className={cn(
-                      "absolute left-1/2 -translate-x-1/2 bottom-0 z-[1] h-[2.5px] w-[14px] rounded-full bg-blue-600 transition-transform duration-200 origin-center",
+                      "absolute left-1/2 -translate-x-1/2 bottom-0 z-[1] h-[3px] w-full rounded-full bg-[#EC1D24] transition-transform duration-200 origin-center",
                       isActive
                         ? "scale-x-100 opacity-100"
-                        : "scale-x-0 opacity-100 group-hover:scale-x-75 group-hover:opacity-40",
+                        : "scale-x-0 opacity-100 group-hover:scale-x-50 group-hover:opacity-40",
                     )}
                   />
                 </button>

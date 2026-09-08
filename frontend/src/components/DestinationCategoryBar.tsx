@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { 
@@ -53,13 +53,13 @@ interface DestinationCategoryBarProps {
   onSelectDestination?: (slug: string) => void;
 }
 
-export default function DestinationCategoryBar({
+function CategoryBarContent({
   activeDestination,
   onSelectDestination,
 }: DestinationCategoryBarProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
-  const currentParam = searchParams.get("destination") || "";
+  const currentParam = searchParams ? searchParams.get("destination") || "" : "";
   const currentActive = activeDestination ?? currentParam;
 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -169,5 +169,13 @@ export default function DestinationCategoryBar({
         )}
       </div>
     </div>
+  );
+}
+
+export default function DestinationCategoryBar(props: DestinationCategoryBarProps) {
+  return (
+    <Suspense fallback={<div className="w-full h-[66px] bg-white border-b border-gray-200" />}>
+      <CategoryBarContent {...props} />
+    </Suspense>
   );
 }

@@ -97,23 +97,10 @@ export default function TripGallerySection({ trip }: TripGallerySectionProps) {
 
             {/* Location Pill Badge (Top Left) */}
             <div className="absolute top-4 left-4 z-10">
-              <span className="bg-[#0B1528]/85 text-white font-montserrat font-bold text-[11px] tracking-wider uppercase px-3.5 py-1.5 rounded-full shadow-md backdrop-blur-md">
-                {trip.location || "HIMACHAL PRADESH"}
+              <span className="bg-white/95 text-gray-900 font-sans font-bold text-xs tracking-tight px-3.5 py-1.5 rounded-full shadow-md backdrop-blur-md flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#EC1D24]" />
+                {trip.location || "Himalayan Expedition"}
               </span>
-            </div>
-
-            {/* View All Photos Button (Bottom Right of main photo) */}
-            <div className="absolute bottom-4 right-4 z-10">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsGalleryOpen(true);
-                }}
-                className="bg-white/95 text-[#0B1528] hover:bg-white font-montserrat font-bold text-xs tracking-wide px-4 py-2 rounded-xl flex items-center gap-2 shadow-lg transition-all border border-zinc-200/80 active:scale-95 cursor-pointer"
-              >
-                <ImageIcon className="w-4 h-4 text-[#D4541A]" />
-                View All Photos
-              </button>
             </div>
           </div>
 
@@ -121,6 +108,7 @@ export default function TripGallerySection({ trip }: TripGallerySectionProps) {
           <div className="col-span-5 grid grid-cols-2 grid-rows-2 gap-3.5 h-full">
             {finalImages.slice(1, 5).map((img, i) => {
               const idx = i + 1;
+              const isLast = i === 3;
               return (
                 <div
                   key={i}
@@ -137,6 +125,20 @@ export default function TripGallerySection({ trip }: TripGallerySectionProps) {
                     className="w-full h-full object-cover object-top transition-transform duration-700 group-hover/item:scale-104"
                   />
                   <div className="absolute inset-0 bg-black/5 group-hover/item:bg-transparent transition-colors duration-300" />
+
+                  {/* Avian View All Photos Pill on the 4th item */}
+                  {isLast && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsGalleryOpen(true);
+                      }}
+                      className="absolute bottom-3 right-3 z-10 bg-white/95 hover:bg-white text-gray-900 font-sans text-xs font-bold px-3.5 py-2 rounded-xl shadow-lg flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
+                    >
+                      <ImageIcon className="w-3.5 h-3.5 text-[#EC1D24]" />
+                      <span>View All Photos</span>
+                    </button>
+                  )}
                 </div>
               );
             })}
