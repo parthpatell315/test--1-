@@ -27,7 +27,7 @@ export async function generateMetadata({
   if (!blogResult.ok || !blogResult.data)
     return pageMetadata({
       title: blogResult.ok ? "Not Found" : "Temporarily unavailable",
-      description: "YouthCamping travel story.",
+      description: "Trrabb travel story.",
       path: `/read/${slug}`,
       index: false,
     });
@@ -35,11 +35,11 @@ export async function generateMetadata({
   const blog = blogResult.data;
   const excerpt =
     truncateMeta(stripHtml(blog.content || "")) ||
-    `Read ${blog.title} on YouthCamping.`;
+    `Read ${blog.title} on Trrabb.`;
   const imageUrl = normalizeImageUrl(blog.image);
 
   return pageMetadata({
-    title: `${blog.title} | YouthCamping`,
+    title: `${blog.title} | Trrabb`,
     description: excerpt,
     path: `/read/${slug}`,
     image: imageUrl,
@@ -175,7 +175,7 @@ export default async function BlogReadPage({ params }: PageProps) {
             },
             publisher: {
               "@type": "Organization",
-              name: "Youthcamping",
+              name: "Trrabb",
               logo: {
                 "@type": "ImageObject",
                 url: `${PUBLIC_SITE_ORIGIN}/logo.png`,

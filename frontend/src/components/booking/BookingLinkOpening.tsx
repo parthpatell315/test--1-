@@ -29,7 +29,7 @@ export function BookingLinkOpening({ error }: { error?: string }) {
         ) : (
           <>
             <span className="text-[8px] font-extrabold uppercase tracking-widest text-[#D4541A] bg-[#D4541A]/10 px-2 py-0.5 rounded-full">
-              YouthCamping
+              Trrabb
             </span>
             <h1 className="mt-3 text-lg font-black tracking-tight text-slate-900">
               Opening your booking…

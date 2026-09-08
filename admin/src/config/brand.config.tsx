@@ -20,11 +20,11 @@ export interface BrandConfig {
 }
 
 export const brandConfig: BrandConfig = {
-  name: (typeof import.meta !== "undefined" && import.meta.env?.VITE_APP_BRAND_NAME) || "TravelOS",
-  shortName: (typeof import.meta !== "undefined" && import.meta.env?.VITE_APP_BRAND_SHORT) || "T-OS",
+  name: (typeof import.meta !== "undefined" && import.meta.env?.VITE_APP_BRAND_NAME) || "Trrabb",
+  shortName: (typeof import.meta !== "undefined" && import.meta.env?.VITE_APP_BRAND_SHORT) || "Trrabb",
   tagline: "Cloud Travel Management & Operations Platform",
   badgeText: "ERP",
-  supportEmail: "support@travelos.io",
+  supportEmail: "support@trrabb.com",
   defaultOperatingAccount: "Main Operating Account",
   currencySymbol: "₹",
   primaryColor: "#2563EB",

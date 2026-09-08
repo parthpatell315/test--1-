@@ -9,7 +9,7 @@ exports.getSeo = async (req, res, next) => {
     });
 
     const defaultSeo = {
-      metaTitle: page === "home" ? "YouthCamping - Adventure & Group Trips" : "",
+      metaTitle: page === "home" ? "Trrabb - Adventure & Group Trips" : "",
       metaDescription: "",
       ogImage: "",
     };

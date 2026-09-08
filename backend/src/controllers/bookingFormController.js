@@ -121,7 +121,7 @@ exports.getShareMessage = async (req, res) => {
   const { tripName, date, formUrl } = req.body;
   res.json({
     success: true,
-    message: `Hello 😊\n\nPlease complete your booking here:\n${formUrl}\n\nTrip: ${tripName}\nDate: ${date}\n\nTeam YouthCamping 🏕️`,
+    message: `Hello 😊\n\nPlease complete your booking here:\n${formUrl}\n\nTrip: ${tripName}\nDate: ${date}\n\nTeam Trrabb 🏕️`,
   });
 };
 

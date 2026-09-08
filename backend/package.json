@@ -1,7 +1,7 @@
 {
-  "name": "youthcamping-backend",
+  "name": "trrabb-backend",
   "version": "1.0.0",
-  "description": "Backend API for Youthcamping travel platform",
+  "description": "Backend API for Trrabb travel platform",
   "main": "src/server.js",
   "engines": {
     "node": ">=20.0.0"

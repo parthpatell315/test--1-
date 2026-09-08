@@ -70,7 +70,7 @@ export default function TripFAQ({ faqs }: TripFAQProps) {
   };
 
   const handleWhatsAppClick = () => {
-    const whatsappUrl = `https://wa.me/919999999999?text=${encodeURIComponent("Hi YouthCamping! I have a question regarding trip details.")}`;
+    const whatsappUrl = `https://wa.me/919924246267?text=${encodeURIComponent("Hi Trrabb! I have a question regarding trip details.")}`;
     window.open(whatsappUrl, "_blank");
   };
 

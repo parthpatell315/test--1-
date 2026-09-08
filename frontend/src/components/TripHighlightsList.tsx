@@ -130,8 +130,8 @@ export default function TripHighlightsList({
       <div className="pt-1 flex items-center gap-2 text-xs text-zinc-500 font-montserrat">
         <Camera className="w-3.5 h-3.5 text-[#D4541A] shrink-0" />
         <span>
-          Tag us <strong className="text-zinc-800">@youthcamping.in</strong> and
-          use <strong className="text-[#D4541A]">#YouthCamping</strong> to get
+          Tag us <strong className="text-zinc-800">@trrabb</strong> and
+          use <strong className="text-[#D4541A]">#Trrabb</strong> to get
           featured!
         </span>
       </div>

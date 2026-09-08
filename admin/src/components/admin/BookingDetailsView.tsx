@@ -2691,7 +2691,7 @@ export default function BookingDetailsView({
           <div class="invoice-wrapper">
             <div class="header">
               <div class="logo-wrap">
-                <span style="font-size:22px; font-weight:900; color:#1e293b; letter-spacing:-1px;">YOUTHCAMPING.</span>
+                <span style="font-size:22px; font-weight:900; color:#1e293b; letter-spacing:-1px;">TRRABB.</span>
               </div>
               <div class="invoice-meta">
                 <div class="invoice-title">Invoice</div>
@@ -8122,7 +8122,7 @@ export default function BookingDetailsView({
                         {filteredCollectionAccounts.map((acc) => (
                           <SelectItem key={acc.id} value={acc.id}>
                             {acc.accountType === "CASH"
-                              ? `${acc.accountName} (YouthCamping Cash Desk)`
+                              ? `${acc.accountName} (Trrabb Cash Desk)`
                               : `${acc.accountName} ${acc.upiId ? `(${acc.upiId})` : `(${acc.accountType})`}`}
                           </SelectItem>
                         ))}
@@ -8255,7 +8255,7 @@ export default function BookingDetailsView({
                 Account Name <span className="text-red-600">*</span>
               </label>
               <Input
-                placeholder="e.g. Nikulbhai Patel Account or YouthCamping HDFC"
+                placeholder="e.g. Main Operating Account or Trrabb HDFC"
                 value={newAccName}
                 onChange={(e) => setNewAccName(e.target.value)}
                 className="h-8 text-xs font-medium"
@@ -8276,7 +8276,7 @@ export default function BookingDetailsView({
                     <SelectItem value="INDIVIDUAL">Individual Account</SelectItem>
                     <SelectItem value="BANK">Bank Account</SelectItem>
                     <SelectItem value="UPI">UPI Account</SelectItem>
-                    <SelectItem value="CASH">YouthCamping Cash Desk</SelectItem>
+                    <SelectItem value="CASH">Trrabb Cash Desk</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

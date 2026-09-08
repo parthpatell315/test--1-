@@ -58,23 +58,23 @@ export function PrivacyPolicyDocument() {
               <p>
                 Thank you for visiting{" "}
                 <a
-                  href="https://youthcamping.in"
+                  href="https://trrabb.com"
                   className="text-[#D4541A] font-bold underline underline-offset-2"
                 >
-                  https://youthcamping.in
+                  https://trrabb.com
                 </a>
-                . The Website is owned and managed by YOUTHCAMPING, The Company
+                . The Website is owned and managed by TRRABB, The Company
                 registered in India as GST number 24CRFPP3172G1ZT, having its
                 registered address at 2ND FLOOR, BLOCK G, 225, TPS-14,113-114,
                 SUMEL BUSINESS PARK-6, NR.DUDHESHWAR CIRCLE, OLD JUPITER MILL,
                 AHMEDABAD, Ahmedabad, Gujarat, 380004.
               </p>
               <p>
-                The Organization is authorized to use www.youthcamping.in for
+                The Organization is authorized to use www.trrabb.com for
                 commercial purposes by virtue of a Platform License Agreement.
               </p>
               <p>
-                At YOUTHCAMPING, we strongly believe in protecting consumer
+                At TRRABB, we strongly believe in protecting consumer
                 privacy. That's why we only ask you for information related to
                 the services we provide. We never sell, rent, share, trade or
                 give away any of your personal information to anyone. This
@@ -82,7 +82,7 @@ export function PrivacyPolicyDocument() {
                 how it is used and what security measures we take to protect it.
               </p>
               <p>
-                Youthcamping provides online travel services through its own
+                Trrabb provides online travel services through its own
                 websites and mobile apps and through other online platforms such
                 as partners' websites and social media. The information that
                 follows applies to all of these platforms.
@@ -94,7 +94,7 @@ export function PrivacyPolicyDocument() {
             id="personal-information"
             className="space-y-3 border-b border-zinc-100 pb-8 scroll-mt-28"
           >
-            <SectionHeading n="02" title="What kind of personal information does Youthcamping use?" />
+            <SectionHeading n="02" title="What kind of personal information does Trrabb use?" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
               <p>
                 When you make a reservation, you'll be asked for your name,
@@ -191,10 +191,10 @@ export function PrivacyPolicyDocument() {
                   information for direct marketing purposes, you may change your
                   mind at any time by writing to or emailing us at{" "}
                   <a
-                    href="mailto:info@youthcamping.in"
+                    href="mailto:contact@trrabb.com"
                     className="text-[#D4541A] font-bold underline underline-offset-2"
                   >
-                    info@youthcamping.in
+                    contact@trrabb.com
                   </a>
                 </li>
               </ul>
@@ -212,10 +212,10 @@ export function PrivacyPolicyDocument() {
                 be payable. If you would like a copy of the information held on
                 you please write to{" "}
                 <a
-                  href="mailto:info@youthcamping.in"
+                  href="mailto:contact@trrabb.com"
                   className="text-[#D4541A] font-bold underline underline-offset-2"
                 >
-                  info@youthcamping.in
+                  contact@trrabb.com
                 </a>
                 . If you believe that any information we are holding on you is
                 incorrect or incomplete, please write to or email us as soon as
@@ -232,10 +232,10 @@ export function PrivacyPolicyDocument() {
                 If there are any questions regarding this privacy policy, you
                 may contact us using the information given above, or email{" "}
                 <a
-                  href="mailto:info@youthcamping.in"
+                  href="mailto:contact@trrabb.com"
                   className="text-[#D4541A] font-bold underline underline-offset-2"
                 >
-                  info@youthcamping.in
+                  contact@trrabb.com
                 </a>
                 .
               </p>
@@ -243,7 +243,7 @@ export function PrivacyPolicyDocument() {
           </section>
 
           <section id="sharing" className="space-y-3 border-b border-zinc-100 pb-8 scroll-mt-28">
-            <SectionHeading n="08" title="How does Youthcamping share your data with third parties?" />
+            <SectionHeading n="08" title="How does Trrabb share your data with third parties?" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
               <p>
                 In certain circumstances, we may share your personal data with
@@ -262,12 +262,12 @@ export function PrivacyPolicyDocument() {
               </p>
               <p>
                 <span className="font-bold text-[#0B1528]">
-                  Your local YOUTHCAMPING office:
+                  Your local TRRABB office:
                 </span>{" "}
                 In order to support you during the reservation process and
                 throughout your stay, your details may be shared with Partners
-                of the Youthcamping. Your information might also be shared with
-                other members of the Youthcamping group for analysis to provide
+                of Trrabb. Your information might also be shared with
+                other members of the Trrabb group for analysis to provide
                 you with travel-related offers that may be of interest to you
                 and to offer you customized service.
               </p>
@@ -426,15 +426,15 @@ export function PrivacyPolicyDocument() {
             <SectionHeading n="14" title="Who is responsible for the processing of personal data?" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
               <p>
-                Youthcamping controls the processing of personal data on its
-                websites and mobile apps. Youthcamping is crafted by our Team.
+                Trrabb controls the processing of personal data on its
+                websites and mobile apps. Trrabb is crafted by our Team.
                 If you have any suggestions or comments about this privacy
                 notice, please send an email to{" "}
                 <a
-                  href="mailto:info@youthcamping.in"
+                  href="mailto:contact@trrabb.com"
                   className="text-[#D4541A] font-bold underline underline-offset-2"
                 >
-                  info@youthcamping.in
+                  contact@trrabb.com
                 </a>
                 .
               </p>

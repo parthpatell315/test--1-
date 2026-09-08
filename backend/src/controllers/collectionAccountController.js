@@ -49,8 +49,8 @@ const ensureDefaultAccounts = async (tenantId, adminId) => {
       const defaults = [
         {
           tenantId,
-          accountName: "YouthCamping Company Account",
-          accountHolderName: "Youth Camping Adventures Pvt Ltd",
+          accountName: "Trrabb Company Account",
+          accountHolderName: "Trrabb Adventures Pvt Ltd",
           accountType: "COMPANY",
           ownershipType: "COMPANY",
           paymentMethods: ["UPI", "BANK_TRANSFER", "CARD", "OTHER"],
@@ -58,8 +58,8 @@ const ensureDefaultAccounts = async (tenantId, adminId) => {
           accountNumber: "50200084920192",
           maskedAccountNumber: "XXXX0192",
           ifsc: "HDFC0001234",
-          upiId: "youthcamping@hdfcbank",
-          description: "Official YouthCamping primary collection account",
+          upiId: "trrabb@hdfcbank",
+          description: "Official Trrabb primary collection account",
           isApproved: true,
           isActive: true,
           createdByAdminId: adminId || null,
@@ -84,7 +84,7 @@ const ensureDefaultAccounts = async (tenantId, adminId) => {
         {
           tenantId,
           accountName: "Cash Collection Account",
-          accountHolderName: "YouthCamping Cash Desk",
+          accountHolderName: "Trrabb Cash Desk",
           accountType: "CASH",
           ownershipType: "COMPANY",
           paymentMethods: ["CASH"],

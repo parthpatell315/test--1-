@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'youthcamping-backend',
+      name: 'trrabb-backend',
       script: 'src/server.js',
       instances: 'max',
       exec_mode: 'cluster',
@@ -25,3 +25,4 @@ module.exports = {
     },
   ],
 };
+

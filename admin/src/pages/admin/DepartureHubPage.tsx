@@ -3485,7 +3485,7 @@ useEffect(() => {
         <body>
           <div class="receipt-header">
             <div>
-              <span style="font-size:20px; font-weight:900; color:#1e293b;">YOUTHCAMPING OS</span>
+              <span style="font-size:20px; font-weight:900; color:#1e293b;">TRRABB OS</span>
               <p style="font-size:10px; color:#64748b; margin-top:2px;">INTERNAL VENDOR SETTLEMENT RECORD</p>
             </div>
             <div style="text-align: right">
@@ -3529,7 +3529,7 @@ useEffect(() => {
             <div class="totals-row grand"><span>Balance Due</span><span>&#8377;${balanceDue}</span></div>
           </div>
           <div class="footer">
-            <p>Authorized and issued by YouthCamping OS Accounts Desk.</p>
+            <p>Authorized and issued by Trrabb OS Accounts Desk.</p>
             <p>This is a system-generated settlement receipt and does not require a physical signature.</p>
           </div>
           <script>
@@ -3629,7 +3629,7 @@ useEffect(() => {
         <body>
           <div class="header">
             <div>
-              <span class="title">YOUTHCAMPING OS</span>
+              <span class="title">TRRABB OS</span>
               <p style="font-size:10px; color:#64748b; margin-top:2px; font-weight:bold;">GUIDE OPERATIONAL HOTEL SHEET</p>
             </div>
             <div style="text-align: right">

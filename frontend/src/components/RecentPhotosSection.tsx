@@ -123,7 +123,7 @@ export default function RecentPhotosSection({
                 >
                   <img
                     src={photo.url}
-                    alt={photo.caption || "YouthCamping photo"}
+                    alt={photo.caption || "Trrabb photo"}
                     loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     onError={(e) => {
@@ -142,10 +142,10 @@ export default function RecentPhotosSection({
           <span className="truncate">
             Tag us{" "}
             <strong className="text-[#0B1528] font-bold">
-              @youthcamping.in
+              @trrabb
             </strong>{" "}
             and use{" "}
-            <strong className="text-[#D4541A] font-bold">#YouthCamping</strong>{" "}
+            <strong className="text-[#D4541A] font-bold">#Trrabb</strong>{" "}
             to get featured!
           </span>
         </div>

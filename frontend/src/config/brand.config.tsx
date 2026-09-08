@@ -33,11 +33,11 @@ export interface BrandConfig {
 }
 
 export const brandConfig: BrandConfig = {
-  name: process.env.NEXT_PUBLIC_BRAND_NAME || "TravelSphere",
-  shortName: process.env.NEXT_PUBLIC_BRAND_SHORT || "TravelSphere",
+  name: process.env.NEXT_PUBLIC_BRAND_NAME || "Trrabb",
+  shortName: process.env.NEXT_PUBLIC_BRAND_SHORT || "Trrabb",
   tagline: process.env.NEXT_PUBLIC_BRAND_TAGLINE || "Curated Adventure Trips & Group Tours",
   subtitle: "Explore extraordinary destinations with verified expert trip leaders and seamless group travel.",
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "contact@travelsphere.io",
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "contact@trrabb.com",
   supportPhone: process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+91 99242 46267",
   whatsappPhone: "919924246267",
   address: "Ahmedabad, Gujarat, India",

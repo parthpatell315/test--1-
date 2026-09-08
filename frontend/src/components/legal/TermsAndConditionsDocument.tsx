@@ -152,10 +152,10 @@ export function TermsAndConditionsDocument() {
                 In case of any disputes, you can raise a complaint by sending
                 mail to{" "}
                 <a
-                  href="mailto:info@youthcamping.in"
+                  href="mailto:contact@trrabb.com"
                   className="text-[#2563EB] font-bold underline underline-offset-2"
                 >
-                  info@youthcamping.in
+                  contact@trrabb.com
                 </a>
                 .
               </p>

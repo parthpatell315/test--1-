@@ -74,7 +74,7 @@ export default function PhotoSlider({
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <span className="text-white font-bold text-xs sm:text-sm tracking-wide">
-                    {slide.title || "YouthCamping Vibes"}
+                    {slide.title || "Trrabb Vibes"}
                   </span>
                 </div>
               </Link>

@@ -13,12 +13,12 @@ const cloudinary = require("cloudinary").v2;
 const SETTINGS_KEY = "global_settings";
 
 const defaultFooterConfig = {
-  brandName: "YOUTHCAMPING",
+  brandName: "TRRABB",
   address:
     "Money Plant High Street, A 738, Jagatpur Rd, Gota, Ahmedabad, Gujarat 382470",
   phone: "+91-99242 46267",
-  email: "info@youthcamping.com",
-  website: "youthcamping.online",
+  email: "contact@trrabb.com",
+  website: "trrabb.com",
   copyright: "ALL RIGHTS RESERVED.",
   logoUrl: "/logo-stacked.png",
   showSocial: true,
@@ -26,10 +26,10 @@ const defaultFooterConfig = {
   showContact: true,
   showCopyright: true,
   socialLinks: [
-    { platform: "facebook", url: "https://facebook.com/youthcamping" },
-    { platform: "instagram", url: "https://instagram.com/youthcamping" },
-    { platform: "linkedin", url: "https://linkedin.com/company/youthcamping" },
-    { platform: "youtube", url: "https://youtube.com/youthcamping" },
+    { platform: "facebook", url: "https://facebook.com/trrabb" },
+    { platform: "instagram", url: "https://instagram.com/trrabb" },
+    { platform: "linkedin", url: "https://linkedin.com/company/trrabb" },
+    { platform: "youtube", url: "https://youtube.com/trrabb" },
   ],
   columns: [
     {
@@ -943,7 +943,7 @@ exports.exportUserData = async (req, res, next) => {
     const exportPayload = {
       user: sanitizeUser(admin),
       exportTimestamp: new Date().toISOString(),
-      system: "YouthCamping OS",
+      system: "Trrabb OS",
     };
 
     if (logAction) {
@@ -960,7 +960,7 @@ exports.exportUserData = async (req, res, next) => {
     res.setHeader("Content-Type", "application/json");
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="youthcamping_data_${admin.id}_${new Date().toISOString().split("T")[0]}.json"`,
+      `attachment; filename="trrabb_data_${admin.id}_${new Date().toISOString().split("T")[0]}.json"`,
     );
     res.status(200).send(JSON.stringify(exportPayload, null, 2));
   } catch (error) {
