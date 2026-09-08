@@ -13,17 +13,16 @@ const cloudinary = require("cloudinary").v2;
 const SETTINGS_KEY = "global_settings";
 
 const defaultFooterConfig = {
-  brandName: "TRRABB",
-  address:
-    "Money Plant High Street, A 738, Jagatpur Rd, Gota, Ahmedabad, Gujarat 382470",
-  phone: "+91-99242 46267",
+  brandName: "Trrabb",
+  address: "",
+  phone: "",
   email: "contact@trrabb.com",
   website: "trrabb.com",
-  copyright: "ALL RIGHTS RESERVED.",
+  copyright: "All Rights Reserved.",
   logoUrl: "/logo-stacked.png",
   showSocial: true,
-  showAddress: true,
-  showContact: true,
+  showAddress: false,
+  showContact: false,
   showCopyright: true,
   socialLinks: [
     { platform: "facebook", url: "https://facebook.com/trrabb" },

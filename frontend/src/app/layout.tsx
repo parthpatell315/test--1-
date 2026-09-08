@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Montserrat, Playfair_Display, Caveat } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Playfair_Display, Caveat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import dynamic from "next/dynamic";
@@ -33,10 +33,17 @@ import {
 } from "@/lib/api";
 import { PUBLIC_SITE_ORIGIN, PUBLIC_SITE_URL } from "@/lib/site";
 
-const montserrat = Montserrat({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-montserrat",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -134,11 +141,11 @@ export default async function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${montserrat.variable} ${playfair.variable} ${caveat.variable} h-full antialiased`}
+      className={`${plusJakarta.variable} ${inter.variable} ${playfair.variable} ${caveat.variable} h-full antialiased`}
     >
       <body
         suppressHydrationWarning
-        className="min-h-full w-full flex flex-col font-montserrat relative"
+        className="min-h-full w-full flex flex-col font-sans relative"
       >
         <GoogleAnalytics />
         <Suspense fallback={null}>

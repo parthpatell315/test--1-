@@ -184,14 +184,10 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
 
   const cfg = footerConfig || {};
 
-  const brandName = cfg.brandName || brandConfig.name;
-  const address =
-    cfg.address || brandConfig.address;
-  const phone = cfg.phone || brandConfig.supportPhone;
-  const email = cfg.email || brandConfig.supportEmail;
-  const copyright = cfg.copyright || "All Rights Reserved.";
+  const brandName = "Trrabb";
+  const email = cfg.email || brandConfig.supportEmail || "contact@trrabb.com";
+  const copyright = "All Rights Reserved.";
   const showSocial = cfg.showSocial !== false;
-  const showAddress = cfg.showAddress !== false;
   const showCopyright = cfg.showCopyright !== false;
   const newsletterHeading = cfg.newsletterHeading || "Join our community";
 
@@ -221,7 +217,7 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
   };
 
   return (
-    <footer className="relative z-20 border-t border-slate-800 bg-[#0F172A] font-montserrat text-white">
+    <footer className="relative z-20 border-t border-slate-800 bg-[#0F172A] font-sans text-white">
       <div className="mx-auto max-w-[1280px] min-w-0 px-6 pt-12 pb-8 sm:px-10">
         <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
           {/* Brand Column */}
@@ -234,31 +230,14 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
               {brandConfig.subtitle}
             </p>
 
-            {showAddress && address && (
-              <p className="max-w-[340px] text-[13px] font-medium leading-relaxed text-slate-400 whitespace-pre-line">
-                {address}
-              </p>
-            )}
-
-            {phone && (
-              <p className="text-[13px] font-medium text-white/50">
+            {email && (
+              <p className="text-[13px] font-medium text-slate-400">
                 <a
-                  href={`tel:${phone.replace(/\s/g, "")}`}
-                  className="hover:text-white transition-colors duration-200"
+                  href={`mailto:${email}`}
+                  className="hover:text-blue-400 transition-colors duration-200"
                 >
-                  {phone}
+                  {email}
                 </a>
-                {email && (
-                  <>
-                    {" · "}
-                    <a
-                      href={`mailto:${email}`}
-                      className="hover:text-white transition-colors duration-200"
-                    >
-                      {email}
-                    </a>
-                  </>
-                )}
               </p>
             )}
 

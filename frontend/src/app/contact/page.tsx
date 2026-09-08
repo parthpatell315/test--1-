@@ -72,18 +72,18 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="bg-white min-h-screen pt-24 font-montserrat pb-20">
+    <div className="bg-white min-h-screen pt-24 font-sans pb-20">
       {/* Top Banner */}
       <section className="bg-[#0F172A] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-3 relative z-10">
-          <span className="bg-blue-900/50 text-blue-400 font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block font-montserrat">
+          <span className="bg-blue-900/50 text-blue-400 font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block font-sans">
             24/7 TRIP CONCIERGE & SUPPORT
           </span>
-          <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight uppercase font-montserrat">
+          <h1 className="text-4xl sm:text-6xl font-extrabold text-white tracking-tight uppercase font-sans">
             CONTACT <span className="text-blue-400">US</span>
           </h1>
           <div className="w-16 h-1 bg-blue-500 rounded-full mx-auto my-3" />
-          <p className="text-sm sm:text-base text-slate-300 font-normal max-w-2xl mx-auto leading-relaxed font-montserrat">
+          <p className="text-sm sm:text-base text-slate-300 font-normal max-w-2xl mx-auto leading-relaxed font-sans">
             Have questions about an upcoming departure or need custom group itinerary planning?
             Talk directly to our travel experts.
           </p>
@@ -227,55 +227,58 @@ export default function ContactPage() {
             )}
           </div>
 
-          {/* Right Column: Office Address & Direct Support Cards */}
+          {/* Right Column: Concierge & Direct Support Cards */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-[#0F172A] text-white rounded-2xl p-8 shadow-xl space-y-6 border border-slate-800">
-              <h3 className="text-lg font-extrabold text-white font-montserrat uppercase tracking-tight">
-                Headquarters & Concierge
+            <div className="bg-[#0F172A] text-white rounded-2xl p-8 shadow-xl space-y-6 border border-slate-800 font-sans">
+              <h3 className="text-lg font-extrabold text-white font-sans uppercase tracking-tight">
+                Trip Concierge & Support
               </h3>
 
               <div className="space-y-5">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-white/10 text-blue-400 flex items-center justify-center font-bold shrink-0">
-                    <MapPin className="w-5 h-5" />
+                    <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider font-montserrat mb-0.5">
-                      Office Address
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider font-sans mb-0.5">
+                      Email Concierge
                     </p>
-                    <p className="text-xs sm:text-sm font-medium text-slate-200 leading-relaxed font-montserrat">
-                      {brandConfig.address}
+                    <p className="text-xs sm:text-sm font-semibold text-white font-sans">
+                      {brandConfig.supportEmail}
+                    </p>
+                    <p className="text-[11px] text-slate-400 font-medium font-sans mt-0.5">
+                      Response within 2-4 business hours
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-xl bg-white/10 text-emerald-400 flex items-center justify-center font-bold shrink-0">
-                    <Phone className="w-5 h-5" />
+                    <Clock className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider font-montserrat mb-0.5">
-                      Hotline & WhatsApp
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider font-sans mb-0.5">
+                      Operating Hours
                     </p>
-                    <p className="text-xs sm:text-sm font-semibold text-white font-montserrat">
-                      {brandConfig.supportPhone}
+                    <p className="text-xs sm:text-sm font-semibold text-white font-sans">
+                      Mon – Sat: 9:00 AM – 7:00 PM IST
                     </p>
-                    <p className="text-[11px] text-slate-400 font-medium font-montserrat mt-0.5">
-                      Available 10 AM - 8 PM IST
+                    <p className="text-[11px] text-slate-400 font-medium font-sans mt-0.5">
+                      Online Booking Support: 24/7
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-white/10 text-blue-400 flex items-center justify-center font-bold shrink-0">
-                    <Mail className="w-5 h-5" />
+                  <div className="w-10 h-10 rounded-xl bg-white/10 text-indigo-400 flex items-center justify-center font-bold shrink-0">
+                    <MessageSquare className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider font-montserrat mb-0.5">
-                      Email Concierge
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider font-sans mb-0.5">
+                      Custom Group Inquiries
                     </p>
-                    <p className="text-xs sm:text-sm font-semibold text-white font-montserrat">
-                      {brandConfig.supportEmail}
+                    <p className="text-xs sm:text-sm font-medium text-slate-200 leading-relaxed font-sans">
+                      Planning a private trek or group expedition? Submit the form and our trip designers will craft a tailored proposal.
                     </p>
                   </div>
                 </div>

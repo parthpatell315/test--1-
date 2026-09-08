@@ -38,9 +38,9 @@ export const brandConfig: BrandConfig = {
   tagline: process.env.NEXT_PUBLIC_BRAND_TAGLINE || "Curated Adventure Trips & Group Tours",
   subtitle: "Explore extraordinary destinations with verified expert trip leaders and seamless group travel.",
   supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || "contact@trrabb.com",
-  supportPhone: process.env.NEXT_PUBLIC_SUPPORT_PHONE || "+91 99242 46267",
-  whatsappPhone: "919924246267",
-  address: "Ahmedabad, Gujarat, India",
+  supportPhone: "",
+  whatsappPhone: "",
+  address: "",
   currencySymbol: "₹",
   primaryColor: "#2563EB",
   secondaryColor: "#0F172A",
@@ -48,7 +48,7 @@ export const brandConfig: BrandConfig = {
     { platform: "instagram", url: "https://instagram.com" },
     { platform: "facebook", url: "https://facebook.com" },
     { platform: "youtube", url: "https://youtube.com" },
-    { platform: "whatsapp", url: "https://wa.me/919924246267" },
+    { platform: "linkedin", url: "https://linkedin.com" },
   ],
 };
 

@@ -47,6 +47,19 @@ const splitTripTitle = (fullTitle: string) => {
   return { main: fullTitle, sub: "" };
 };
 
+const getDestinationFallbackPhoto = (title: string, location: string): string => {
+  const query = `${title} ${location}`.toLowerCase();
+  if (query.includes("spiti")) return "https://images.unsplash.com/photo-1581793745862-99f579601e1b?w=800&q=80";
+  if (query.includes("manali") || query.includes("kasol") || query.includes("tosh")) return "https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=80";
+  if (query.includes("kedar") || query.includes("chopta") || query.includes("uttarakhand")) return "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=80";
+  if (query.includes("meghalaya") || query.includes("shillong") || query.includes("dawki")) return "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=80";
+  if (query.includes("ladakh") || query.includes("leh") || query.includes("pangong")) return "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=80";
+  if (query.includes("kerala") || query.includes("munnar") || query.includes("varkala")) return "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=80";
+  if (query.includes("gokarna") || query.includes("goa") || query.includes("beach")) return "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80";
+  if (query.includes("rajasthan") || query.includes("jaisalmer")) return "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=80";
+  return "https://images.unsplash.com/photo-1506929113675-b92417bbbe8d?w=800&q=80";
+};
+
 export default function TripCard({
   trip,
   index = 0,
@@ -128,8 +141,12 @@ export default function TripCard({
       });
     }
 
+    if (list.length === 0) {
+      list.push(getDestinationFallbackPhoto(trip.title || "", trip.location || ""));
+    }
+
     return list;
-  }, [trip.heroImage, trip.images]);
+  }, [trip.heroImage, trip.images, trip.title, trip.location]);
 
   // Staggered automatic photo slider — stagger start time per card index
   useEffect(() => {
@@ -230,6 +247,9 @@ export default function TripCard({
                 src={imgUrl}
                 alt={title}
                 loading={imgIdx === 0 ? "eager" : "lazy"}
+                onError={(e) => {
+                  e.currentTarget.src = getDestinationFallbackPhoto(trip.title || "", trip.location || "");
+                }}
                 className={`absolute inset-0 w-full h-full object-cover will-change-transform transition-transform duration-[4000ms] ease-[cubic-bezier(0.25,0.1,0.25,1)] ${
                   isActive ? active : idle
                 }`}
@@ -241,7 +261,7 @@ export default function TripCard({
 
         {/* TOP LEFT BADGE */}
         <div className="absolute top-3 left-3 z-20 pointer-events-none max-w-[85%]">
-          <span className="inline-block bg-[#0a0f1d]/90 text-white font-montserrat font-semibold text-[9px] sm:text-[10px] tracking-wider uppercase px-3 py-1 rounded-full backdrop-blur-sm shadow-sm truncate max-w-full">
+          <span className="inline-block bg-[#0a0f1d]/90 text-white font-sans font-semibold text-[9px] sm:text-[10px] tracking-wider uppercase px-3 py-1 rounded-full backdrop-blur-sm shadow-sm truncate max-w-full">
             {locationBadge}
           </span>
         </div>
@@ -270,7 +290,7 @@ export default function TripCard({
       </div>
 
       {/* LOWER WHITE CARD CONTENT CONTAINER WITH GENEROUS SIDE WHITESPACE PADDING */}
-      <div className="trip-card-body relative z-10 -mt-4 pt-6 pb-5 px-6 sm:px-7 mx-1 sm:mx-1.5 bg-white rounded-b-2xl rounded-t-xl border border-slate-200 shadow-sm flex flex-col flex-1 font-montserrat justify-between transition-shadow group-hover:shadow-md">
+      <div className="trip-card-body relative z-10 -mt-4 pt-6 pb-5 px-6 sm:px-7 mx-1 sm:mx-1.5 bg-white rounded-b-2xl rounded-t-xl border border-slate-200 shadow-sm flex flex-col flex-1 font-sans justify-between transition-shadow group-hover:shadow-md">
         <div>
           {/* META ROW: DURATION & EX-CITY */}
           <div className="flex items-center justify-between text-xs font-medium text-slate-500 mb-2 gap-2 pt-0.5">

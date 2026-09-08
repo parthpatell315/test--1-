@@ -29,6 +29,40 @@ interface DestinationsProps {
   destinations?: Destination[];
 }
 
+const DESTINATION_PHOTOS: Record<string, string> = {
+  "uttarakhand": "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=800&q=85",
+  "spiti valley": "https://images.unsplash.com/photo-1581793745862-99f579601e1b?w=800&q=85",
+  "spiti": "https://images.unsplash.com/photo-1581793745862-99f579601e1b?w=800&q=85",
+  "ladakh": "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=85",
+  "leh": "https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd?w=800&q=85",
+  "kerala": "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800&q=85",
+  "himachal pradesh": "https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=85",
+  "himachal": "https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=85",
+  "manali": "https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=800&q=85",
+  "gokarna": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=85",
+  "meghalaya": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800&q=85",
+  "rajasthan": "https://images.unsplash.com/photo-1477587458883-47145ed94245?w=800&q=85",
+  "kashmir": "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?w=800&q=85",
+};
+
+const getDestinationPhoto = (name: string, customImg?: string): string => {
+  if (customImg && customImg.startsWith("http") && !customImg.includes("youthcamping")) return customImg;
+  const key = (name || "").toLowerCase().trim();
+  for (const [k, url] of Object.entries(DESTINATION_PHOTOS)) {
+    if (key.includes(k)) return url;
+  }
+  return "https://images.unsplash.com/photo-1506929113675-b92417bbbe8d?w=800&q=85";
+};
+
+const DEFAULT_DESTINATIONS: Destination[] = [
+  { name: "Uttarakhand", subtext: "Trekking & Temple Trails", img: DESTINATION_PHOTOS["uttarakhand"], href: "/trips" },
+  { name: "Spiti Valley", subtext: "High Altitude Desert", img: DESTINATION_PHOTOS["spiti valley"], href: "/trips" },
+  { name: "Ladakh", subtext: "Passes & Pangong Lake", img: DESTINATION_PHOTOS["ladakh"], href: "/trips" },
+  { name: "Kerala", subtext: "Backwaters & Tropical Hills", img: DESTINATION_PHOTOS["kerala"], href: "/trips" },
+  { name: "Himachal Pradesh", subtext: "Snow Peaks & Valleys", img: DESTINATION_PHOTOS["himachal pradesh"], href: "/trips" },
+  { name: "Gokarna", subtext: "Beach & Cliff Treks", img: DESTINATION_PHOTOS["gokarna"], href: "/trips" },
+];
+
 function destinationHref(d: any): string | undefined {
   if (!d || typeof d !== "object") return undefined;
   const raw = d.href || d.link || d.url;
@@ -54,7 +88,7 @@ export default function Destinations({
   useWheelPassThrough(scrollRef);
 
   const sourceList =
-    Array.isArray(destinations) && destinations.length > 0 ? destinations : [];
+    Array.isArray(destinations) && destinations.length > 0 ? destinations : DEFAULT_DESTINATIONS;
 
   const displayItems: Destination[] = useMemo(
     () =>
@@ -66,9 +100,9 @@ export default function Destinations({
             : "";
         return {
           name: rawName,
-          subtext: typeof d === "object" && d?.subtext ? d.subtext : "",
-          img: customImg || "",
-          href: destinationHref(d),
+          subtext: typeof d === "object" && d?.subtext ? d.subtext : "Adventure Circuit",
+          img: getDestinationPhoto(rawName, customImg),
+          href: destinationHref(d) || "/trips",
         };
       }).filter((d) => d.name),
     [sourceList],
@@ -100,12 +134,12 @@ export default function Destinations({
 
   return (
     <section
-      className="popular-destinations popular-section destinations-grid w-full pt-8 pb-8 sm:pt-10 sm:pb-10 font-montserrat overflow-hidden border-0 outline-none shadow-none bg-slate-50/80"
+      className="popular-destinations popular-section destinations-grid w-full pt-8 pb-8 sm:pt-10 sm:pb-10 font-sans overflow-hidden border-0 outline-none shadow-none bg-slate-50/80"
     >
       <div className="max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12 min-w-0 w-full">
         <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-nowrap">
           <div className="flex items-baseline gap-2 min-w-0 overflow-hidden whitespace-nowrap">
-            <h2 className="text-slate-900 font-montserrat font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight capitalize leading-tight">
+            <h2 className="text-slate-900 font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight capitalize leading-tight">
               {primaryWord}
             </h2>
             <span className="font-extrabold text-blue-600 text-2xl sm:text-3xl md:text-4xl leading-tight shrink-0 capitalize pr-2 sm:pr-3">
@@ -144,16 +178,15 @@ export default function Destinations({
                 "dest-photo-card group relative block w-full aspect-[9/13] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600";
               const inner = (
                 <>
-                  {item.img ? (
-                    <img
-                      src={item.img}
-                      alt={item.name}
-                      loading="lazy"
-                      className="dest-photo-img absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 bg-slate-200" aria-hidden />
-                  )}
+                  <img
+                    src={item.img}
+                    alt={item.name}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = getDestinationPhoto(item.name);
+                    }}
+                    className="dest-photo-img absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                   <div
                     className="absolute inset-0 z-[1] bg-gradient-to-t from-black/80 via-black/20 to-transparent"
                     aria-hidden

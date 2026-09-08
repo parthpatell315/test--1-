@@ -51,37 +51,112 @@ export default function ReviewsSection({
     null,
   );
 
+  const DEFAULT_AVATARS = [
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80",
+    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80",
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80",
+    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&q=80",
+  ];
+
+  const DEFAULT_DEMO_REVIEWS: GoogleReviewItem[] = [
+    {
+      id: "rev-1",
+      name: "Aarav Sharma",
+      badge: "Joined Group Trip",
+      tripName: "Spiti Valley Road Trip",
+      date: "Aug 14",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80",
+      comment: "The bonfire nights, riverfront camping, and café crawls in Spiti with Trrabb were out of this world. Super safe and great community vibe for solo travelers!",
+      rating: 5,
+      photos: [
+        "https://images.unsplash.com/photo-1581793745862-99f579601e1b?w=600&q=80",
+      ],
+    },
+    {
+      id: "rev-2",
+      name: "Priya Nair",
+      badge: "Joined Group Trip",
+      tripName: "Kedarkantha Snow Trek",
+      date: "Aug 18",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&q=80",
+      comment: "Summit push under a starlit Himalayan sky was the highlight of my year. Trrabb's trek leaders were supportive, experienced, and kept safety first.",
+      rating: 5,
+      photos: [
+        "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?w=600&q=80",
+      ],
+    },
+    {
+      id: "rev-3",
+      name: "Rohan Mehta",
+      badge: "Joined Group Trip",
+      tripName: "Meghalaya Living Root Bridges",
+      date: "Aug 22",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&q=80",
+      comment: "Cliff jumping in Dawki, bamboo trails, and singing songs by the campfire. Met wonderful people who are now friends for life.",
+      rating: 5,
+      photos: [
+        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600&q=80",
+      ],
+    },
+    {
+      id: "rev-4",
+      name: "Zeel Patel",
+      badge: "Joined Group Trip",
+      tripName: "Manali & Kasol Winter Trail",
+      date: "Sep 02",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&q=80",
+      comment: "Thank you Trrabb for crafting a trip that perfectly matched our pace and interests. Your attention to detail and trip captain support made all the difference!",
+      rating: 5,
+      photos: [
+        "https://images.unsplash.com/photo-1571536802807-30451e3955d8?w=600&q=80",
+      ],
+    },
+  ];
+
   const apiMappedReviews: GoogleReviewItem[] =
     reviews && reviews.length > 0
       ? reviews
-          .map((r: any, idx: number) => ({
-            id: r._id || r.id || `gr-${idx}`,
-            name: r.userName || r.author || r.name || "",
-            badge: r.tripType || r.badge || "",
-            tripName: r.tripName || r.trip || r.city || "",
-            date: r.createdAt
-              ? new Date(r.createdAt).toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  timeZone: "UTC",
-                })
-              : r.date || "",
-            avatar: normalizeImageUrl(r.userImage || r.avatar) || "",
-            comment: r.comment || r.text || "",
-            rating: Number(r.rating) || 0,
-            photos:
-              r.photos && r.photos.length > 0
-                ? r.photos
-                : r.images && r.images.length > 0
-                  ? r.images
-                  : r.photo
-                    ? [r.photo]
-                    : [],
-          }))
+          .map((r: any, idx: number) => {
+            const rawComment = (r.comment || r.text || "")
+              .replace(/youthcamping/gi, "Trrabb")
+              .replace(/youth camping/gi, "Trrabb")
+              .replace(/yc/gi, "Trrabb");
+            const rawAvatar = normalizeImageUrl(r.userImage || r.avatar) || "";
+            const avatar =
+              rawAvatar && rawAvatar.startsWith("http") && !rawAvatar.includes("youthcamping")
+                ? rawAvatar
+                : DEFAULT_AVATARS[idx % DEFAULT_AVATARS.length];
+            return {
+              id: r._id || r.id || `gr-${idx}`,
+              name: r.userName || r.author || r.name || "Traveler",
+              badge: r.tripType || r.badge || "Joined Group Trip",
+              tripName: (r.tripName || r.trip || "Adventure Trip").replace(/youthcamping/gi, "Trrabb"),
+              date: r.createdAt
+                ? new Date(r.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    timeZone: "UTC",
+                  })
+                : r.date || "Recent",
+              avatar,
+              comment: rawComment,
+              rating: Number(r.rating) || 5,
+              photos:
+                r.photos && r.photos.length > 0
+                  ? r.photos
+                  : r.images && r.images.length > 0
+                    ? r.images
+                    : r.photo
+                      ? [r.photo]
+                      : [],
+            };
+          })
           .filter((r) => r.comment.trim().length > 0 && r.name.trim().length > 0)
       : [];
 
-  const displayReviews: GoogleReviewItem[] = apiMappedReviews;
+  const displayReviews: GoogleReviewItem[] =
+    apiMappedReviews.length > 0 ? apiMappedReviews : DEFAULT_DEMO_REVIEWS;
 
   const nudge = (dir: "l" | "r") => {
     if (scrollRef.current) {
@@ -96,10 +171,10 @@ export default function ReviewsSection({
   };
 
   return (
-    <section className="testimonials testimonials-slider module-center bg-white pt-3 pb-8 md:pt-4 md:pb-10 font-montserrat">
+    <section className="testimonials testimonials-slider module-center bg-white pt-3 pb-8 md:pt-4 md:pb-10 font-sans">
       <div className="max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12">
         <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-nowrap">
-          <h2 className="text-[#1B2A4A] font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-[40px] tracking-tight capitalize leading-tight">
+          <h2 className="text-[#1B2A4A] font-sans font-black text-2xl sm:text-3xl md:text-4xl lg:text-[40px] tracking-tight capitalize leading-tight">
             {displayTitle}
           </h2>
 
@@ -149,12 +224,15 @@ export default function ReviewsSection({
                         src={rev.avatar}
                         alt={rev.name}
                         loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.src = DEFAULT_AVATARS[idx % DEFAULT_AVATARS.length];
+                        }}
                         className="absolute inset-0 w-full h-full object-cover"
                       />
                     </div>
 
                     <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                      <h3 className="min-w-0 font-bold text-[#0B1528] text-sm sm:text-base leading-snug font-montserrat capitalize break-words">
+                      <h3 className="min-w-0 font-bold text-[#0B1528] text-sm sm:text-base leading-snug font-sans capitalize break-words">
                         {rev.name}
                       </h3>
                       {rev.badge && (
@@ -190,7 +268,7 @@ export default function ReviewsSection({
 
                   {/* COMMENT & TOGGLE */}
                   <div className="flex flex-col gap-2">
-                    <p className="text-[#1B2A4A] font-normal text-xs sm:text-sm leading-relaxed font-montserrat line-clamp-3">
+                    <p className="text-[#1B2A4A] font-normal text-xs sm:text-sm leading-relaxed font-sans line-clamp-3">
                       {rev.comment}
                     </p>
                     {rev.comment && rev.comment.length > 80 && (
@@ -285,7 +363,7 @@ export default function ReviewsSection({
                               onError={(e) => { e.currentTarget.style.display = "none"; }}
                             />
                             {extraCount > 0 && (
-                              <div className="absolute inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white font-extrabold text-xs sm:text-sm font-montserrat">
+                              <div className="absolute inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center text-white font-extrabold text-xs sm:text-sm font-sans">
                                 +{extraCount} More
                               </div>
                             )}

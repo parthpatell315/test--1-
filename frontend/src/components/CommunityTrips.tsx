@@ -18,6 +18,12 @@ const ROTATING_WORDS = [
   "Restless",
 ];
 
+const DEFAULT_HERO_BG_PHOTOS = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=85",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=85",
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=85",
+];
+
 function getAutoMonths() {
   const today = new Date();
   const currentMonthIdx = today.getMonth();
@@ -139,17 +145,20 @@ export default function CommunityTrips({
   }, [activeMonth]);
 
   // Parse multiple photos or single fallback
-  const bgPhotosList: string[] =
+  const rawBgList =
     Array.isArray(backgroundImages) && backgroundImages.length > 0
       ? backgroundImages
       : backgroundImage
         ? [backgroundImage]
-      : [];
+        : [];
+  const validBgList = rawBgList.filter((s: string) => Boolean(s && s.trim()));
+  const bgPhotosList: string[] =
+    validBgList.length > 0 ? validBgList : DEFAULT_HERO_BG_PHOTOS;
 
   const currentBgPhoto =
     bgPhotosList.length > 0
       ? bgPhotosList[bgIdx % bgPhotosList.length]
-      : "";
+      : DEFAULT_HERO_BG_PHOTOS[0];
 
   const activeHeadlinePrefix =
     headlinePrefix !== undefined ? headlinePrefix : headline;
@@ -378,9 +387,12 @@ export default function CommunityTrips({
                 />
               ) : (
                 <img
-                  src={currentBgPhoto}
-                  alt="Group of young travellers"
+                  src={currentBgPhoto || DEFAULT_HERO_BG_PHOTOS[0]}
+                  alt=""
                   loading="eager"
+                  onError={(e) => {
+                    e.currentTarget.src = DEFAULT_HERO_BG_PHOTOS[0];
+                  }}
                   className="absolute inset-0 w-full h-full object-cover object-center carousel-image-cinematic"
                 />
               )}
@@ -400,7 +412,7 @@ export default function CommunityTrips({
         <div className="relative z-10 max-w-[1440px] w-full mx-auto px-6 sm:px-8 md:px-12">
           <div className="max-w-[720px]">
             <h2
-              className={`font-montserrat font-extrabold leading-[1.18] tracking-tight text-[26px] sm:text-[36px] md:text-[44px] lg:text-[50px] ${isWhiteOverlay ? "text-[#0B1528]" : "text-white drop-shadow-md"}`}
+              className={`font-sans font-extrabold leading-[1.18] tracking-tight text-[26px] sm:text-[36px] md:text-[44px] lg:text-[50px] ${isWhiteOverlay ? "text-[#0B1528]" : "text-white drop-shadow-md"}`}
             >
               <span className="block">{activeHeadlinePrefix}</span>
               {(Boolean(activeStrikethroughWord) ||

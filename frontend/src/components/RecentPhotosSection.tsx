@@ -22,6 +22,57 @@ interface RecentPhotosSectionProps {
   subtitle?: string;
 }
 
+const DEFAULT_RECENT_PHOTOS: RecentPhoto[] = [
+  {
+    id: "rp-1",
+    url: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
+    caption: "Sunset at Gokarna Cliff",
+    location: "Gokarna, Karnataka",
+  },
+  {
+    id: "rp-2",
+    url: "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=800&q=80",
+    caption: "High Mountain Pass Trek",
+    location: "Spiti Valley, Himachal",
+  },
+  {
+    id: "rp-3",
+    url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+    caption: "Summit Sunrise at Kedarkantha",
+    location: "Uttarakhand",
+  },
+  {
+    id: "rp-4",
+    url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80",
+    caption: "Starlit Camp Under the Milky Way",
+    location: "Pangong Tso, Ladakh",
+  },
+  {
+    id: "rp-5",
+    url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80",
+    caption: "Crystal Waterfall Expedition",
+    location: "Cherrapunji, Meghalaya",
+  },
+  {
+    id: "rp-6",
+    url: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&w=800&q=80",
+    caption: "Misty Backwaters Canoe Cruise",
+    location: "Alleppey, Kerala",
+  },
+  {
+    id: "rp-7",
+    url: "https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?auto=format&fit=crop&w=800&q=80",
+    caption: "Alpine Meadow Campsite",
+    location: "Kasol & Kheerganga",
+  },
+  {
+    id: "rp-8",
+    url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+    caption: "Emerald Valley Vista",
+    location: "Manali, Himachal",
+  },
+];
+
 export default function RecentPhotosSection({
   photos = [],
   title = "Recent Photos",
@@ -45,7 +96,7 @@ export default function RecentPhotosSection({
     }))
     .filter((p): p is RecentPhoto => Boolean(p.url));
 
-  const basePhotos = displayPhotos;
+  const basePhotos = displayPhotos.length > 0 ? displayPhotos : DEFAULT_RECENT_PHOTOS;
 
   const marqueePhotos = useMemo(
     () => [...basePhotos, ...basePhotos, ...basePhotos, ...basePhotos],
@@ -72,14 +123,14 @@ export default function RecentPhotosSection({
 
   return (
     <section
-      className="py-4 sm:py-5 font-montserrat overflow-hidden bg-[#E2E7ED]"
+      className="py-4 sm:py-5 font-sans overflow-hidden bg-[#E2E7ED]"
       style={{ backgroundColor: "#E2E7ED" }}
     >
       <div className="max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12">
         {/* HEADER ROW - FITS TITLE ON ONE LINE */}
         <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-nowrap">
           <div className="flex items-baseline gap-2 min-w-0 overflow-hidden whitespace-nowrap">
-            <h2 className="text-[#1B2A4A] font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-[40px] tracking-tight capitalize leading-tight">
+            <h2 className="text-[#1B2A4A] font-sans font-black text-2xl sm:text-3xl md:text-4xl lg:text-[40px] tracking-tight capitalize leading-tight">
               {title.toLowerCase()}
             </h2>
             <span className="font-caveat font-bold text-[#D4541A] text-[26px] sm:text-[34px] md:text-[40px] lg:text-[46px] leading-none shrink-0 capitalize pr-2 sm:pr-3">
@@ -114,7 +165,7 @@ export default function RecentPhotosSection({
             }}
           >
             {marqueePhotos.map((photo, idx) => {
-              const actualIndex = idx % displayPhotos.length;
+              const actualIndex = idx % basePhotos.length;
               return (
                 <div
                   key={`${photo.id}-${idx}`}
@@ -127,7 +178,7 @@ export default function RecentPhotosSection({
                     loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
+                      (e.target as HTMLImageElement).src = DEFAULT_RECENT_PHOTOS[idx % DEFAULT_RECENT_PHOTOS.length].url;
                     }}
                   />
                 </div>
@@ -137,7 +188,7 @@ export default function RecentPhotosSection({
         </div>
 
         {/* BOTTOM HASHTAG FEATURE BAR - FITS ON ONE SINGLE LINE */}
-        <div className="flex items-center gap-1.5 sm:gap-2 mt-4 text-[11px] sm:text-[13px] md:text-sm text-zinc-600 font-montserrat whitespace-nowrap overflow-hidden">
+        <div className="flex items-center gap-1.5 sm:gap-2 mt-4 text-[11px] sm:text-[13px] md:text-sm text-zinc-600 font-sans whitespace-nowrap overflow-hidden">
           <Camera className="w-4 h-4 text-[#D4541A] shrink-0" />
           <span className="truncate">
             Tag us{" "}

@@ -26,6 +26,12 @@ const DEFAULT_ROTATING_WORDS = [
   "Restless",
 ];
 
+const DEFAULT_HERO_SLIDES = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1920&q=85",
+  "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=85",
+  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=85",
+];
+
 export default function Hero({
   tagline,
   headlinePrefix,
@@ -41,10 +47,12 @@ export default function Hero({
   const [wordIdx, setWordIdx] = useState(0);
 
   const imagesList: string[] = (() => {
-    if (Array.isArray(backgroundImages) && backgroundImages.length > 0)
-      return backgroundImages;
+    if (Array.isArray(backgroundImages) && backgroundImages.length > 0) {
+      const valid = backgroundImages.filter(Boolean);
+      if (valid.length > 0) return valid;
+    }
     if (backgroundImage) return [backgroundImage];
-    return [];
+    return DEFAULT_HERO_SLIDES;
   })();
 
   const rotWords: string[] = (() => {
@@ -97,7 +105,7 @@ export default function Hero({
   };
 
   return (
-    <div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[78vh] min-h-[440px] md:min-h-[540px] max-h-[720px] overflow-hidden bg-zinc-900 font-montserrat flex items-center">
+    <div className="relative w-full h-[60vh] sm:h-[70vh] md:h-[78vh] min-h-[440px] md:min-h-[540px] max-h-[720px] overflow-hidden bg-zinc-900 font-sans flex items-center">
       {/* BACKGROUND IMAGE SLIDE */}
       <div className="absolute inset-0 z-0">
         {activeImg ? (
@@ -152,14 +160,14 @@ export default function Hero({
         >
           {/* TOP TAGLINE */}
           {displayTagline && (
-            <p className="text-blue-400 font-extrabold text-xs sm:text-sm tracking-[2.5px] uppercase mb-3 font-montserrat flex items-center gap-2">
+            <p className="text-blue-400 font-extrabold text-xs sm:text-sm tracking-[2.5px] uppercase mb-3 font-sans flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-blue-400 inline-block animate-pulse" />
               {displayTagline}
             </p>
           )}
 
           {/* HEADLINE */}
-          <h1 className="text-white font-extrabold text-[32px] sm:text-[44px] md:text-[54px] lg:text-[60px] leading-[1.15] tracking-tight font-montserrat mb-3 drop-shadow-xl">
+          <h1 className="text-white font-extrabold text-[32px] sm:text-[44px] md:text-[54px] lg:text-[60px] leading-[1.15] tracking-tight font-sans mb-3 drop-shadow-xl">
             <span className="block">{displayHeadline}</span>
             {(Boolean(strikethroughWord) || rotWords.length > 0) && (
               <span className="flex items-center gap-2.5 sm:gap-3.5 flex-nowrap mt-0.5 whitespace-nowrap">
@@ -208,7 +216,7 @@ export default function Hero({
 
           {/* SUBTITLE */}
           {displaySubheadline && (
-            <p className="text-slate-200 text-sm sm:text-base md:text-lg font-montserrat font-medium leading-relaxed max-w-[580px] drop-shadow-md mt-2">
+            <p className="text-slate-200 text-sm sm:text-base md:text-lg font-sans font-medium leading-relaxed max-w-[580px] drop-shadow-md mt-2">
               {displaySubheadline}
             </p>
           )}

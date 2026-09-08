@@ -28,18 +28,21 @@ export default function CTASlider({
   const [activeIdx, setActiveIdx] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const fallbackImg = "https://images.unsplash.com/photo-1510312305653-8ed496efae75?w=1600&q=85";
+  const [mediaError, setMediaError] = useState(false);
+
   // Parse media list items (videos or photos)
   const items: string[] = (() => {
     const list: string[] = [];
     if (Array.isArray(mediaList) && mediaList.length > 0) {
       mediaList.forEach((m) => {
         const norm = normalizeImageUrl(m);
-        if (norm && !list.includes(norm)) list.push(norm);
+        if (norm && !norm.includes("youthcamping") && !list.includes(norm)) list.push(norm);
       });
     }
     if (videoUrl) {
       const norm = normalizeImageUrl(videoUrl);
-      if (norm && !list.includes(norm)) list.unshift(norm);
+      if (norm && !norm.includes("youthcamping") && !list.includes(norm)) list.unshift(norm);
     }
     return list;
   })();
@@ -60,10 +63,12 @@ export default function CTASlider({
     if (items.length <= 1) return;
     const timer = setInterval(() => {
       setActiveIdx((prev) => (prev + 1) % items.length);
+      setMediaError(false);
     }, 6000);
     return () => clearInterval(timer);
   }, [items.length]);
 
+  // If no valid media items exist, hide the section completely to avoid rendering empty dark box
   if (items.length === 0) return null;
 
   return (
@@ -86,14 +91,20 @@ export default function CTASlider({
         >
           <AnimatePresence mode="popLayout">
             <motion.div
-              key={currentMedia}
+              key={currentMedia + (mediaError ? "-fallback" : "")}
               initial={{ opacity: 0, scale: 1.03 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.0, ease: "easeInOut" }}
               className="w-full h-full relative"
             >
-              {isYouTube(currentMedia) ? (
+              {mediaError ? (
+                <img
+                  src={fallbackImg}
+                  alt={title || "Trrabb Adventure"}
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : isYouTube(currentMedia) ? (
                 <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none rounded-inherit">
                   <iframe
                     className="absolute top-1/2 left-1/2 w-[250%] h-[250%] max-w-none -translate-x-1/2 -translate-y-1/2 pointer-events-none"
@@ -112,12 +123,14 @@ export default function CTASlider({
                   playsInline
                   controls={false}
                   disablePictureInPicture
+                  onError={() => setMediaError(true)}
                   className="hide-native-video-play w-full h-full object-cover object-center"
                 />
               ) : (
                 <img
                   src={currentMedia}
                   alt={title || "CTA Banner"}
+                  onError={() => setMediaError(true)}
                   className="w-full h-full object-cover object-center"
                 />
               )}

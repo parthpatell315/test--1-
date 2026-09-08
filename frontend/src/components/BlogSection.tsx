@@ -26,6 +26,45 @@ interface BlogSectionProps {
   subtitle?: string;
 }
 
+const DEFAULT_BLOG_STORIES: BlogCardItem[] = [
+  {
+    id: "blog-1",
+    title: "The Winter Beauty of Kashmir: Snow Valleys & Frozen Lakes",
+    slug: "winter-beauty-of-kashmir",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200",
+    authorName: "Aditi Raval",
+    authorAvatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300",
+    readTime: "7 min read",
+  },
+  {
+    id: "blog-2",
+    title: "8-Day Dubai Adventure: A Journey of Thrills & Luxury",
+    slug: "dubai-adventure",
+    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=1200",
+    authorName: "Harsh Patel",
+    authorAvatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300",
+    readTime: "6 min read",
+  },
+  {
+    id: "blog-3",
+    title: "Winter Spiti Valley Experience: Surviving -20°C in the Middle Land",
+    slug: "winter-spiti-experience",
+    image: "https://images.unsplash.com/photo-1596230529625-7ee10f7b09b6?q=80&w=1200",
+    authorName: "Avdhesh Patel",
+    authorAvatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300",
+    readTime: "5 min read",
+  },
+  {
+    id: "blog-4",
+    title: "Bhrigu Lake Trek: High Altitude Serenity & Alpine Meadows",
+    slug: "bhrigu-lake-trek",
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200",
+    authorName: "Priya Shah",
+    authorAvatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300",
+    readTime: "8 min read",
+  },
+];
+
 export default function BlogSection({
   blogs = [],
   title,
@@ -44,30 +83,32 @@ export default function BlogSection({
     blogs && blogs.length > 0
       ? blogs
           .map((b: any, idx: number) => {
-            const rawAuthor = String(b.author || `${brandConfig.name} Editorial`);
+            const rawAuthor = String(b.author || `Trrabb Editorial`);
             const cleanAuthor = rawAuthor.replace(/^by\s+/i, "");
-            const storyImg = normalizeImageUrl(b.image) || "";
-            const storyAvatar = normalizeImageUrl(b.authorImage) || "";
+            const rawImg = normalizeImageUrl(b.image) || "";
+            const storyImg =
+              rawImg && rawImg.startsWith("http") && !rawImg.includes("youthcamping")
+                ? rawImg
+                : DEFAULT_BLOG_STORIES[idx % DEFAULT_BLOG_STORIES.length].image;
+            const storyAvatar =
+              normalizeImageUrl(b.authorImage) ||
+              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300";
 
             return {
-              id: b._id || b.id || `b-${idx}`,
-              title: b.title || "",
+              id: b.id || b._id || `blog-${idx}`,
+              title: b.title || "Travel Story",
               slug: b.slug || "",
               image: storyImg,
               authorName: cleanAuthor,
               authorAvatar: storyAvatar,
-              readTime: b.readTime || "5 MIN READ",
+              readTime: b.readTime || "5 min read",
             };
           })
-          .filter(
-            (b) =>
-              b.title.trim().length > 0 &&
-              b.slug.trim().length > 0 &&
-              b.image.trim().length > 0,
-          )
+          .filter((s) => Boolean(s.title && s.slug))
       : [];
 
-  const displayStories = apiMappedStories;
+  const displayStories: BlogCardItem[] =
+    apiMappedStories.length > 0 ? apiMappedStories : DEFAULT_BLOG_STORIES;
   const scrollRef = useRef<HTMLDivElement>(null);
   useWheelPassThrough(scrollRef);
 
@@ -86,12 +127,12 @@ export default function BlogSection({
   if (displayStories.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden font-montserrat bg-white py-10 sm:py-12">
+    <section className="relative overflow-hidden font-sans bg-white py-10 sm:py-12">
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12">
         {/* HEADER ROW WITH SLIDER CONTROLS */}
         <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-nowrap">
           <div className="flex items-baseline gap-2 min-w-0 overflow-hidden whitespace-nowrap">
-            <h2 className="text-slate-900 font-montserrat font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight capitalize leading-tight">
+            <h2 className="text-slate-900 font-sans font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight capitalize leading-tight">
               {displayTitle}
             </h2>
             <span className="font-extrabold text-blue-600 text-2xl sm:text-3xl md:text-4xl leading-tight shrink-0 capitalize pr-2 sm:pr-3">
@@ -136,6 +177,9 @@ export default function BlogSection({
                   src={story.image}
                   alt={story.title}
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = DEFAULT_BLOG_STORIES[idx % DEFAULT_BLOG_STORIES.length].image;
+                  }}
                   className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
 
