@@ -4,12 +4,13 @@ import UpcomingTripsClient from "@/components/UpcomingTripsClient";
 import { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 
+import { brandConfig } from "@/config/brand.config";
+
 export const revalidate = 30;
 
 export const metadata: Metadata = pageMetadata({
-  title: "Upcoming Trips | YouthCamping",
-  description:
-    "Browse YouthCamping group trips across Himachal, Ladakh, Kashmir, Kerala, and more.",
+  title: `Upcoming Trips & Tours | ${brandConfig.name}`,
+  description: `Browse ${brandConfig.name} group trips and curated adventures across extraordinary destinations.`,
   path: "/trips",
 });
 

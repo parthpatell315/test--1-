@@ -54,13 +54,13 @@ function DestinationRow({ location, trips }: { location: string; trips: Trip[] }
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div className="flex items-baseline gap-2 flex-wrap">
-            <h2 className="text-lg sm:text-xl font-black text-[#0B1528] font-montserrat tracking-tight leading-tight">
+            <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-montserrat tracking-tight leading-tight">
               {location}
             </h2>
-            <span className="text-[#D4541A] font-bold text-2xl sm:text-3xl font-caveat leading-tight">
-              Adventures
+            <span className="text-blue-600 font-extrabold text-xl sm:text-2xl leading-tight">
+              Expeditions
             </span>
-            <span className="text-xs text-zinc-400 font-semibold ml-1 hidden sm:inline">
+            <span className="text-xs text-slate-400 font-semibold ml-1 hidden sm:inline">
               {trips.length} {trips.length === 1 ? "trip" : "trips"}
             </span>
           </div>
@@ -71,17 +71,17 @@ function DestinationRow({ location, trips }: { location: string; trips: Trip[] }
             onClick={() => scroll("l")}
             disabled={!canScrollLeft}
             aria-label="Scroll left"
-            className="w-8 h-8 rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
+            className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
           >
-            <ChevronLeft className="w-4 h-4 text-zinc-600" />
+            <ChevronLeft className="w-4 h-4 text-slate-600" />
           </button>
           <button
             onClick={() => scroll("r")}
             disabled={!canScrollRight}
             aria-label="Scroll right"
-            className="w-8 h-8 rounded-full border border-zinc-200 bg-white hover:bg-zinc-50 flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
+            className="w-8 h-8 rounded-full border border-slate-200 bg-white hover:bg-slate-50 flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed shadow-sm"
           >
-            <ChevronRight className="w-4 h-4 text-zinc-600" />
+            <ChevronRight className="w-4 h-4 text-slate-600" />
           </button>
         </div>
       </div>
@@ -100,7 +100,7 @@ function DestinationRow({ location, trips }: { location: string; trips: Trip[] }
       </div>
 
       {/* Thin divider */}
-      <div className="w-full h-px bg-zinc-100 mt-2" />
+      <div className="w-full h-px bg-slate-100 mt-2" />
     </div>
   );
 }
@@ -153,7 +153,7 @@ export default function UpcomingTripsClient({ trips: propTrips = [] }: Props) {
     <main className="bg-white min-h-screen font-montserrat">
 
       {/* ── HERO ──────────────────────────────────────────────────────── */}
-      <section className="relative w-full overflow-hidden bg-[#0B1528] pt-[88px] pb-0">
+      <section className="relative w-full overflow-hidden bg-[#0F172A] pt-[88px] pb-0">
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -164,7 +164,7 @@ export default function UpcomingTripsClient({ trips: propTrips = [] }: Props) {
             className="object-cover object-center opacity-20"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1528]/60 via-[#0B1528]/80 to-[#0B1528]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/60 via-[#0F172A]/80 to-[#0F172A]" />
         </div>
 
         <div className="relative z-10 max-w-[1200px] w-full mx-auto px-6 sm:px-10 pt-10 pb-12 md:pt-14 md:pb-16">
@@ -175,33 +175,33 @@ export default function UpcomingTripsClient({ trips: propTrips = [] }: Props) {
             className="max-w-2xl"
           >
             {/* Eyebrow */}
-            <div className="flex items-center gap-2 mb-5">
-              <span className="w-6 h-[2px] bg-[#D4541A] rounded-full" />
-              <span className="text-[#D4541A] font-extrabold text-[10px] uppercase tracking-[0.2em] font-montserrat">
-                Group Adventures · India
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-6 h-[2px] bg-blue-500 rounded-full" />
+              <span className="text-blue-400 font-extrabold text-[11px] uppercase tracking-[0.2em] font-montserrat">
+                Curated Travel Expeditions
               </span>
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white uppercase tracking-tight leading-[0.95] font-montserrat mb-4">
-              Find Your<br />
-              <span className="text-[#D4541A]">Next Escape</span>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-[1.05] font-montserrat mb-4">
+              Explore Group<br />
+              <span className="text-blue-400">Adventures & Tours</span>
             </h1>
 
-            <p className="text-zinc-400 text-sm sm:text-base font-medium max-w-md leading-relaxed mb-8">
-              Curated group journeys across India's most breathtaking destinations. Real people, real memories.
+            <p className="text-slate-300 text-sm sm:text-base font-normal max-w-md leading-relaxed mb-8">
+              Handcrafted group itineraries with verified accommodations, expert trip leaders, and seamless travel logistics.
             </p>
 
             {/* Stats row */}
             <div className="flex items-center gap-6 flex-wrap">
               {[
                 { label: "Destinations", value: locationKeys.length || "8+" },
-                { label: "Active Trips", value: totalTrips || "20+" },
-                { label: "Travellers", value: "10K+" },
+                { label: "Active Tours", value: totalTrips || "20+" },
+                { label: "Community Rating", value: "4.9 / 5" },
               ].map((s) => (
                 <div key={s.label} className="flex flex-col">
-                  <span className="text-white font-black text-2xl leading-none">{s.value}</span>
-                  <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-0.5">{s.label}</span>
+                  <span className="text-white font-extrabold text-2xl leading-none">{s.value}</span>
+                  <span className="text-slate-400 text-[10px] font-bold uppercase tracking-widest mt-1">{s.label}</span>
                 </div>
               ))}
             </div>
@@ -222,13 +222,13 @@ export default function UpcomingTripsClient({ trips: propTrips = [] }: Props) {
             animate={{ opacity: 1 }}
             className="flex items-center gap-2"
           >
-            <span className="text-sm text-zinc-500 font-semibold">
+            <span className="text-sm text-slate-500 font-semibold">
               {totalTrips} {totalTrips === 1 ? "trip" : "trips"} found
             </span>
             {(search || activeCategory !== "All") && (
               <button
                 onClick={() => { setSearch(""); setActiveCategory("All"); }}
-                className="text-xs text-[#D4541A] font-bold hover:underline"
+                className="text-xs text-blue-600 font-bold hover:underline"
               >
                 Clear filters
               </button>
@@ -243,14 +243,14 @@ export default function UpcomingTripsClient({ trips: propTrips = [] }: Props) {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center justify-center py-24 text-center"
           >
-            <div className="w-16 h-16 rounded-full bg-zinc-100 flex items-center justify-center mb-4">
-              <MapPin className="w-7 h-7 text-zinc-400" />
+            <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
+              <MapPin className="w-7 h-7 text-slate-400" />
             </div>
-            <h3 className="text-lg font-black text-zinc-700 mb-1">No trips found</h3>
-            <p className="text-zinc-400 text-sm mb-4">Try a different search or category</p>
+            <h3 className="text-lg font-bold text-slate-800 mb-1">No trips found</h3>
+            <p className="text-slate-400 text-sm mb-4">Try adjusting your search criteria</p>
             <button
               onClick={() => { setSearch(""); setActiveCategory("All"); }}
-              className="px-5 py-2 bg-[#D4541A] text-white text-sm font-bold rounded-full"
+              className="px-5 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-500/20"
             >
               Show all trips
             </button>
@@ -278,14 +278,14 @@ export default function UpcomingTripsClient({ trips: propTrips = [] }: Props) {
             viewport={{ once: true }}
             className="pt-4 pb-8 text-center"
           >
-            <p className="text-zinc-400 text-sm font-semibold mb-4">
-              Can't find what you're looking for?
+            <p className="text-slate-500 text-sm font-semibold mb-4">
+              Looking for a custom group or corporate departure?
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#0B1528] text-white text-sm font-bold rounded-full hover:bg-[#D4541A] transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white text-sm font-bold rounded-xl shadow-md shadow-blue-500/20 hover:bg-blue-700 transition-colors"
             >
-              Talk to our trip experts
+              Speak with a Travel Consultant
             </Link>
           </motion.div>
         )}

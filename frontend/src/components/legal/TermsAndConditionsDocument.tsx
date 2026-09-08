@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { RefundSchedule } from "@/components/legal/RefundSchedule";
+import { brandConfig } from "@/config/brand.config";
 
 const sections = [
   { id: "declaration", label: "Declaration" },
@@ -15,18 +16,18 @@ const sections = [
 export function TermsAndConditionsDocument() {
   return (
     <div className="bg-white min-h-screen pt-24 font-montserrat pb-20">
-      <section className="bg-[#0B1528] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
+      <section className="bg-[#0F172A] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-3 relative z-10">
-          <span className="bg-white/10 text-[#D4541A] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
+          <span className="bg-white/10 text-[#2563EB] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
             Legal policies & guidelines
           </span>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            Terms & <span className="text-[#D4541A]">Conditions</span>
+            Terms & <span className="text-[#2563EB]">Conditions</span>
           </h1>
-          <div className="w-16 h-1.5 bg-[#D4541A] rounded-full mx-auto my-3" />
+          <div className="w-16 h-1.5 bg-[#2563EB] rounded-full mx-auto my-3" />
           <p className="text-xs sm:text-sm text-zinc-300 font-semibold max-w-xl mx-auto leading-relaxed">
             Please read these terms carefully before booking any adventure trip
-            with YouthCamping. By booking, you agree to this document.
+            with {brandConfig.name}. By booking, you agree to this document.
           </p>
         </div>
       </section>
@@ -40,14 +41,14 @@ export function TermsAndConditionsDocument() {
             <a
               key={s.id}
               href={`#${s.id}`}
-              className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wide px-3 py-1.5 rounded-full border border-zinc-200 text-[#0B1528] hover:border-[#D4541A] hover:text-[#D4541A] transition-colors"
+              className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wide px-3 py-1.5 rounded-full border border-zinc-200 text-[#0F172A] hover:border-[#2563EB] hover:text-[#2563EB] transition-colors"
             >
               {s.label}
             </a>
           ))}
         </nav>
 
-        <div className="bg-white border border-zinc-200/90 rounded-[28px] p-6 sm:p-10 space-y-10">
+        <div className="bg-white border border-zinc-200/90 rounded-2xl p-6 sm:p-10 space-y-10">
           <section id="declaration" className="space-y-3 border-b border-zinc-100 pb-8 scroll-mt-28">
             <SectionHeading n="01" title="Declaration" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
@@ -55,7 +56,7 @@ export function TermsAndConditionsDocument() {
                 I hereby agree that I am participating in this Adventure &amp;
                 leisure trip with proper medical advice on my own will &amp;
                 risk. I am solely responsible for any injury or accident
-                (minor/fatal) that takes place during the trip. YouthCamping is
+                (minor/fatal) that takes place during the trip. {brandConfig.name} is
                 not responsible for any such cases, incidents, or accidents
                 related to the above-mentioned subject. I also understand the
                 risk from wild animals and the dangerous state of water bodies
@@ -69,10 +70,10 @@ export function TermsAndConditionsDocument() {
             <SectionHeading n="02" title="Company liability & conduct" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
               <p>
-                YouthCamping is a modern adventure travel company that organizes
+                {brandConfig.name} is a modern adventure travel company that organizes
                 and arranges adventure trips to the mountains, which carry the
                 risk of accidents, loss of life, bodily injury, financial
-                repercussions, and similar outcomes. Neither YouthCamping nor
+                repercussions, and similar outcomes. Neither {brandConfig.name} nor
                 its agents or affiliated entities shall be responsible or liable
                 for any accident, bodily injury, illness or death, loss or
                 damage to baggage or property, or for any damages or claims
@@ -110,7 +111,7 @@ export function TermsAndConditionsDocument() {
                   fewer than 10 persons.
                 </li>
                 <li>
-                  YouthCamping does not accept any kind of payment through any
+                  {brandConfig.name} does not accept any kind of payment through any
                   3rd party portals, agents, booking offices, mobile
                   applications, etc.
                 </li>
@@ -137,7 +138,7 @@ export function TermsAndConditionsDocument() {
                 7 PM on all days excluding public holidays on{" "}
                 <a
                   href="tel:+919924246267"
-                  className="text-[#D4541A] font-bold underline underline-offset-2"
+                  className="text-[#2563EB] font-bold underline underline-offset-2"
                 >
                   +91 9924246267
                 </a>
@@ -152,7 +153,7 @@ export function TermsAndConditionsDocument() {
                 mail to{" "}
                 <a
                   href="mailto:info@youthcamping.in"
-                  className="text-[#D4541A] font-bold underline underline-offset-2"
+                  className="text-[#2563EB] font-bold underline underline-offset-2"
                 >
                   info@youthcamping.in
                 </a>
@@ -166,7 +167,7 @@ export function TermsAndConditionsDocument() {
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
               <ul className="list-disc space-y-2 pl-4">
                 <li>
-                  Train tickets are booked subject to availability. YouthCamping
+                  Train tickets are booked subject to availability. {brandConfig.name}
                   does not possess a right to change the status for waiting or
                   RAC tickets. However, the status will be conveyed to
                   participants while booking tickets.
@@ -177,12 +178,12 @@ export function TermsAndConditionsDocument() {
                   transport vehicle on schedule, etc., the expenditure of extra
                   accommodation facilities, new transport arrangements, etc.
                   will have to be borne by the participants themselves. No such
-                  responsibility would be on part of YouthCamping.
+                  responsibility would be on part of {brandConfig.name}.
                 </li>
                 <li>
                   Before boarding the vehicle, the traveler needs to check their
                   vehicle seats/windows. In case of damage, he/she must inform
-                  the respective representative of YouthCamping. If not informed
+                  the respective representative of {brandConfig.name}. If not informed
                   and found damaged, the traveler needs to pay the repairing
                   cost for the same.
                 </li>
@@ -190,7 +191,7 @@ export function TermsAndConditionsDocument() {
                 <li>
                   Please note: if you book a package from Mumbai, Vadodara, or
                   Surat, inter railway station transfers are not provided by
-                  YouthCamping.
+                  {brandConfig.name}.
                 </li>
               </ul>
             </div>
@@ -230,7 +231,7 @@ export function TermsAndConditionsDocument() {
                 See also the standalone{" "}
                 <Link
                   href="/cancellation-policy"
-                  className="text-[#D4541A] font-bold underline underline-offset-2"
+                  className="text-[#2563EB] font-bold underline underline-offset-2"
                 >
                   Cancellation &amp; Refund Policy
                 </Link>
@@ -243,12 +244,12 @@ export function TermsAndConditionsDocument() {
             <SectionHeading n="07" title="Content of trip" />
             <div className="space-y-3 text-xs sm:text-sm text-zinc-600 font-medium leading-relaxed pl-9">
               <p>
-                Photos and videos created on YouthCamping's trip (by
-                YouthCamping's content creators or clients) are the property of
-                YouthCamping and can only be used by YouthCamping for
+                Photos and videos created on {brandConfig.name}'s trip (by
+                {brandConfig.name}'s content creators or clients) are the property of
+                {brandConfig.name} and can only be used by {brandConfig.name} for
                 advertising across media platforms. None of the digital content
                 can be used by anyone without obtaining the rightful permissions
-                from YouthCamping.
+                from {brandConfig.name}.
               </p>
             </div>
           </section>
@@ -264,7 +265,7 @@ export function TermsAndConditionsDocument() {
                 All travelers have to follow the laws formed by local
                 authorities and governments. If anyone is found in violation of
                 law, the local administration or government may take legal
-                action. YouthCamping will not be held responsible in such cases.
+                action. {brandConfig.name} will not be held responsible in such cases.
               </p>
             </div>
           </section>
@@ -277,10 +278,10 @@ export function TermsAndConditionsDocument() {
 function SectionHeading({ n, title }: { n: string; title: string }) {
   return (
     <div className="flex items-center gap-2.5">
-      <span className="w-7 h-7 rounded-lg bg-orange-50 text-[#D4541A] font-black text-xs flex items-center justify-center shrink-0">
+      <span className="w-7 h-7 rounded-lg bg-orange-50 text-[#2563EB] font-black text-xs flex items-center justify-center shrink-0">
         {n}
       </span>
-      <h2 className="text-lg sm:text-xl font-black text-[#0B1528] uppercase tracking-tight">
+      <h2 className="text-lg sm:text-xl font-black text-[#0F172A] uppercase tracking-tight">
         {title}
       </h2>
     </div>

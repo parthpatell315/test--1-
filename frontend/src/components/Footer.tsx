@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
+import { BrandLogo, brandConfig } from "@/config/brand.config";
+
 // ─── Types matching the backend FooterConfig shape ───────────────────────────
 
 interface LinkItem {
@@ -53,9 +55,10 @@ const DEFAULT_COLUMNS: ColumnItem[] = [
     title: "Explore",
     visible: true,
     links: [
-      { id: "e1", label: "All Trips", href: "/trips", visible: true },
-      { id: "e2", label: "Blogs & Stories", href: "/blogs", visible: true },
-      { id: "e3", label: "FAQs & Support", href: "/questions", visible: true },
+      { id: "e1", label: "All Trips & Tours", href: "/trips", visible: true },
+      { id: "e2", label: "Destinations", href: "/trips", visible: true },
+      { id: "e3", label: "Travel Blogs", href: "/blogs", visible: true },
+      { id: "e4", label: "Help & FAQs", href: "/questions", visible: true },
     ],
   },
   {
@@ -63,8 +66,8 @@ const DEFAULT_COLUMNS: ColumnItem[] = [
     title: "Company",
     visible: true,
     links: [
-      { id: "c1", label: "About Us", href: "/about", visible: true },
-      { id: "c2", label: "Contact Us", href: "/contact", visible: true },
+      { id: "c1", label: "About Us", href: "/about-us", visible: true },
+      { id: "c2", label: "Contact Support", href: "/contact", visible: true },
       {
         id: "c3",
         label: "Terms & Conditions",
@@ -82,9 +85,9 @@ const DEFAULT_COLUMNS: ColumnItem[] = [
 ];
 
 const DEFAULT_SOCIAL: SocialLink[] = [
-  { platform: "instagram", url: "https://instagram.com/youthcamping" },
-  { platform: "facebook", url: "https://facebook.com/youthcamping" },
-  { platform: "youtube", url: "https://youtube.com/youthcamping" },
+  { platform: "instagram", url: "https://instagram.com" },
+  { platform: "facebook", url: "https://facebook.com" },
+  { platform: "youtube", url: "https://youtube.com" },
   { platform: "whatsapp", url: "https://wa.me/919924246267" },
 ];
 
@@ -98,7 +101,7 @@ const LEGAL_LINKS = [
 // ─── Style helpers ───────────────────────────────────────────────────────────
 
 const linkClass = cn(
-  "block py-1 text-[13px] font-medium leading-snug text-white/55",
+  "block py-1 text-[13px] font-medium leading-snug text-slate-400",
   "transition-[color,transform,opacity] duration-200 ease-out",
   "hover:text-white hover:translate-x-0.5",
   "focus-visible:outline-none focus-visible:text-white",
@@ -107,17 +110,17 @@ const linkClass = cn(
 
 const socialClass = cn(
   "inline-flex h-9 w-9 items-center justify-center",
-  "rounded-full border border-white/15 bg-transparent text-white/70",
+  "rounded-xl border border-white/10 bg-white/5 text-slate-300",
   "transition-[color,border-color,background-color] duration-200 ease-out",
-  "hover:border-[#FF4D00] hover:bg-[#FF4D00]/10 hover:text-[#FF4D00]",
-  "focus-visible:outline-none focus-visible:border-[#FF4D00] focus-visible:text-[#FF4D00]",
+  "hover:border-blue-500 hover:bg-blue-500/15 hover:text-blue-400",
+  "focus-visible:outline-none focus-visible:border-blue-500 focus-visible:text-blue-400",
   "motion-reduce:transition-none",
 );
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/90">
-      <span className="h-px w-3.5 shrink-0 bg-[#FF4D00]" aria-hidden />
+    <h3 className="flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-200">
+      <span className="h-px w-3.5 shrink-0 bg-blue-500" aria-hidden />
       {children}
     </h3>
   );
@@ -181,26 +184,21 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
 
   const cfg = footerConfig || {};
 
-  const brandName = cfg.brandName || "YouthCamping";
+  const brandName = cfg.brandName || brandConfig.name;
   const address =
-    cfg.address ||
-    "Money Plant High Street, A 738, Jagatpur Rd, Gota,\nAhmedabad, Gujarat 382470";
-  const phone = cfg.phone || "+91-99242 46267";
-  const email = cfg.email || "";
+    cfg.address || brandConfig.address;
+  const phone = cfg.phone || brandConfig.supportPhone;
+  const email = cfg.email || brandConfig.supportEmail;
   const copyright = cfg.copyright || "All Rights Reserved.";
-  // Dark navy footer needs a white wordmark. CMS logoUrl often points at
-  // light-bg assets (dark glyphs) that disappear on #0B1528 — keep the
-  // previous white-text treatment (footer-wordmark + invert).
-  const logoUrl = "/footer-wordmark.png";
   const showSocial = cfg.showSocial !== false;
   const showAddress = cfg.showAddress !== false;
   const showCopyright = cfg.showCopyright !== false;
-  const newsletterHeading = cfg.newsletterHeading || "Stay updated";
+  const newsletterHeading = cfg.newsletterHeading || "Join our community";
 
   const socialLinks =
     Array.isArray(cfg.socialLinks) && cfg.socialLinks.length > 0
       ? cfg.socialLinks
-      : DEFAULT_SOCIAL;
+      : brandConfig.socialLinks;
 
   const rawColumns =
     Array.isArray(cfg.columns) && cfg.columns.length > 0
@@ -223,21 +221,21 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
   };
 
   return (
-    <footer className="relative z-20 border-t border-white/10 bg-[#0B1528] font-montserrat text-white">
-      <div className="mx-auto max-w-[1280px] min-w-0 px-6 pt-10 pb-6 sm:px-10 sm:pt-12 sm:pb-8">
+    <footer className="relative z-20 border-t border-slate-800 bg-[#0F172A] font-montserrat text-white">
+      <div className="mx-auto max-w-[1280px] min-w-0 px-6 pt-12 pb-8 sm:px-10">
         <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-0">
           {/* Brand Column */}
           <div className="min-w-0 space-y-4 lg:col-span-5">
             <Link href="/" className="inline-flex items-center">
-              <img
-                src={logoUrl}
-                alt={brandName}
-                className="h-8 w-auto object-contain object-left brightness-0 invert sm:h-9"
-              />
+              <BrandLogo showText={true} textColor="text-white" />
             </Link>
 
+            <p className="max-w-[340px] text-xs font-normal leading-relaxed text-slate-400">
+              {brandConfig.subtitle}
+            </p>
+
             {showAddress && address && (
-              <p className="max-w-[340px] text-[13px] font-medium leading-relaxed text-white/50 whitespace-pre-line">
+              <p className="max-w-[340px] text-[13px] font-medium leading-relaxed text-slate-400 whitespace-pre-line">
                 {address}
               </p>
             )}
@@ -317,12 +315,11 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
           <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-end lg:justify-between lg:gap-8">
             <div className="min-w-0 max-w-md space-y-1.5">
               <h3 className="flex items-center gap-2.5 text-[13px] font-semibold tracking-wide text-white">
-                <span className="h-px w-3.5 shrink-0 bg-[#FF4D00]" aria-hidden />
+                <span className="h-px w-3.5 shrink-0 bg-blue-500" aria-hidden />
                 {newsletterHeading}
               </h3>
-              <p className="text-[13px] font-medium leading-snug text-white/50">
-                Travel stories, trip updates, and the occasional offer — in your
-                inbox.
+              <p className="text-[13px] font-medium leading-snug text-slate-400">
+                Curated travel inspirations, seasonal itineraries, and exclusive group departures.
               </p>
             </div>
 
@@ -339,26 +336,26 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
                   type="email"
                   value={newsletterEmail}
                   onChange={(e) => setNewsletterEmail(e.target.value)}
-                  placeholder="Email address"
+                  placeholder="Enter your email address"
                   required
                   className={cn(
-                    "min-h-[44px] min-w-0 flex-1 rounded-md",
-                    "border border-white/20 bg-white/[0.12] px-4 py-2.5",
+                    "min-h-[44px] min-w-0 flex-1 rounded-xl",
+                    "border border-slate-700 bg-slate-800/80 px-4 py-2.5",
                     "text-[13px] font-medium text-white outline-none",
-                    "placeholder:text-white/45",
+                    "placeholder:text-slate-400",
                     "transition-colors duration-200",
-                    "focus-visible:border-[#FF4D00]/70 focus-visible:bg-white/[0.16]",
+                    "focus-visible:border-blue-500 focus-visible:bg-slate-800",
                     "motion-reduce:transition-none",
                   )}
                 />
                 <button
                   type="submit"
                   className={cn(
-                    "inline-flex min-h-[44px] shrink-0 items-center justify-center",
-                    "rounded-md bg-[#FF4D00] px-6 text-[13px] font-semibold text-white",
-                    "transition-opacity duration-200 hover:opacity-90",
-                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B1528]",
-                    "active:opacity-80 motion-reduce:transition-none",
+                    "inline-flex min-h-[44px] shrink-0 items-center justify-center cursor-pointer",
+                    "rounded-xl bg-blue-600 px-6 text-[13px] font-bold text-white shadow-md shadow-blue-600/20",
+                    "transition-all duration-200 hover:bg-blue-700",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
+                    "active:scale-95 motion-reduce:transition-none",
                   )}
                 >
                   {subscribed ? "Subscribed ✓" : "Subscribe"}
@@ -369,44 +366,25 @@ export default function Footer({ footerConfig }: FooterProps = {}) {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex min-w-0 flex-col gap-3 border-t border-white/10 pt-5 text-[12px] font-medium text-white/40 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-          <p className="min-w-0 text-[13px] leading-snug text-white/55">
-            Tag us{" "}
-            <a
-              href="https://instagram.com/youthcamping"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white transition-colors duration-200 hover:text-[#FF4D00] motion-reduce:transition-none"
-            >
-              @youthcamping.in
-            </a>{" "}
-            and use{" "}
-            <span className="font-caveat text-[18px] font-bold leading-none text-[#FF4D00]">
-              #YouthCamping
-            </span>{" "}
-            to get featured.
+        <div className="flex min-w-0 flex-col gap-3 border-t border-slate-800 pt-6 text-[12px] font-medium text-slate-400 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+          <p className="min-w-0 text-[13px] leading-snug text-slate-400">
+            Certified Travel Platform · Operated with enterprise reliability
           </p>
 
           {showCopyright && (
             <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-1">
-              <p className="min-w-0">
+              <p className="min-w-0 text-slate-400">
                 © {new Date().getFullYear()} {brandName}. {copyright}
               </p>
               {LEGAL_LINKS.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="inline-flex items-center py-0.5 text-white/40 transition-colors duration-200 hover:text-white motion-reduce:transition-none"
+                  className="inline-flex items-center py-0.5 text-slate-400 transition-colors duration-200 hover:text-white motion-reduce:transition-none"
                 >
                   {item.label}
                 </Link>
               ))}
-              <span className="hidden text-white/20 sm:inline" aria-hidden>
-                ·
-              </span>
-              <p className="inline-flex items-center text-white/40">
-                Made for travellers
-              </p>
             </div>
           )}
         </div>

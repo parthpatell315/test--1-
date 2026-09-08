@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Calendar, Megaphone } from "lucide-react";
 import { toast } from "sonner";
@@ -171,13 +171,13 @@ export default function DashboardPage() {
           <div className="text-[12px] font-medium text-slate-500">{currentDateString}</div>
 
           <div className="flex items-center gap-2">
-            <div className="flex h-7 items-center rounded-lg border border-slate-200 bg-white px-3">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#FF4D00]">
-                {userRole ? `${userRole} view` : "Operator"}
+            <div className="flex h-7 items-center rounded-lg border border-slate-200 bg-white px-3 shadow-2xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600">
+                {userRole ? `${userRole} workspace` : "Operator"}
               </span>
             </div>
 
-            <div className="flex h-7 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5">
+            <div className="flex h-7 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 shadow-2xs">
               <Calendar className="h-3.5 w-3.5 text-slate-500" strokeWidth={1.75} />
               <select
                 value={dateFilter}
@@ -205,12 +205,12 @@ export default function DashboardPage() {
             <section key={cat} className="space-y-3">
               {cat !== "kpi" && (
                 <div className="flex min-h-6 items-center gap-3">
-                  <h2 className="flex shrink-0 items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#FF4D00] shadow-[0_0_4px_2px_rgba(255,77,0,0.4)]" />
+                  <h2 className="flex shrink-0 items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                    <span className="h-1.5 w-1.5 rounded-full bg-blue-600 shadow-xs" />
                     {info.title}
                   </h2>
                   <span className="h-px flex-1 bg-slate-200" />
-                  <span className="shrink-0 text-[10px] font-medium text-slate-600">
+                  <span className="shrink-0 text-[10px] font-medium text-slate-500">
                     {info.subtitle}
                   </span>
                 </div>
@@ -249,43 +249,43 @@ export default function DashboardPage() {
 
       {/* Dialog: Create Announcement */}
       <Dialog open={showAddAnnouncement} onOpenChange={setShowAddAnnouncement}>
-        <DialogContent className="sm:max-w-[425px] rounded-2xl border border-[#1E2D45] bg-[#0D1B2E] p-5 shadow-[0_8px_40px_0_rgba(0,0,0,0.6)]">
+        <DialogContent className="sm:max-w-[425px] rounded-xl border border-slate-200 bg-white p-5 shadow-xl">
           <DialogHeader className="space-y-1">
-            <DialogTitle className="flex items-center gap-2 text-[13px] font-semibold text-slate-200">
-              <Megaphone className="h-4 w-4 text-[#FF4D00]" strokeWidth={1.75} />
+            <DialogTitle className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+              <Megaphone className="h-4 w-4 text-blue-600" strokeWidth={1.75} />
               Publish announcement
             </DialogTitle>
-            <DialogDescription className="text-[11px] font-medium text-slate-500">
-              Post an update to the admin dashboard.
+            <DialogDescription className="text-xs font-medium text-slate-500">
+              Post an update to the company dashboard.
             </DialogDescription>
           </DialogHeader>
 
           <form onSubmit={handleCreateAnnouncement} className="mt-3 space-y-4">
             <div className="space-y-1.5">
-              <label className="text-[11px] font-medium text-slate-400">
+              <label className="text-xs font-semibold text-slate-700">
                 Announcement title
               </label>
               <Input
                 required
                 value={announcementTitle}
                 onChange={(e) => setAnnouncementTitle(e.target.value)}
-                placeholder="e.g. Office closed tomorrow due to weather"
-                className="h-8 rounded-lg border border-[#1E2D45] bg-[#060E1A] text-xs text-slate-200 placeholder:text-slate-600"
+                placeholder="e.g. System maintenance scheduled for Sunday"
+                className="h-9 rounded-lg border border-slate-200 bg-white text-xs text-slate-900 placeholder:text-slate-400"
               />
             </div>
-            <DialogFooter className="flex justify-end gap-2 pt-1">
+            <DialogFooter className="flex justify-end gap-2 pt-2 border-t border-slate-100">
               <Button
                 type="button"
-                variant="ghost"
+                variant="outline"
                 onClick={() => setShowAddAnnouncement(false)}
-                className="h-8 rounded-lg border border-[#1E2D45] text-xs font-semibold text-slate-400 hover:bg-[#1E2D45] hover:text-slate-200"
+                className="h-9 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 disabled={creatingAnnouncement}
-                className="h-8 rounded-lg bg-[#FF4D00] px-4 text-xs font-semibold text-white hover:bg-[#E04400]"
+                className="h-9 rounded-lg bg-blue-600 px-4 text-xs font-semibold text-white hover:bg-blue-700 shadow-xs"
               >
                 {creatingAnnouncement ? "Publishing..." : "Publish"}
               </Button>
@@ -296,29 +296,29 @@ export default function DashboardPage() {
 
       {/* Dialog: All Announcements */}
       <Dialog open={showAllAnnouncements} onOpenChange={setShowAllAnnouncements}>
-        <DialogContent className="flex max-h-[80vh] flex-col rounded-2xl border border-[#1E2D45] bg-[#0D1B2E] p-5 shadow-[0_8px_40px_0_rgba(0,0,0,0.6)] sm:max-w-[500px]">
+        <DialogContent className="flex max-h-[80vh] flex-col rounded-xl border border-slate-200 bg-white p-5 shadow-xl sm:max-w-[500px]">
           <DialogHeader className="space-y-1">
-            <DialogTitle className="flex items-center gap-2 text-[13px] font-semibold text-slate-200">
-              <Megaphone className="h-4 w-4 text-[#FF4D00]" strokeWidth={1.75} />
-              All announcements ({announcements.length})
+            <DialogTitle className="flex items-center gap-2 text-sm font-semibold text-slate-900">
+              <Megaphone className="h-4 w-4 text-blue-600" strokeWidth={1.75} />
+              Company announcements ({announcements.length})
             </DialogTitle>
-            <DialogDescription className="text-[11px] font-medium text-slate-500">
-              Updates published to the company.
+            <DialogDescription className="text-xs font-medium text-slate-500">
+              Updates published to the organization.
             </DialogDescription>
           </DialogHeader>
 
           <div className="no-scrollbar mt-3 max-h-[50vh] flex-1 space-y-2 overflow-y-auto pr-1">
             {announcements.length === 0 ? (
-              <p className="py-8 text-center text-[11px] font-medium text-slate-500">
+              <p className="py-8 text-center text-xs font-medium text-slate-400">
                 No announcements posted.
               </p>
             ) : (
               announcements.map((ann) => (
                 <div
                   key={ann.id}
-                  className="rounded-xl border border-[#1E2D45] bg-[#060E1A] p-3"
+                  className="rounded-lg border border-slate-200 bg-slate-50/70 p-3.5"
                 >
-                  <p className="text-[12px] font-medium leading-snug text-slate-200">
+                  <p className="text-xs font-semibold leading-snug text-slate-900">
                     {ann.title}
                   </p>
                   <p className="mt-1 text-[10px] font-medium text-slate-500">
@@ -333,11 +333,12 @@ export default function DashboardPage() {
             )}
           </div>
 
-          <DialogFooter className="mt-3 shrink-0 border-t border-[#1E2D45] pt-3">
+          <DialogFooter className="mt-3 shrink-0 border-t border-slate-100 pt-3">
             <Button
               type="button"
+              variant="outline"
               onClick={() => setShowAllAnnouncements(false)}
-              className="h-8 rounded-lg border border-[#1E2D45] bg-transparent px-4 text-xs font-semibold text-slate-400 hover:bg-[#1E2D45] hover:text-slate-200"
+              className="h-9 rounded-lg border border-slate-200 bg-white px-4 text-xs font-semibold text-slate-700 hover:bg-slate-50"
             >
               Close
             </Button>

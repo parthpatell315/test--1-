@@ -89,6 +89,7 @@ import NewBookingModal from "./NewBookingModal";
 import { knowledgeService } from "@/services/knowledge.service";
 import { erpService } from "@/services/erp.service";
 import { resolveAdminRoute } from "@/lib/adminRouteAliases";
+import { BrandLogo, brandConfig } from "@/config/brand.config";
 
 // Reconfigured hierarchical modules config for accordion logic:
 interface SidebarModule {
@@ -107,7 +108,7 @@ const sidebarModules: SidebarModule[] = [
     hasSubItems: false,
   },
   {
-    title: "Sales",
+    title: "Sales & CRM",
     icon: ShoppingBag,
     hasSubItems: true,
     subItems: [
@@ -135,7 +136,7 @@ const sidebarModules: SidebarModule[] = [
     ],
   },
   {
-    title: "Finance",
+    title: "Finance & Accounts",
     icon: Wallet,
     hasSubItems: true,
     subItems: [
@@ -155,16 +156,16 @@ const sidebarModules: SidebarModule[] = [
     ],
   },
   {
-    title: "Business",
-    icon: Tent,
+    title: "Inventory & CMS",
+    icon: Globe,
     hasSubItems: true,
     subItems: [
-      { title: "Trips", url: "/admin/trips" },
+      { title: "Trips / Products", url: "/admin/trips" },
       { title: "Website", url: "/admin/website" },
       { title: "Pages", url: "/admin/pages" },
       { title: "Blogs", url: "/admin/blogs" },
       { title: "Reviews", url: "/admin/reviews" },
-      { title: "SEO", url: "/admin/seo" },
+      { title: "SEO Center", url: "/admin/seo" },
       { title: "Analytics", url: "/admin/analytics" },
       { title: "Footer", url: "/admin/footer-management" },
     ],
@@ -175,39 +176,14 @@ const sidebarModules: SidebarModule[] = [
     hasSubItems: true,
     subItems: [
       { title: "Staff profiles", url: "/admin/staff-profiles" },
-      { title: "Roles", url: "/admin/roles" },
+      { title: "Roles & Permissions", url: "/admin/roles" },
+      { title: "Company Documents", url: "/admin/company-documents" },
       { title: "Email templates", url: "/admin/email-templates" },
       { title: "Settings", url: "/admin/settings" },
       { title: "Profile", url: "/admin/my-profile" },
     ],
   },
 ];
-
-// Brand mark: one triangle read two ways — a pitched tent (via the door
-// notch) and a summit. Drawn inline so it stays crisp at any rail width.
-function BrandMark({ className }: { className?: string }) {
-  return (
-    <span
-      className={cn(
-        "flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] bg-[#FF4D00]",
-        className,
-      )}
-    >
-      <svg
-        viewBox="0 0 24 24"
-        className="h-[18px] w-[18px]"
-        fill="#FFFFFF"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path
-          fillRule="evenodd"
-          d="M12 3.4 L21.6 20.4 L2.4 20.4 Z M12 12.4 L14.6 20.4 L9.4 20.4 Z"
-        />
-      </svg>
-    </span>
-  );
-}
 
 function AdminSidebar() {
   const { state, setOpenMobile, isMobile } = useSidebar();
@@ -279,20 +255,26 @@ function AdminSidebar() {
         {/* Brand / Logo Header */}
         <div
           className={cn(
-            "flex items-center justify-start shrink-0 h-14 px-4 overflow-hidden",
+            "flex items-center justify-start shrink-0 h-14 px-4 overflow-hidden border-b border-white/[0.06]",
             collapsed && "justify-center px-0",
           )}
         >
           {!collapsed ? (
-            <div className="flex w-full min-w-0 items-center gap-0">
-              <span className="truncate text-[15px] leading-none tracking-tight">
-                <span className="font-bold text-white">Youth</span>
-                <span className="font-light text-[#FF4D00]">Camping</span>
-              </span>
-              <span className="ml-2 text-[9px] font-bold uppercase tracking-widest text-slate-600 border border-slate-700 rounded px-1 py-0.5 leading-none">ERP</span>
+            <div className="flex w-full min-w-0 items-center gap-2.5">
+              <BrandLogo className="h-7 w-7" iconClassName="h-3.5 w-3.5" />
+              <div className="flex flex-col min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-[14px] font-bold text-white tracking-tight">
+                    {brandConfig.name}
+                  </span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/20 rounded px-1 py-0.5 leading-none">
+                    {brandConfig.badgeText}
+                  </span>
+                </div>
+              </div>
             </div>
           ) : (
-            <span className="text-[12px] font-black text-white tracking-tight">YC</span>
+            <BrandLogo className="h-8 w-8" iconClassName="h-4 w-4" />
           )}
         </div>
 
@@ -488,14 +470,14 @@ function AdminSidebar() {
                   )}
                 >
                   {isModuleActive && !collapsed && (
-                    <span className="absolute left-0 top-2 bottom-2 w-[2.5px] rounded-full bg-[#FF4D00] shadow-[0_0_6px_rgba(255,77,0,0.6)]" />
+                    <span className="absolute left-0 top-2 bottom-2 w-[2.5px] rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]" />
                   )}
                   <span
                     className={cn(
                       "flex h-6 w-6 items-center justify-center rounded-md shrink-0 transition-colors",
                       collapsed ? "" : "mr-2.5",
                       isModuleActive
-                        ? "text-[#FF4D00]"
+                        ? "text-blue-400"
                         : "text-slate-500 group-hover/nav:text-slate-300",
                     )}
                   >
@@ -515,7 +497,7 @@ function AdminSidebar() {
                   {!collapsed &&
                     hasSub &&
                     (isExpanded ? (
-                      <ChevronDown className="h-3 w-3 text-slate-600 ml-auto shrink-0" strokeWidth={2} />
+                      <ChevronDown className="h-3 w-3 text-slate-500 ml-auto shrink-0" strokeWidth={2} />
                     ) : (
                       <ChevronRight className="h-3 w-3 text-slate-600 ml-auto shrink-0" strokeWidth={2} />
                     ))}
@@ -535,12 +517,12 @@ function AdminSidebar() {
                           className={cn(
                             "text-[12px] py-1.5 px-2.5 rounded-md transition-all duration-100 flex items-center gap-1.5 cursor-pointer leading-snug",
                             active
-                              ? "text-white font-semibold bg-[#FF4D00]/10"
-                              : "text-slate-500 font-medium hover:text-slate-200 hover:bg-white/[0.04]",
+                              ? "text-white font-semibold bg-blue-500/15"
+                              : "text-slate-400 font-medium hover:text-slate-200 hover:bg-white/[0.04]",
                           )}
                           activeClassName=""
                         >
-                          {active && <span className="h-1 w-1 rounded-full bg-[#FF4D00] shrink-0" />}
+                          {active && <span className="h-1 w-1 rounded-full bg-blue-400 shrink-0" />}
                           <span>{sub.title}</span>
                         </NavLink>
                       );
@@ -556,7 +538,7 @@ function AdminSidebar() {
           {collapsed ? (
             <div className="flex flex-col items-center gap-2">
               {admin && (
-                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-[#FF4D00] to-[#ff7040] text-white flex items-center justify-center text-[11px] font-bold shadow-sm">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center text-[11px] font-bold shadow-sm">
                   {admin.name ? admin.name.charAt(0).toUpperCase() : "A"}
                 </div>
               )}
@@ -564,7 +546,7 @@ function AdminSidebar() {
                 type="button"
                 onClick={handleLogout}
                 title="Log out"
-                className="h-8 w-8 rounded-md text-slate-600 hover:text-red-400 hover:bg-red-500/10 flex items-center justify-center transition-colors"
+                className="h-8 w-8 rounded-md text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center transition-colors"
               >
                 <LogOut className="h-3.5 w-3.5" strokeWidth={1.75} />
               </button>
@@ -577,10 +559,10 @@ function AdminSidebar() {
                     <img
                       src={admin.avatarUrl}
                       alt=""
-                      className="h-7 w-7 rounded-full object-cover ring-1 ring-[#FF4D00]/30 shrink-0"
+                      className="h-7 w-7 rounded-full object-cover ring-1 ring-blue-500/30 shrink-0"
                     />
                   ) : (
-                    <div className="h-7 w-7 rounded-full bg-gradient-to-br from-[#FF4D00] to-[#ff7040] text-white flex items-center justify-center text-[10px] font-bold shrink-0 shadow-sm">
+                    <div className="h-7 w-7 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-white flex items-center justify-center text-[10px] font-bold shrink-0 shadow-sm">
                       {admin.name ? admin.name.charAt(0).toUpperCase() : "A"}
                     </div>
                   )}
@@ -598,7 +580,7 @@ function AdminSidebar() {
                 type="button"
                 onClick={handleLogout}
                 title="Log out"
-                className="h-7 w-7 rounded-md text-slate-600 hover:text-red-400 hover:bg-red-500/10 flex items-center justify-center shrink-0 transition-colors"
+                className="h-7 w-7 rounded-md text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 flex items-center justify-center shrink-0 transition-colors"
               >
                 <LogOut className="h-3.5 w-3.5" strokeWidth={1.75} />
               </button>
@@ -811,7 +793,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           {isNavigating && (
             <div className="absolute top-0 left-0 right-0 z-50 h-[2px] overflow-hidden">
               <div
-                className="h-full bg-[#FF4D00] rounded-full"
+                className="h-full bg-blue-600 rounded-full"
                 style={{
                   animation: "nav-progress 1.2s ease-in-out infinite",
                   width: "60%",
@@ -885,16 +867,16 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                 <DropdownMenuTrigger asChild>
                   <button
                     type="button"
-                    className="flex h-8 items-center gap-2 rounded-lg px-2 text-left outline-none transition-colors hover:bg-white/[0.07] focus-visible:ring-2 focus-visible:ring-[#FF4D00]/30"
+                    className="flex h-8 items-center gap-2 rounded-lg px-2 text-left outline-none transition-colors hover:bg-white/[0.07] focus-visible:ring-2 focus-visible:ring-blue-500/30"
                   >
                     {admin?.avatarUrl ? (
                       <img
                         src={admin.avatarUrl}
-                        className="h-6 w-6 shrink-0 rounded-full object-cover ring-1 ring-[#FF4D00]/30"
+                        className="h-6 w-6 shrink-0 rounded-full object-cover ring-1 ring-blue-500/30"
                         alt={admin?.name || "User"}
                       />
                     ) : (
-                      <div className="h-6 w-6 shrink-0 rounded-full bg-gradient-to-br from-[#FF4D00] to-[#ff7040] flex items-center justify-center text-[10px] font-bold text-white">
+                      <div className="h-6 w-6 shrink-0 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-[10px] font-bold text-white shadow-sm">
                         {admin?.name ? admin.name.charAt(0).toUpperCase() : "A"}
                       </div>
                     )}
@@ -921,7 +903,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                     <p className="text-[10px] font-medium text-slate-500 truncate">
                       {admin?.email}
                     </p>
-                    <span className="mt-1 inline-block text-[10px] font-semibold capitalize text-[#FF4D00] bg-[#FF4D00]/10 px-1.5 py-0.5 rounded">
+                    <span className="mt-1 inline-block text-[10px] font-semibold capitalize text-blue-400 bg-blue-500/10 border border-blue-500/20 px-1.5 py-0.5 rounded">
                       {resolveAdminDisplayRole(admin)}
                     </span>
                   </div>
@@ -953,26 +935,26 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                   {((admin?.email || "").toLowerCase().includes("hemal") ||
                     admin?.email === "hemal.patel@youthcamping.online") && (
                     <>
-                      <DropdownMenuSeparator className="my-1 border-slate-100" />
+                      <DropdownMenuSeparator className="my-1 border-white/[0.07]" />
                       <DropdownMenuItem
                         onClick={() => navigate("/admin/staff-profiles")}
-                        className="text-xs font-semibold text-[#C2410C] hover:bg-[#FF4D00]/5 cursor-pointer rounded-md py-1.5"
+                        className="text-xs font-semibold text-blue-400 hover:bg-blue-500/10 cursor-pointer rounded-md py-1.5"
                       >
-                        <Users className="w-4 h-4 mr-2 text-[#FF4D00]" />
+                        <Users className="w-4 h-4 mr-2 text-blue-400" />
                         Manage Staff Profiles
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => navigate("/admin/roles")}
-                        className="text-[12px] font-medium text-[#FF4D00] hover:bg-[#FF4D00]/10 cursor-pointer rounded-md py-1.5"
+                        className="text-[12px] font-medium text-blue-400 hover:bg-blue-500/10 cursor-pointer rounded-md py-1.5"
                       >
-                        <ShieldCheck className="w-3.5 h-3.5 mr-2 text-[#FF4D00]" />
+                        <ShieldCheck className="w-3.5 h-3.5 mr-2 text-blue-400" />
                         Roles & Permissions
                       </DropdownMenuItem>
                       <DropdownMenuItem
                         onClick={() => navigate("/admin/permission-matrix")}
-                        className="text-[12px] font-medium text-[#FF4D00] hover:bg-[#FF4D00]/10 cursor-pointer rounded-md py-1.5"
+                        className="text-[12px] font-medium text-blue-400 hover:bg-blue-500/10 cursor-pointer rounded-md py-1.5"
                       >
-                        <Sliders className="w-3.5 h-3.5 mr-2 text-[#FF4D00]" />
+                        <Sliders className="w-3.5 h-3.5 mr-2 text-blue-400" />
                         Permission Matrix
                       </DropdownMenuItem>
                     </>
@@ -985,7 +967,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                       e.preventDefault();
                       logout();
                     }}
-                    className="text-[12px] font-medium text-red-400 hover:bg-red-500/10 hover:text-red-300 focus:bg-red-500/10 cursor-pointer rounded-md py-1.5"
+                    className="text-[12px] font-medium text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 focus:bg-rose-500/10 cursor-pointer rounded-md py-1.5"
                   >
                     <LogOut className="w-3.5 h-3.5 mr-2" />
                     Log out
@@ -998,7 +980,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               <button
                 type="button"
                 onClick={() => setBookingModalOpen(true)}
-                className="hidden h-8 items-center gap-1.5 rounded-lg bg-[#FF4D00] px-3 text-[12px] font-semibold text-white shadow-[0_0_12px_rgba(255,77,0,0.25)] transition-colors hover:bg-[#E04400] md:inline-flex"
+                className="hidden h-8 items-center gap-1.5 rounded-lg bg-blue-600 px-3 text-[12px] font-semibold text-white shadow-xs transition-colors hover:bg-blue-700 md:inline-flex"
               >
                 <Plus className="h-3.5 w-3.5" strokeWidth={2.5} />
                 New Booking
@@ -1022,12 +1004,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                     </h3>
                     <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
                       <div className="space-y-2">
-                        <BookOpen className="w-4 h-4 text-[#FF4D00]" />
-                        <h4 className="font-semibold text-sm text-[#0B1528]">
-                          Knowledge Base
+                        <BookOpen className="w-4 h-4 text-blue-600" />
+                        <h4 className="font-semibold text-sm text-slate-900">
+                          Documentation & Guides
                         </h4>
                         <p className="text-[12px] text-slate-500 leading-relaxed">
-                          Step-by-step guides for configuring the platform.
+                          Step-by-step guides for configuring the travel operations platform.
                         </p>
                       </div>
                     </div>
@@ -1058,7 +1040,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           <div className="max-h-[380px] overflow-y-auto p-3.5 space-y-4">
             {isSearching ? (
               <div className="flex items-center justify-center py-8 gap-2">
-                <Loader2 className="w-4 h-4 animate-spin text-[#FF4D00]" />
+                <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
                 <span className="text-xs text-slate-450 font-bold uppercase tracking-wider">
                   Searching Database...
                 </span>

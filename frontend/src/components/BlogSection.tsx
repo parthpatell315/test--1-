@@ -8,6 +8,8 @@ import { Blog } from "@/types";
 import { normalizeImageUrl } from "@/lib/api";
 import { useWheelPassThrough } from "@/lib/useWheelPassThrough";
 
+import { brandConfig } from "@/config/brand.config";
+
 interface BlogCardItem {
   id: string;
   title: string;
@@ -34,15 +36,15 @@ export default function BlogSection({
     title === "New journal" ||
     title === "Journal" ||
     title === "Blogs"
-      ? "Stories"
+      ? "Travel"
       : title;
-  const displaySubtitle = subtitle || "From The Road";
+  const displaySubtitle = subtitle || "Journal & Guides";
 
   const apiMappedStories: BlogCardItem[] =
     blogs && blogs.length > 0
       ? blogs
           .map((b: any, idx: number) => {
-            const rawAuthor = String(b.author || "YouthCamping Team");
+            const rawAuthor = String(b.author || `${brandConfig.name} Editorial`);
             const cleanAuthor = rawAuthor.replace(/^by\s+/i, "");
             const storyImg = normalizeImageUrl(b.image) || "";
             const storyAvatar = normalizeImageUrl(b.authorImage) || "";
@@ -84,28 +86,26 @@ export default function BlogSection({
   if (displayStories.length === 0) return null;
 
   return (
-    <section className="relative overflow-hidden font-montserrat bg-white py-6 sm:py-8">
-      {/* Two-tone background transition: top half white, bottom half grey (#E2E7ED) */}
-      <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-[#E2E7ED] z-0" />
+    <section className="relative overflow-hidden font-montserrat bg-white py-10 sm:py-12">
       <div className="relative z-10 max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12">
         {/* HEADER ROW WITH SLIDER CONTROLS */}
         <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-nowrap">
           <div className="flex items-baseline gap-2 min-w-0 overflow-hidden whitespace-nowrap">
-            <h2 className="text-[#1B2A4A] font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-[40px] tracking-tight capitalize leading-tight">
-              {displayTitle.toLowerCase()}
+            <h2 className="text-slate-900 font-montserrat font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight capitalize leading-tight">
+              {displayTitle}
             </h2>
-            <span className="font-caveat font-bold text-[#D4541A] text-[26px] sm:text-[34px] md:text-[40px] lg:text-[46px] leading-none shrink-0 capitalize pr-2 sm:pr-3">
-              {displaySubtitle.toLowerCase()}
+            <span className="font-extrabold text-blue-600 text-2xl sm:text-3xl md:text-4xl leading-tight shrink-0 capitalize pr-2 sm:pr-3">
+              {displaySubtitle}
             </span>
           </div>
 
           <Link
             href="/blogs"
             prefetch={false}
-            className="group inline-flex items-center gap-1.5 text-xs sm:text-[15px] font-bold text-[#0B1528] hover:text-[#D4541A] transition-colors shrink-0"
+            className="group inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-700 hover:text-blue-600 transition-colors shrink-0"
           >
             <span>View All</span>
-            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D4541A] group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 text-blue-600 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 

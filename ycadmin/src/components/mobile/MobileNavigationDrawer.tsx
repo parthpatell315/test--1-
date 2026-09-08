@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Sheet,
@@ -54,14 +54,14 @@ export const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
 
         <div className="flex items-center justify-between border-b border-white/[0.08] bg-[#0B1528]/80 p-4">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#FF4D00] to-[#ff7040] text-sm font-black text-white">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 text-sm font-black text-white shadow-sm">
               {admin?.name?.charAt(0) || "A"}
             </div>
             <div className="min-w-0">
               <h3 className="truncate text-xs font-bold text-white">
                 {admin?.name || "Admin User"}
               </h3>
-              <span className="mt-0.5 inline-block rounded border border-[#FF4D00]/30 bg-[#FF4D00]/15 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-[#FF4D00]">
+              <span className="mt-0.5 inline-block rounded border border-blue-500/30 bg-blue-500/15 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-blue-400">
                 {isFounder ? "Founder" : admin?.role || "Staff"}
               </span>
             </div>
@@ -92,7 +92,7 @@ export const MobileNavigationDrawer: React.FC<MobileNavigationDrawerProps> = ({
                 className={cn(
                   "flex w-full touch-manipulation items-center gap-3 rounded-xl px-3.5 py-3 text-left text-xs font-semibold transition-all active:scale-[0.98]",
                   isActive
-                    ? "bg-[#FF4D00] font-bold text-white shadow-md shadow-orange-500/20"
+                    ? "bg-blue-600 font-bold text-white shadow-sm"
                     : "text-slate-300 hover:bg-white/[0.06] hover:text-white",
                 )}
               >

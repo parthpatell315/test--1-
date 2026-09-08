@@ -19,7 +19,7 @@ export default function UnauthorizedPage() {
         Error Code: 403 Forbidden
       </p>
 
-      <div className="max-w-md bg-white border border-[#E2E8F0] rounded-[4px] p-6 shadow-none mb-8">
+      <div className="max-w-md bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-8">
         <p className="text-slate-600 font-medium text-xs leading-relaxed">
           You do not have permission to access this area. If you believe this is
           an error, please contact your administrator to upgrade your role or
@@ -31,13 +31,13 @@ export default function UnauthorizedPage() {
         <Button
           variant="outline"
           onClick={() => navigate(-1)}
-          className="rounded-[4px] border border-slate-200 font-semibold text-xs px-4 h-8.5 flex items-center gap-1.5"
+          className="rounded-lg border border-slate-200 font-semibold text-xs px-4 h-9 flex items-center gap-1.5 hover:bg-slate-50"
         >
           <ArrowLeft className="w-3.5 h-3.5" /> Go Back
         </Button>
         <Button
           onClick={() => navigate("/admin")}
-          className="rounded-[4px] font-semibold text-xs px-4 h-8.5 bg-primary-orange hover:bg-primary-orange/90 text-white"
+          className="rounded-lg font-semibold text-xs px-4 h-9 bg-blue-600 hover:bg-blue-700 text-white shadow-xs"
         >
           Go to Dashboard
         </Button>

@@ -102,10 +102,10 @@ export default function QuotationFormPage() {
     travelling: [],
     expiryHours: 48,
     expert: {
-      name: "Zeel Panchal",
-      whatsapp: "918866699409",
-      phone: "918866699409",
-      designation: "YOUTHCAMPING Destination Expert",
+      name: "Travel Advisor",
+      whatsapp: "",
+      phone: "",
+      designation: "Destination Specialist",
       photo: "",
       avatar: "",
       description: "I'll guide you through your journey, customize your stays, and provide end-to-end trip support on WhatsApp.",
@@ -122,11 +122,11 @@ export default function QuotationFormPage() {
               ...prev,
               ...data,
               expert: {
-                name: data.expert?.name || prev.expert?.name || "Zeel Panchal",
+                name: data.expert?.name || prev.expert?.name || "Travel Advisor",
                 designation:
                   data.expert?.designation ||
                   prev.expert?.designation ||
-                  "YOUTHCAMPING Destination Expert",
+                  "Destination Specialist",
                 whatsapp:
                   data.expert?.whatsapp ||
                   data.expert?.phone ||
@@ -309,7 +309,7 @@ export default function QuotationFormPage() {
     const quoteLink = getPublicQuoteUrl();
     const message = `Hi ${formData.customerName},
 
-Greetings from YOUTHCAMPING Experiences!
+Greetings from our travel team!
 
 We've prepared your customized travel proposal for ${formData.tripTitle || "your upcoming trip"}.
 
@@ -317,8 +317,8 @@ View your quotation here:
 ${quoteLink}
 
 Best regards,
-${formData.expert?.name || "YOUTHCAMPING Team"}
-${formData.expert?.designation || "Destination Expert"}`;
+${formData.expert?.name || "Travel Specialist"}
+${formData.expert?.designation || "Destination Specialist"}`;
 
     const encoded = encodeURIComponent(message);
     window.open(
@@ -1490,12 +1490,12 @@ ${formData.expert?.designation || "Destination Expert"}`;
                         ...formData,
                         expert: {
                           ...(formData.expert || {}),
-                          name: formData.expert?.name || "Zeel Panchal",
+                          name: formData.expert?.name || "Travel Advisor",
                           designation:
                             formData.expert?.designation ||
-                            "YOUTHCAMPING Destination Expert",
-                          whatsapp: formData.expert?.whatsapp || "918866699409",
-                          phone: formData.expert?.phone || "918866699409",
+                            "Destination Specialist",
+                          whatsapp: formData.expert?.whatsapp || "",
+                          phone: formData.expert?.phone || "",
                           photo: newPhoto,
                           avatar: newPhoto,
                         },
@@ -1511,12 +1511,12 @@ ${formData.expert?.designation || "Destination Expert"}`;
                           ...formData,
                           expert: {
                             ...(formData.expert || {}),
-                            name: formData.expert?.name || "Zeel Panchal",
+                            name: formData.expert?.name || "Travel Advisor",
                             designation:
                               formData.expert?.designation ||
-                              "YOUTHCAMPING Destination Expert",
-                            whatsapp: formData.expert?.whatsapp || "918866699409",
-                            phone: formData.expert?.phone || "918866699409",
+                              "Destination Specialist",
+                            whatsapp: formData.expert?.whatsapp || "",
+                            phone: formData.expert?.phone || "",
                             photo: "",
                             avatar: "",
                           },
@@ -1546,13 +1546,13 @@ ${formData.expert?.designation || "Destination Expert"}`;
                         name: e.target.value,
                         designation:
                           formData.expert?.designation ||
-                          "YOUTHCAMPING Destination Expert",
-                        whatsapp: formData.expert?.whatsapp || "918866699409",
-                        phone: formData.expert?.phone || "918866699409",
+                          "Destination Specialist",
+                        whatsapp: formData.expert?.whatsapp || "",
+                        phone: formData.expert?.phone || "",
                       },
                     })
                   }
-                  placeholder="Zeel Panchal"
+                  placeholder="e.g. Alex Morgan"
                   className="h-9 bg-slate-50/70 border-slate-200 rounded-xl text-xs font-bold"
                 />
               </div>
@@ -1568,14 +1568,14 @@ ${formData.expert?.designation || "Destination Expert"}`;
                       ...formData,
                       expert: {
                         ...(formData.expert || {}),
-                        name: formData.expert?.name || "Zeel Panchal",
+                        name: formData.expert?.name || "Travel Advisor",
                         designation: e.target.value,
-                        whatsapp: formData.expert?.whatsapp || "918866699409",
-                        phone: formData.expert?.phone || "918866699409",
+                        whatsapp: formData.expert?.whatsapp || "",
+                        phone: formData.expert?.phone || "",
                       },
                     })
                   }
-                  placeholder="YOUTHCAMPING Destination Expert"
+                  placeholder="Destination Specialist"
                   className="h-9 bg-slate-50/70 border-slate-200 rounded-xl text-xs font-semibold"
                 />
               </div>
@@ -1594,16 +1594,16 @@ ${formData.expert?.designation || "Destination Expert"}`;
                       ...formData,
                       expert: {
                         ...(formData.expert || {}),
-                        name: formData.expert?.name || "Zeel Panchal",
+                        name: formData.expert?.name || "Travel Advisor",
                         designation:
                           formData.expert?.designation ||
-                          "YOUTHCAMPING Destination Expert",
+                          "Destination Specialist",
                         whatsapp: val,
                         phone: val,
                       },
                     });
                   }}
-                  placeholder="8866699409"
+                  placeholder="e.g. 9876543210"
                   className="h-9 bg-slate-50/70 border-slate-200 rounded-xl text-xs font-bold"
                 />
               </div>
@@ -1619,12 +1619,12 @@ ${formData.expert?.designation || "Destination Expert"}`;
                       ...formData,
                       expert: {
                         ...(formData.expert || {}),
-                        name: formData.expert?.name || "Zeel Panchal",
+                        name: formData.expert?.name || "Travel Advisor",
                         designation:
                           formData.expert?.designation ||
-                          "YOUTHCAMPING Destination Expert",
-                        whatsapp: formData.expert?.whatsapp || "918866699409",
-                        phone: formData.expert?.phone || "918866699409",
+                          "Destination Specialist",
+                        whatsapp: formData.expert?.whatsapp || "",
+                        phone: formData.expert?.phone || "",
                         description: e.target.value,
                       },
                     })

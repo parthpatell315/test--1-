@@ -4,64 +4,66 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ChevronDown, HelpCircle, MessageSquare, Phone } from "lucide-react";
 
+import { brandConfig } from "@/config/brand.config";
+
 const faqs = [
   {
-    category: "Booking & Payments",
+    category: "Booking & Reservations",
     questions: [
       {
-        q: "How do I book a trip with YouthCamping?",
-        a: "Simply browse our trips, select your preferred departure date and station (Ex-Delhi, Ex-Ahmedabad, Ex-Chandigarh, Ex-Mumbai), fill out the inquiry form, and our team will confirm your seat within 24 hours.",
+        q: `How do I book a tour with ${brandConfig.name}?`,
+        a: "Simply browse our trips catalog, select your preferred departure date and joining city (Ex-Delhi, Ex-Ahmedabad, Ex-Chandigarh, Ex-Mumbai), submit your traveler details, and our concierge team will confirm your seat.",
       },
       {
         q: "What payment modes are accepted?",
-        a: "We accept bank transfers (NEFT/IMPS), UPI payments, and cash at our Ahmedabad office. We do not accept payments via third-party portals or agents not listed on our website.",
+        a: "We accept net banking (NEFT/IMPS), UPI payments, credit/debit cards, and direct bank transfers. All transactions are securely processed with instantaneous receipt issuance.",
       },
       {
         q: "When is full payment due?",
-        a: "Full payment has to be done before 15 days of trip departure. An advance booking amount is required to secure your seat at the time of booking and is non-refundable.",
+        a: "Full payment is required 15 days prior to trip departure. An advance booking deposit is required to reserve your seat at the time of booking.",
       },
     ],
   },
   {
-    category: "Train Tickets & Travel",
+    category: "Travel Logistics & Transport",
     questions: [
       {
-        q: "Who books the train tickets?",
-        a: "YouthCamping handles all train ticket bookings via IRCTC. Ticket status (Confirmed / RAC / WL) is communicated to you before and after booking. We do not guarantee confirmed status but try our best to secure confirmed seats.",
+        q: "Who coordinates train and flight logistics?",
+        a: `${brandConfig.name} manages all verified transport logistics according to your package. Seat and berth status are communicated proactively before departure.`,
       },
       {
-        q: "What if my train ticket is on Waiting List?",
-        a: "We proactively monitor WL ticket status and inform you. In case of non-confirmation closer to departure, we arrange alternative transport or issue refunds for the ticket cost.",
+        q: "What happens if there are schedule disruptions?",
+        a: "We monitor route conditions continuously. In case of unexpected weather or transport disruptions, our on-ground ops team arranges verified alternative options.",
       },
     ],
   },
   {
-    category: "Stays & Accommodation",
+    category: "Accommodations & Hospitality",
     questions: [
       {
-        q: "What types of stays are included in the trip?",
-        a: "Depending on the route, stays include Boutique Hotels, Heritage Himalayan Homestays, and Luxury Dome Camping sites — all handpicked for cleanliness, hot water, and scenic value.",
+        q: "What types of stays are included in the package?",
+        a: "Stays include verified boutique hotels, heritage homestays, and premium Swiss tent glamping sites — all inspected for hygiene, hot water availability, and panoramic views.",
       },
       {
         q: "Are meals included in the package?",
-        a: "Most packages include breakfast and dinner. Local organic meals are served at homestay properties. All dietary restrictions should be communicated 5 days prior to departure.",
+        a: "Most packages include breakfast and dinner. Local organic cuisine is served at partner homestays. Special dietary needs can be communicated prior to departure.",
       },
     ],
   },
   {
-    category: "Safety & Group Dynamics",
+    category: "Safety & Group Support",
     questions: [
       {
-        q: "How large are the travel groups?",
-        a: "Our standard group size ranges from 15 to 40 travelers per batch. Smaller groups of under 10 travelers are handled as private custom expeditions.",
+        q: "What is the typical group size?",
+        a: "Our standard group size ranges from 12 to 30 travelers per departure to maintain a personalized boutique experience. Custom private departures are also available for private groups.",
       },
       {
-        q: "Is this safe for solo female travelers?",
-        a: "Absolutely! Thousands of solo female travelers have explored with us. Our certified trip captains maintain strict group safety protocols and regular safety briefings.",
+        q: "Is group travel safe for solo travelers?",
+        a: "Absolutely! A large portion of our community consists of solo travelers. Our certified trip leaders maintain strict group safety guidelines, icebreakers, and 24/7 on-ground assistance.",
       },
       {
-        q: "What happens in a medical emergency at high altitude?",
-        a: "Our trip captains carry first-aid kits and emergency oxygen cylinders. We work with local mountain rescue teams and have direct contact with emergency hospitals in all key route cities.",
+        q: "What emergency protocols are in place for remote routes?",
+        a: "Our trip leaders carry certified medical first-aid kits and emergency oxygen cylinders. We maintain 24/7 liaison with local mountain rescue networks and medical facilities.",
       },
     ],
   },
@@ -77,17 +79,17 @@ export default function FAQPage() {
   return (
     <div className="bg-white min-h-screen font-montserrat pt-24 pb-20">
       {/* Top Banner */}
-      <section className="bg-[#0B1528] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
+      <section className="bg-[#0F172A] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-3 relative z-10">
-          <span className="bg-white/10 text-[#D4541A] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block font-montserrat">
-            QUICK ANSWERS FOR TRAVELERS
+          <span className="bg-blue-900/50 text-blue-400 font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block font-montserrat">
+            HELP & CONCIERGE CENTER
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase font-montserrat">
-            FREQUENTLY ASKED <span className="text-[#D4541A]">QUESTIONS</span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight uppercase font-montserrat">
+            FREQUENTLY ASKED <span className="text-blue-400">QUESTIONS</span>
           </h1>
-          <div className="w-16 h-1.5 bg-[#D4541A] rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-zinc-300 font-semibold max-w-xl mx-auto leading-relaxed">
-            Answers to the most common questions from our traveler community.
+          <div className="w-16 h-1 bg-blue-500 rounded-full mx-auto my-3" />
+          <p className="text-xs sm:text-sm text-slate-300 font-normal max-w-xl mx-auto leading-relaxed">
+            Everything you need to know about our expeditions, booking policies, and on-ground safety.
           </p>
         </div>
       </section>
@@ -97,7 +99,7 @@ export default function FAQPage() {
           <div key={gi} className="space-y-3">
             {/* Category Label */}
             <div className="flex items-center gap-2 mb-4">
-              <span className="bg-[#D4541A] text-white font-extrabold text-[10px] uppercase tracking-wider px-3 py-1 rounded-full font-montserrat">
+              <span className="bg-blue-600 text-white font-bold text-[11px] uppercase tracking-wider px-3 py-1 rounded-xl font-montserrat">
                 {group.category}
               </span>
             </div>
@@ -108,7 +110,7 @@ export default function FAQPage() {
               return (
                 <div
                   key={qi}
-                  className={`bg-white border rounded-[20px] overflow-hidden transition-all shadow-2xs ${isOpen ? "border-[#D4541A]" : "border-zinc-200/90"}`}
+                  className={`bg-white border rounded-2xl overflow-hidden transition-all shadow-2xs ${isOpen ? "border-blue-600" : "border-slate-200"}`}
                 >
                   <button
                     onClick={() => toggle(key)}
@@ -116,19 +118,19 @@ export default function FAQPage() {
                   >
                     <div className="flex items-center gap-3">
                       <HelpCircle
-                        className={`w-4 h-4 shrink-0 transition-colors ${isOpen ? "text-[#D4541A]" : "text-zinc-400"}`}
+                        className={`w-4 h-4 shrink-0 transition-colors ${isOpen ? "text-blue-600" : "text-slate-400"}`}
                       />
-                      <span className="text-sm font-extrabold text-[#0B1528] font-montserrat leading-snug">
+                      <span className="text-sm font-extrabold text-slate-900 font-montserrat leading-snug">
                         {item.q}
                       </span>
                     </div>
                     <ChevronDown
-                      className={`w-4 h-4 shrink-0 text-[#D4541A] transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                      className={`w-4 h-4 shrink-0 text-blue-600 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
                     />
                   </button>
 
                   {isOpen && (
-                    <div className="px-5 sm:px-6 pb-4 pt-0 border-t border-zinc-100 text-xs sm:text-sm text-zinc-600 font-semibold leading-relaxed pl-[calc(1.25rem+28px)] font-montserrat">
+                    <div className="px-5 sm:px-6 pb-4 pt-0 border-t border-slate-100 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed pl-[calc(1.25rem+28px)] font-montserrat">
                       {item.a}
                     </div>
                   )}
@@ -139,30 +141,29 @@ export default function FAQPage() {
         ))}
 
         {/* Still Have Questions Banner */}
-        <div className="bg-[#0B1528] rounded-[28px] p-7 sm:p-10 mt-10 text-center space-y-3">
-          <h3 className="text-lg sm:text-2xl font-black text-white font-montserrat uppercase tracking-tight">
+        <div className="bg-[#0F172A] rounded-2xl p-7 sm:p-10 mt-10 text-center space-y-3 border border-slate-800">
+          <h3 className="text-lg sm:text-2xl font-extrabold text-white font-montserrat uppercase tracking-tight">
             Still Have Questions?
           </h3>
-          <p className="text-xs sm:text-sm text-zinc-300 font-semibold font-montserrat max-w-md mx-auto leading-relaxed">
-            Our 24/7 expedition team is available Mon–Sat 10 AM to 7 PM to
-            answer any specific itinerary or booking questions.
+          <p className="text-xs sm:text-sm text-slate-300 font-normal font-montserrat max-w-md mx-auto leading-relaxed">
+            Our 24/7 travel concierge is available to answer any specific itinerary or booking questions.
           </p>
           <div className="flex items-center justify-center gap-3 flex-wrap pt-2">
             <a
-              href="https://wa.me/919924246267"
+              href={`https://wa.me/${brandConfig.whatsappPhone}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#D4541A] text-white font-extrabold text-xs uppercase tracking-wider px-6 py-3 rounded-full transition-all hover:bg-[#c24813] active:scale-95 cursor-pointer shadow-md"
+              className="inline-flex items-center gap-2 bg-blue-600 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl transition-all hover:bg-blue-700 active:scale-95 cursor-pointer shadow-md shadow-blue-500/20"
             >
               <MessageSquare className="w-4 h-4" />
-              <span>WhatsApp Us</span>
+              <span>WhatsApp Concierge</span>
             </a>
             <a
-              href="tel:+919924246267"
-              className="inline-flex items-center gap-2 bg-white/10 text-white font-extrabold text-xs uppercase tracking-wider px-6 py-3 rounded-full hover:bg-white/20 transition-all active:scale-95 cursor-pointer"
+              href={`tel:${brandConfig.supportPhone.replace(/\s/g, "")}`}
+              className="inline-flex items-center gap-2 bg-white/10 text-white font-bold text-xs uppercase tracking-wider px-6 py-3 rounded-xl hover:bg-white/20 transition-all active:scale-95 cursor-pointer"
             >
               <Phone className="w-4 h-4" />
-              <span>+91-99242 46267</span>
+              <span>{brandConfig.supportPhone}</span>
             </a>
           </div>
         </div>

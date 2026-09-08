@@ -100,15 +100,15 @@ export default function Destinations({
 
   return (
     <section
-      className="popular-destinations popular-section destinations-grid w-full pt-4 pb-2 sm:pt-5 sm:pb-2 font-montserrat overflow-hidden border-0 outline-none shadow-none bg-[#E2E7ED]"
+      className="popular-destinations popular-section destinations-grid w-full pt-8 pb-8 sm:pt-10 sm:pb-10 font-montserrat overflow-hidden border-0 outline-none shadow-none bg-slate-50/80"
     >
       <div className="max-w-[1440px] mx-auto px-6 sm:px-8 md:px-12 min-w-0 w-full">
         <div className="flex items-center justify-between mb-6 sm:mb-8 gap-3 flex-nowrap">
           <div className="flex items-baseline gap-2 min-w-0 overflow-hidden whitespace-nowrap">
-            <h2 className="text-[#0B1528] font-montserrat font-black text-2xl sm:text-3xl md:text-4xl lg:text-[40px] tracking-tight capitalize leading-tight">
+            <h2 className="text-slate-900 font-montserrat font-extrabold text-2xl sm:text-3xl md:text-4xl tracking-tight capitalize leading-tight">
               {primaryWord}
             </h2>
-            <span className="font-caveat font-bold text-[#FF4D00] text-[26px] sm:text-[34px] md:text-[40px] lg:text-[46px] leading-none shrink-0 capitalize pr-2 sm:pr-3">
+            <span className="font-extrabold text-blue-600 text-2xl sm:text-3xl md:text-4xl leading-tight shrink-0 capitalize pr-2 sm:pr-3">
               {accentWord}
             </span>
           </div>
@@ -120,7 +120,7 @@ export default function Destinations({
               aria-label="Previous Destinations"
               className="dest-nav"
             >
-              <ChevronLeft className="w-5 h-5 text-[#0B1528]" strokeWidth={2.25} />
+              <ChevronLeft className="w-5 h-5 text-slate-800" strokeWidth={2.25} />
             </button>
             <button
               type="button"
@@ -128,7 +128,7 @@ export default function Destinations({
               aria-label="Next Destinations"
               className="dest-nav dest-nav-next"
             >
-              <ChevronRight className="w-5 h-5 text-[#0B1528]" strokeWidth={2.25} />
+              <ChevronRight className="w-5 h-5 text-slate-800" strokeWidth={2.25} />
             </button>
           </div>
         </div>
@@ -140,9 +140,8 @@ export default function Destinations({
             style={{ touchAction: "pan-x" }}
           >
             {displayItems.map((item, idx) => {
-              const useScript = idx % 2 === 1;
               const cardClass =
-                "dest-photo-card group relative block w-full aspect-[9/14] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF4D00]";
+                "dest-photo-card group relative block w-full aspect-[9/13] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600";
               const inner = (
                 <>
                   {item.img ? (
@@ -150,24 +149,25 @@ export default function Destinations({
                       src={item.img}
                       alt={item.name}
                       loading="lazy"
-                      className="dest-photo-img absolute inset-0 w-full h-full object-cover"
+                      className="dest-photo-img absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-zinc-300" aria-hidden />
+                    <div className="absolute inset-0 bg-slate-200" aria-hidden />
                   )}
                   <div
-                    className="dest-photo-fade pointer-events-none absolute inset-0 z-[1]"
+                    className="absolute inset-0 z-[1] bg-gradient-to-t from-black/80 via-black/20 to-transparent"
                     aria-hidden
                   />
-                  <span
-                    className={`absolute top-0 inset-x-0 z-[2] px-3 pt-5 sm:pt-6 text-center text-white ${
-                      useScript
-                        ? "font-caveat font-bold text-[28px] sm:text-[32px] leading-none"
-                        : "font-montserrat font-extrabold text-[16px] sm:text-[18px] tracking-[0.06em] uppercase leading-tight"
-                    }`}
-                  >
-                    {item.name}
-                  </span>
+                  <div className="absolute bottom-0 inset-x-0 z-[2] p-4 text-left">
+                    <span className="block text-white font-extrabold text-base sm:text-lg tracking-tight leading-snug">
+                      {item.name}
+                    </span>
+                    {item.subtext && (
+                      <span className="block text-slate-300 text-xs font-medium mt-0.5">
+                        {item.subtext}
+                      </span>
+                    )}
+                  </div>
                 </>
               );
 

@@ -270,58 +270,61 @@ export default function TripCard({
       </div>
 
       {/* LOWER WHITE CARD CONTENT CONTAINER WITH GENEROUS SIDE WHITESPACE PADDING */}
-      <div className="trip-card-body relative z-10 -mt-4 pt-6 pb-5 px-6 sm:px-7 mx-1 sm:mx-1.5 bg-white rounded-b-[26px] rounded-t-[16px] border border-zinc-200/80 flex flex-col flex-1 font-montserrat justify-between">
+      <div className="trip-card-body relative z-10 -mt-4 pt-6 pb-5 px-6 sm:px-7 mx-1 sm:mx-1.5 bg-white rounded-b-2xl rounded-t-xl border border-slate-200 shadow-sm flex flex-col flex-1 font-montserrat justify-between transition-shadow group-hover:shadow-md">
         <div>
           {/* META ROW: DURATION & EX-CITY */}
-          <div className="flex items-center justify-between font-montserrat text-[12px] sm:text-[13px] font-normal text-[#666666] mb-2.5 gap-2 pt-0.5">
+          <div className="flex items-center justify-between text-xs font-medium text-slate-500 mb-2 gap-2 pt-0.5">
             <div className="flex items-center gap-1.5 min-w-0">
-              <Clock className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+              <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               <span className="truncate">{durationText}</span>
             </div>
-            <div className="flex items-center gap-1.5 min-w-0 ml-2">
-              <MapPin className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-              <span className="truncate">{exCity}</span>
-            </div>
+            {exCity && (
+              <div className="flex items-center gap-1.5 min-w-0 ml-2">
+                <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <span className="truncate">{exCity}</span>
+              </div>
+            )}
           </div>
 
-          {/* TITLE — MONTSERRAT EXTRA BOLD (800) + CAVEAT ORANGE HANDWRITTEN SUBTITLE */}
-          <div className="min-h-[50px] flex flex-col justify-center mb-1">
+          {/* TITLE & SUBTITLE */}
+          <div className="min-h-[48px] flex flex-col justify-center mb-1">
             <h3
-              className="trip-card-title font-montserrat text-[17px] sm:text-[18px] leading-[1.25] font-black group-hover:text-[#0B1528] transition-colors"
-              style={{ fontWeight: 800, color: "#0B1528" }}
+              className="trip-card-title text-base sm:text-[17px] leading-snug font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors"
             >
               {mainTitle}
             </h3>
             {subTitle && (
-              <span className="font-caveat font-bold text-[#D4541A] text-[20px] sm:text-[22px] leading-none block mt-0.5">
+              <span className="text-xs font-semibold text-blue-600 block mt-0.5">
                 {subTitle}
               </span>
             )}
           </div>
 
-          {/* TAGLINE — MONTSERRAT REGULAR (400), 13-14PX, #666666 */}
-          <p className="font-montserrat text-[#666666] text-[13px] sm:text-[14px] font-normal line-clamp-1 mb-3.5">
-            {tagline}
-          </p>
+          {/* TAGLINE */}
+          {tagline && (
+            <p className="text-slate-500 text-xs font-normal line-clamp-1 mb-3">
+              {tagline}
+            </p>
+          )}
         </div>
 
-        <div className="mt-auto">
-          {/* PRICE ROW — MONTSERRAT BOLD 700, 16-18PX, #D4541A */}
-          <div className="flex items-baseline gap-1.5 mb-2.5">
-            <span className="font-montserrat text-[#D4541A] font-normal text-xs sm:text-sm">
-              From
+        <div className="mt-auto pt-2 border-t border-slate-100 flex items-center justify-between">
+          {/* PRICE */}
+          <div className="flex flex-col">
+            <span className="text-[11px] font-medium text-slate-400">
+              Starting from
             </span>
-            <span className="font-montserrat text-[#D4541A] font-bold text-[16px] sm:text-[18px] leading-none">
+            <span className="text-base sm:text-lg font-extrabold text-slate-900 leading-tight">
               {Number.isFinite(price) && price > 0
                 ? `₹${price.toLocaleString("en-IN")}`
-                : "Price unavailable"}
+                : "Contact for price"}
             </span>
           </div>
 
-          {/* VIEW TRIP LINK */}
-          <div className="trip-card-cta inline-flex items-center gap-1.5 font-montserrat font-bold text-xs sm:text-[14px] text-[#0B1528] group-hover:text-[#D4541A]">
-            <span>View Trip</span>
-            <span className="text-[#D4541A] font-bold text-sm">→</span>
+          {/* VIEW TRIP CTA BUTTON */}
+          <div className="trip-card-cta inline-flex items-center gap-1 text-xs font-bold text-blue-600 group-hover:translate-x-0.5 transition-transform">
+            <span>Details</span>
+            <span className="text-sm">→</span>
           </div>
         </div>
         </div>

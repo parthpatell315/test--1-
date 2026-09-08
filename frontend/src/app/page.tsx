@@ -12,12 +12,13 @@ import { unwrapData } from "@/lib/publicData";
 import { Trip, Review, Blog } from "@/types";
 import { pageMetadata } from "@/lib/seo";
 
+import { brandConfig } from "@/config/brand.config";
+
 export const revalidate = 60;
 
 export const metadata: Metadata = pageMetadata({
-  title: "YouthCamping — Adventure Tours for Young India",
-  description:
-    "Book Himachal Pradesh, Ladakh, Kashmir, Kerala group tours. Best adventure trips for young adults from Gujarat.",
+  title: `${brandConfig.name} — ${brandConfig.tagline}`,
+  description: brandConfig.subtitle,
   path: "/",
 });
 

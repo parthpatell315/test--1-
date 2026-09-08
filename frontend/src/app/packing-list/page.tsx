@@ -3,10 +3,11 @@ import Link from "next/link";
 import { Backpack, CheckCircle2 } from "lucide-react";
 import { pageMetadata } from "@/lib/seo";
 
+import { brandConfig } from "@/config/brand.config";
+
 export const metadata: Metadata = pageMetadata({
-  title: "Packing List | YouthCamping",
-  description:
-    "What to pack for a YouthCamping group trip: documents, clothing, shoes, and mountain essentials.",
+  title: `Packing List | ${brandConfig.name}`,
+  description: `Essential packing checklist for ${brandConfig.name} adventure tours: documents, clothing, footwear, and travel kit.`,
   path: "/packing-list",
 });
 
@@ -14,35 +15,35 @@ const groups = [
   {
     title: "Documents",
     items: [
-      "Government photo ID (original + a photocopy or phone photo)",
-      "Booking confirmation / trip WhatsApp group details",
-      "Any medical notes or prescriptions you already use",
+      "Government photo ID (original + photocopy or digital scan)",
+      "Booking confirmation / trip concierge group details",
+      "Any personal medical prescriptions you regularly require",
     ],
   },
   {
-    title: "Clothing",
+    title: "Clothing & Layers",
     items: [
-      "Quick-dry t-shirts and a warm layer for cold evenings",
-      "Comfortable trekking pants or joggers",
-      "Rain jacket or poncho (Himalayan weather changes fast)",
-      "Extra socks and a cap or buff",
+      "Quick-dry athletic tops and thermal layers for cold evenings",
+      "Comfortable trekking pants or outdoor joggers",
+      "Waterproof rain jacket or poncho (mountain weather changes quickly)",
+      "Extra wool/moisture-wicking socks and a beanie or sun cap",
     ],
   },
   {
-    title: "Shoes & bag",
+    title: "Footwear & Luggage",
     items: [
-      "Broken-in walking or trekking shoes with grip",
-      "A 40–60L backpack for clothing and a small daypack if you have one",
-      "A dry bag or zip pouches for electronics and wet clothes",
+      "Broken-in walking or hiking shoes with deep rubber grip",
+      "A 40–60L main backpack and a lightweight daypack",
+      "Waterproof dry bag or ziplock pouches for electronics",
     ],
   },
   {
-    title: "Personal kit",
+    title: "Personal Essentials",
     items: [
-      "Sunscreen, lip balm, and a basic first-aid pouch",
-      "Reusable water bottle",
-      "Power bank and phone charger",
-      "Personal toiletries (keep it light)",
+      "High SPF sunscreen, lip balm, and personal first-aid items",
+      "Reusable insulated water bottle",
+      "High-capacity power bank and charging cables",
+      "Compact personal toiletries",
     ],
   },
 ];
@@ -50,19 +51,17 @@ const groups = [
 export default function PackingListPage() {
   return (
     <div className="bg-white min-h-screen pt-24 font-montserrat pb-20">
-      <section className="bg-[#0B1528] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
+      <section className="bg-[#0F172A] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-3 relative z-10">
-          <span className="bg-white/10 text-[#D4541A] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
-            Before you leave
+          <span className="bg-blue-900/50 text-blue-400 font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
+            PRE-DEPARTURE CHECKLIST
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            PACKING <span className="text-[#D4541A]">LIST</span>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight uppercase">
+            PACKING <span className="text-blue-400">GUIDE</span>
           </h1>
-          <div className="w-16 h-1.5 bg-[#D4541A] rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-zinc-300 font-semibold max-w-xl mx-auto leading-relaxed">
-            A practical checklist for YouthCamping group trips. Your trip
-            captain may add destination-specific notes in the batch WhatsApp
-            group.
+          <div className="w-16 h-1 bg-blue-500 rounded-full mx-auto my-3" />
+          <p className="text-xs sm:text-sm text-slate-300 font-normal max-w-xl mx-auto leading-relaxed">
+            A comprehensive checklist for {brandConfig.name} expeditions. Your trip leader will also provide route-specific updates in your batch coordination group.
           </p>
         </div>
       </section>
@@ -71,11 +70,11 @@ export default function PackingListPage() {
         {groups.map((group) => (
           <section
             key={group.title}
-            className="bg-white border border-zinc-200/90 rounded-[28px] p-6 sm:p-8 space-y-4"
+            className="bg-white border border-slate-200/90 rounded-2xl p-6 sm:p-8 space-y-4 shadow-sm"
           >
             <div className="flex items-center gap-3">
-              <Backpack className="w-5 h-5 text-[#D4541A]" />
-              <h2 className="text-lg font-black text-[#0B1528] uppercase tracking-tight">
+              <Backpack className="w-5 h-5 text-blue-600" />
+              <h2 className="text-lg font-extrabold text-slate-900 uppercase tracking-tight">
                 {group.title}
               </h2>
             </div>
@@ -83,23 +82,23 @@ export default function PackingListPage() {
               {group.items.map((item) => (
                 <li
                   key={item}
-                  className="flex items-start gap-2 text-sm text-zinc-600 font-medium leading-relaxed"
+                  className="flex items-start gap-2 text-sm text-slate-600 font-normal leading-relaxed"
                 >
-                  <CheckCircle2 className="w-4 h-4 text-[#D4541A] mt-0.5 shrink-0" />
+                  <CheckCircle2 className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
                   {item}
                 </li>
               ))}
             </ul>
           </section>
         ))}
-        <p className="text-xs sm:text-sm text-zinc-500 font-medium text-center">
-          Need trip-specific help?{" "}
-          <Link href="/contact" className="text-[#D4541A] font-bold">
-            Contact us
+        <p className="text-xs sm:text-sm text-slate-500 font-normal text-center">
+          Need trip-specific assistance?{" "}
+          <Link href="/contact" className="text-blue-600 font-bold hover:underline">
+            Contact Concierge
           </Link>{" "}
-          or read{" "}
-          <Link href="/how-it-works" className="text-[#D4541A] font-bold">
-            how booking works
+          or view{" "}
+          <Link href="/how-it-works" className="text-blue-600 font-bold hover:underline">
+            How Booking Works
           </Link>
           .
         </p>

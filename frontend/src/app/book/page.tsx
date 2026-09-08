@@ -44,7 +44,7 @@ const choiceCardClass = (active: boolean, compact = false) =>
       ? "px-2.5 py-2.5 min-h-[44px] flex items-center justify-center"
       : "p-3 min-h-[72px] flex flex-col justify-between gap-1.5",
     active
-      ? "border-[#D4541A] bg-[#D4541A]/5 shadow-sm text-slate-900"
+      ? "border-[#2563EB] bg-[#2563EB]/5 shadow-sm text-slate-900"
       : "border-slate-200/80 bg-white text-slate-600 hover:border-slate-300",
   );
 
@@ -123,8 +123,11 @@ const parseTripDate = (dateStr?: string) => {
   }
 };
 
-const travelerHasIdProof = (traveler: any) =>
-  Boolean(traveler?.aadhaarUrl || traveler?.idProofUrl);
+const travelerHasIdProof = (traveler: any) => {
+  if (Array.isArray(traveler?.idProofUrls) && traveler.idProofUrls.length > 0)
+    return true;
+  return Boolean(traveler?.aadhaarUrl || traveler?.idProofUrl);
+};
 
 function BookingForm() {
   const searchParams = useSearchParams();
@@ -570,10 +573,17 @@ function BookingForm() {
       if (data.success && data.url) {
         setFormData((prev) => {
           const list = [...(prev.participantsList || [])] as any[];
+          const existing = Array.isArray(list[index].idProofUrls)
+            ? [...list[index].idProofUrls]
+            : list[index].aadhaarUrl
+              ? [list[index].aadhaarUrl]
+              : [];
+          existing.push(data.url);
           list[index] = {
             ...list[index],
-            aadhaarUrl: data.url,
-            idProofUrl: data.url,
+            idProofUrls: existing,
+            aadhaarUrl: existing[0],
+            idProofUrl: existing[0],
             aadhaarFileName: file.name,
           };
           return { ...prev, participantsList: list };
@@ -586,15 +596,29 @@ function BookingForm() {
       alert("Document upload failed. Please try again.");
     } finally {
       setUploadingAadhaarIndex(null);
+      // Reset file input so same file can be re-selected
+      if (e.target) e.target.value = "";
     }
   };
 
-  const handleRemoveAadhaar = (index: number) => {
-    const list = [...formData.participantsList] as any[];
-    delete list[index].aadhaarUrl;
-    delete list[index].idProofUrl;
-    delete list[index].aadhaarFileName;
-    setFormData((prev) => ({ ...prev, participantsList: list }));
+  const handleRemoveAadhaarPhoto = (travelerIndex: number, photoIndex: number) => {
+    setFormData((prev) => {
+      const list = [...(prev.participantsList || [])] as any[];
+      const urls = Array.isArray(list[travelerIndex].idProofUrls)
+        ? [...list[travelerIndex].idProofUrls]
+        : list[travelerIndex].aadhaarUrl
+          ? [list[travelerIndex].aadhaarUrl]
+          : [];
+      urls.splice(photoIndex, 1);
+      list[travelerIndex] = {
+        ...list[travelerIndex],
+        idProofUrls: urls,
+        aadhaarUrl: urls[0] || null,
+        idProofUrl: urls[0] || null,
+        aadhaarFileName: urls.length > 0 ? list[travelerIndex].aadhaarFileName : null,
+      };
+      return { ...prev, participantsList: list };
+    });
   };
 
   // Check if selected variant is Direct Join / Excludes travel options
@@ -868,10 +892,13 @@ function BookingForm() {
           roomSharing: p.roomSharing,
           trainOption: p.trainOption,
           foodPreference: p.foodPreference || "Normal Food",
-          idProof: p.aadhaarUrl || p.idProofUrl || null,
-          idProofUrl: p.aadhaarUrl || p.idProofUrl || null,
-          aadhaarUrl: p.aadhaarUrl || p.idProofUrl || null,
-          aadhaar: p.aadhaarUrl || p.idProofUrl || null,
+          idProofUrls: Array.isArray(p.idProofUrls) && p.idProofUrls.length > 0
+            ? p.idProofUrls
+            : (p.aadhaarUrl || p.idProofUrl) ? [p.aadhaarUrl || p.idProofUrl] : [],
+          idProof: p.idProofUrls?.[0] || p.aadhaarUrl || p.idProofUrl || null,
+          idProofUrl: p.idProofUrls?.[0] || p.aadhaarUrl || p.idProofUrl || null,
+          aadhaarUrl: p.idProofUrls?.[0] || p.aadhaarUrl || p.idProofUrl || null,
+          aadhaar: p.idProofUrls?.[0] || p.aadhaarUrl || p.idProofUrl || null,
         })),
         trainClass: formData.participantsList[0]?.trainOption || "Sleeper",
         roomType: formData.participantsList[0]?.roomSharing || "Triple Sharing",
@@ -933,7 +960,7 @@ function BookingForm() {
         {/* Sleek Header Banner */}
         <div className="bg-[#0B1528] rounded-xl p-3 text-white space-y-0.5 shadow-sm">
           <div className="flex items-center justify-between">
-            <span className="text-[8px] font-black uppercase tracking-widest text-[#D4541A] bg-white/10 px-2 py-0.5 rounded-full">
+            <span className="text-[8px] font-black uppercase tracking-widest text-[#2563EB] bg-white/10 px-2 py-0.5 rounded-full">
               Your trip
             </span>
             <span className="text-[9px] font-extrabold text-slate-300 bg-white/5 px-2 py-0.5 rounded-md border border-white/10">
@@ -984,7 +1011,7 @@ function BookingForm() {
               (!isDirectJoin && t.trainOption !== "Sleeper"),
           ) && (
             <div className="pt-1.5 border-t border-slate-200/60 space-y-1">
-              <span className="text-[8px] font-extrabold uppercase tracking-widest text-[#D4541A] block mb-1">
+              <span className="text-[8px] font-extrabold uppercase tracking-widest text-[#2563EB] block mb-1">
                 Upgrades
               </span>
               {formData.participantsList.map((t, i) => {
@@ -1058,7 +1085,7 @@ function BookingForm() {
         </div>
 
         <div className="space-y-2">
-          <div className="bg-gradient-to-br from-[#D4541A] to-[#FF8A00] p-3.5 rounded-2xl flex flex-col justify-between text-white shadow-md shadow-[#D4541A]/15">
+          <div className="bg-gradient-to-br from-[#2563EB] to-[#3B82F6] p-3.5 rounded-2xl flex flex-col justify-between text-white shadow-md shadow-[#2563EB]/15">
             <div className="flex justify-between items-center">
               <span className="text-[8px] font-extrabold uppercase tracking-widest opacity-90 block">
                 Total (pay now)
@@ -1145,7 +1172,7 @@ function BookingForm() {
                 <div className="flex-1 min-w-0 p-3 sm:p-3.5 flex flex-col justify-center gap-1.5">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#D4541A]">
+                      <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#2563EB]">
                         YouthCamping
                       </p>
                       <h1 className="font-caveat font-bold text-[22px] sm:text-[26px] leading-none text-[#0B1528] truncate">
@@ -1164,7 +1191,7 @@ function BookingForm() {
                   </div>
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-semibold text-slate-600">
                     <span className="inline-flex items-center gap-1.5 min-w-0">
-                      <span className="inline-flex flex-col items-center justify-center w-7 h-7 rounded-md bg-[#D4541A] text-white leading-none shrink-0">
+                      <span className="inline-flex flex-col items-center justify-center w-7 h-7 rounded-md bg-[#2563EB] text-white leading-none shrink-0">
                         <span className="text-[6px] font-bold uppercase tracking-wide">
                           {parsedDate.month}
                         </span>
@@ -1178,7 +1205,7 @@ function BookingForm() {
                     </span>
                     <span className="hidden sm:inline text-slate-300">|</span>
                     <span className="inline-flex items-center gap-1 min-w-0">
-                      <MapPin className="w-3 h-3 text-[#D4541A] shrink-0" />
+                      <MapPin className="w-3 h-3 text-[#2563EB] shrink-0" />
                       <span className="capitalize truncate font-bold text-slate-800">
                         {joiningLabel}
                       </span>
@@ -1224,7 +1251,7 @@ function BookingForm() {
                     className={cn(
                       "w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-all",
                       item.active
-                        ? "bg-[#D4541A] text-white"
+                        ? "bg-[#2563EB] text-white"
                         : "bg-slate-100 text-slate-400 border border-slate-200",
                     )}
                   >
@@ -1260,13 +1287,13 @@ function BookingForm() {
               >
                 <span className="flex items-center gap-1.5">
                   Price summary
-                  <span className="bg-orange-100 text-[#D4541A] px-2 py-0.5 rounded-full text-[9px] lowercase font-extrabold">
+                  <span className="bg-blue-100 text-[#2563EB] px-2 py-0.5 rounded-full text-[9px] lowercase font-extrabold">
                     {formData.participants} pax
                   </span>
                 </span>
                 <div className="flex items-center gap-1.5">
                   <div className="text-right">
-                    <span className="text-[#D4541A] font-mono text-xs font-black block">
+                    <span className="text-[#2563EB] font-mono text-xs font-black block">
                       ₹{pricing.finalTotal.toLocaleString()}
                     </span>
                     {paymentMode === "Partial Payment" && (
@@ -1301,12 +1328,12 @@ function BookingForm() {
                 >
                   <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm">
                     <div className="border-b border-slate-100 pb-2">
-                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#D4541A]">
+                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#2563EB]">
                         Step 1 of 4
                       </p>
                       <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900">
                         Lead contact{" "}
-                        <span className="font-caveat font-bold text-[#D4541A] text-xl sm:text-2xl">
+                        <span className="font-bold text-blue-600 text-xl sm:text-2xl">
                           details
                         </span>
                       </h2>
@@ -1319,13 +1346,13 @@ function BookingForm() {
                       <div className="relative group">
                         <User
                           size={15}
-                          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#D4541A] transition-colors"
+                          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#2563EB] transition-colors"
                         />
                         <input
                           type="text"
                           required
                           placeholder="Full Name *"
-                          className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#D4541A] focus:ring-2 focus:ring-[#D4541A]/5 outline-none transition-all"
+                          className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/5 outline-none transition-all"
                           value={formData.name}
                           onChange={(e) =>
                             setFormData({ ...formData, name: e.target.value })
@@ -1337,13 +1364,13 @@ function BookingForm() {
                         <div className="relative group">
                           <Phone
                             size={15}
-                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#D4541A] transition-colors"
+                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#2563EB] transition-colors"
                           />
                           <input
                             type="tel"
                             required
                             placeholder="WhatsApp Number *"
-                            className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#D4541A] focus:ring-2 focus:ring-[#D4541A]/5 outline-none transition-all"
+                            className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/5 outline-none transition-all"
                             value={formData.phone}
                             onChange={(e) =>
                               setFormData({
@@ -1357,12 +1384,12 @@ function BookingForm() {
                         <div className="relative group">
                           <Mail
                             size={15}
-                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#D4541A] transition-colors"
+                            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#2563EB] transition-colors"
                           />
                           <input
                             type="email"
                             placeholder="Email Address"
-                            className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#D4541A] focus:ring-2 focus:ring-[#D4541A]/5 outline-none transition-all"
+                            className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/5 outline-none transition-all"
                             value={formData.email}
                             onChange={(e) =>
                               setFormData({
@@ -1377,13 +1404,13 @@ function BookingForm() {
                       <div className="relative group">
                         <Building
                           size={15}
-                          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#D4541A] transition-colors"
+                          className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#2563EB] transition-colors"
                         />
                         <input
                           type="text"
                           required
                           placeholder="City/State *"
-                          className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#D4541A] focus:ring-2 focus:ring-[#D4541A]/5 outline-none transition-all"
+                          className="w-full h-11 bg-slate-50/50 border border-slate-200 rounded-xl pl-10 pr-3 text-xs font-bold text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/5 outline-none transition-all"
                           value={formData.cityState}
                           onChange={(e) =>
                             setFormData({
@@ -1409,7 +1436,7 @@ function BookingForm() {
                   {/* Joining Point Selection */}
                   <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-sm">
                     <div className="border-b border-slate-100 pb-2.5">
-                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#D4541A]">
+                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#2563EB]">
                         Step 2 of 4 · Route
                       </p>
                       <h2 className="text-base font-extrabold tracking-tight text-slate-900">
@@ -1451,7 +1478,7 @@ function BookingForm() {
                                 </p>
                               </div>
                               {active && (
-                                <span className="shrink-0 w-5 h-5 rounded-full bg-[#D4541A] flex items-center justify-center mt-0.5">
+                                <span className="shrink-0 w-5 h-5 rounded-full bg-[#2563EB] flex items-center justify-center mt-0.5">
                                   <Check
                                     size={11}
                                     strokeWidth={3}
@@ -1479,12 +1506,12 @@ function BookingForm() {
                   {/* Travelers Manifest Inputs */}
                   <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-sm">
                     <div className="border-b border-slate-100 pb-2.5">
-                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#D4541A]">
+                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#2563EB]">
                         Manifest
                       </p>
                       <h2 className="text-base font-extrabold tracking-tight text-slate-900">
                         Traveler{" "}
-                        <span className="font-caveat font-bold text-[#D4541A] text-xl">
+                        <span className="font-bold text-blue-600 text-xl">
                           details
                         </span>
                       </h2>
@@ -1510,7 +1537,7 @@ function BookingForm() {
                               className={choiceCardClass(active, true)}
                             >
                               {active && (
-                                <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#D4541A] flex items-center justify-center">
+                                <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                                   <Check
                                     size={9}
                                     strokeWidth={3}
@@ -1542,7 +1569,7 @@ function BookingForm() {
                           )}
                         >
                           {formData.participants > 5 && (
-                            <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#D4541A] flex items-center justify-center">
+                            <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                               <Check
                                 size={9}
                                 strokeWidth={3}
@@ -1564,7 +1591,7 @@ function BookingForm() {
                       {/* Dropdown for More than 5 selection */}
                       {formData.participants > 5 && (
                         <div className="pt-1 max-w-xs">
-                          <label className="text-[9px] font-extrabold uppercase tracking-wider text-[#D4541A] block mb-1.5">
+                          <label className="text-[9px] font-extrabold uppercase tracking-wider text-[#2563EB] block mb-1.5">
                             Select count (6 to 12)
                           </label>
                           <select
@@ -1572,7 +1599,7 @@ function BookingForm() {
                             onChange={(e) =>
                               syncParticipantsCount(Number(e.target.value))
                             }
-                            className="w-full h-11 bg-white border-2 border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#D4541A]"
+                            className="w-full h-11 bg-white border-2 border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#2563EB]"
                           >
                             {[6, 7, 8, 9, 10, 11, 12].map((cnt) => (
                               <option key={cnt} value={cnt}>
@@ -1591,14 +1618,14 @@ function BookingForm() {
                           key={index}
                           className="p-3.5 sm:p-4 bg-slate-50/40 border border-slate-200/90 rounded-2xl space-y-3"
                         >
-                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#D4541A]">
+                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#2563EB]">
                             Traveler {index + 1}
                           </span>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                             <input
                               required
                               placeholder="Full Name *"
-                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#D4541A] focus:ring-2 focus:ring-[#D4541A]/5"
+                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/5"
                               value={traveler.name}
                               onChange={(e) =>
                                 handleParticipantChange(
@@ -1611,7 +1638,7 @@ function BookingForm() {
                             <input
                               required
                               placeholder="Mobile Number *"
-                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#D4541A] focus:ring-2 focus:ring-[#D4541A]/5"
+                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/5"
                               value={traveler.phone}
                               onChange={(e) =>
                                 handleParticipantChange(
@@ -1629,7 +1656,7 @@ function BookingForm() {
                               min={1}
                               max={120}
                               placeholder="Age *"
-                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#D4541A] focus:ring-2 focus:ring-[#D4541A]/5"
+                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/5"
                               value={traveler.age}
                               onChange={(e) => {
                                 const val = e.target.value;
@@ -1647,7 +1674,7 @@ function BookingForm() {
                             />
                             <select
                               aria-label={`Gender for traveler ${index + 1}`}
-                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#D4541A]"
+                              className="w-full h-11 bg-white border border-slate-200 rounded-xl px-3 text-xs font-bold text-slate-800 outline-none focus:border-[#2563EB]"
                               value={traveler.gender}
                               onChange={(e) =>
                                 handleParticipantChange(
@@ -1694,7 +1721,7 @@ function BookingForm() {
                                     className={choiceCardClass(active, true)}
                                   >
                                     {active && (
-                                      <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#D4541A] flex items-center justify-center">
+                                      <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                                         <Check
                                           size={9}
                                           strokeWidth={3}
@@ -1743,7 +1770,7 @@ function BookingForm() {
                                       className={choiceCardClass(active, true)}
                                     >
                                       {active && (
-                                        <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#D4541A] flex items-center justify-center">
+                                        <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                                           <Check
                                             size={9}
                                             strokeWidth={3}
@@ -1785,7 +1812,7 @@ function BookingForm() {
                                     className={choiceCardClass(active, true)}
                                   >
                                     {active && (
-                                      <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#D4541A] flex items-center justify-center">
+                                      <span className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#2563EB] flex items-center justify-center">
                                         <Check
                                           size={9}
                                           strokeWidth={3}
@@ -1802,11 +1829,11 @@ function BookingForm() {
                             </div>
                           </div>
 
-                          {/* Aadhaar Card / ID Proof Upload (Required) */}
+                          {/* Aadhaar Card / ID Proof Upload (Required — Multi-photo) */}
                           <div className="space-y-2 pt-2 border-t border-slate-200/70">
                             <div className="flex items-center justify-between gap-2">
                               <label className="text-[9px] font-extrabold uppercase tracking-widest text-slate-700">
-                                ID proof{" "}
+                                ID proof (Front & Back){" "}
                                 <span className="text-rose-600 normal-case tracking-normal font-black">
                                   *
                                 </span>
@@ -1817,11 +1844,56 @@ function BookingForm() {
                               {travelerHasIdProof(traveler) && (
                                 <span className="text-emerald-600 font-bold flex items-center gap-1 normal-case text-[10px] shrink-0">
                                   <CheckCircle2 className="w-3.5 h-3.5" />{" "}
-                                  Uploaded
+                                  {(Array.isArray((traveler as any).idProofUrls) ? (traveler as any).idProofUrls.length : 1)} uploaded
                                 </span>
                               )}
                             </div>
 
+                            {/* Uploaded photo thumbnails */}
+                            {(() => {
+                              const urls: string[] = Array.isArray((traveler as any).idProofUrls)
+                                ? (traveler as any).idProofUrls
+                                : (traveler as any).aadhaarUrl
+                                  ? [(traveler as any).aadhaarUrl]
+                                  : [];
+                              if (urls.length === 0) return null;
+                              return (
+                                <div className="flex flex-wrap gap-2">
+                                  {urls.map((url: string, pIdx: number) => (
+                                    <div
+                                      key={pIdx}
+                                      className="relative group w-20 h-20 rounded-xl overflow-hidden border-2 border-emerald-200 bg-emerald-50 shadow-sm"
+                                    >
+                                      {url.toLowerCase().endsWith(".pdf") ? (
+                                        <div className="w-full h-full flex flex-col items-center justify-center bg-slate-100">
+                                          <CreditCard className="w-6 h-6 text-slate-500" />
+                                          <span className="text-[8px] font-bold text-slate-500 mt-1">PDF</span>
+                                        </div>
+                                      ) : (
+                                        <img
+                                          src={url.startsWith("http") ? url : `${API_BASE_URL}${url}`}
+                                          alt={`ID photo ${pIdx + 1}`}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      )}
+                                      <span className="absolute top-0.5 left-1 text-[7px] font-black text-white bg-black/50 px-1 py-0.5 rounded">
+                                        {pIdx === 0 ? "Front" : pIdx === 1 ? "Back" : `#${pIdx + 1}`}
+                                      </span>
+                                      <button
+                                        type="button"
+                                        onClick={() => handleRemoveAadhaarPhoto(index, pIdx)}
+                                        className="absolute top-0.5 right-0.5 w-5 h-5 bg-rose-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-[10px] font-black shadow"
+                                        title="Remove this photo"
+                                      >
+                                        ×
+                                      </button>
+                                    </div>
+                                  ))}
+                                </div>
+                              );
+                            })()}
+
+                            {/* Upload / Add more button */}
                             <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
                               <label
                                 className={cn(
@@ -1833,15 +1905,14 @@ function BookingForm() {
                                       : "border-slate-300 bg-white",
                                 )}
                               >
-                                <CreditCard className="w-4 h-4 text-[#D4541A] shrink-0" />
+                                <CreditCard className="w-4 h-4 text-[#2563EB] shrink-0" />
                                 <span className="flex-1 min-w-0 text-[11px] font-semibold text-slate-600 leading-snug">
-                                  {(traveler as any).aadhaarFileName ||
-                                    (travelerHasIdProof(traveler)
-                                      ? "ID proof uploaded"
-                                      : "Upload Aadhaar / ID (JPG, PNG, PDF)")}
+                                  {travelerHasIdProof(traveler)
+                                    ? "Add back side / another photo"
+                                    : "Upload Aadhaar / ID (JPG, PNG, PDF)"}
                                 </span>
                                 <span className="shrink-0 text-[10px] font-extrabold uppercase tracking-wider bg-slate-100 text-slate-700 px-2.5 py-1.5 rounded-lg">
-                                  Browse
+                                  {travelerHasIdProof(traveler) ? "+ Add" : "Browse"}
                                 </span>
                                 <input
                                   type="file"
@@ -1853,17 +1924,6 @@ function BookingForm() {
                                   }
                                 />
                               </label>
-
-                              {travelerHasIdProof(traveler) && (
-                                <button
-                                  type="button"
-                                  onClick={() => handleRemoveAadhaar(index)}
-                                  className="h-11 sm:h-auto px-3 bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 rounded-xl text-xs font-bold transition-all shrink-0"
-                                  title="Remove file"
-                                >
-                                  Remove
-                                </button>
-                              )}
                             </div>
                             {!travelerHasIdProof(traveler) &&
                               error?.toLowerCase().includes("aadhaar") && (
@@ -1894,7 +1954,7 @@ function BookingForm() {
                       </p>
                     </div>
                     <textarea
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs font-semibold text-slate-800 placeholder-slate-400 outline-none focus:bg-white focus:border-[#D4541A] min-h-[88px] resize-y transition-all"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-xs font-semibold text-slate-800 placeholder-slate-400 outline-none focus:bg-white focus:border-[#2563EB] min-h-[88px] resize-y transition-all"
                       placeholder="Food allergies, room requests, or other details..."
                       value={formData.specialRequests}
                       onChange={(e) =>
@@ -1919,12 +1979,12 @@ function BookingForm() {
                   {/* Payment Plan */}
                   <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm">
                     <div className="border-b border-slate-100 pb-2">
-                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#D4541A]">
+                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#2563EB]">
                         Step 3 of 4
                       </p>
                       <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900">
                         Payment{" "}
-                        <span className="font-caveat font-bold text-[#D4541A] text-xl sm:text-2xl">
+                        <span className="font-bold text-blue-600 text-xl sm:text-2xl">
                           plan
                         </span>
                       </h2>
@@ -1951,7 +2011,7 @@ function BookingForm() {
                               Pay In Full
                             </span>
                             {paymentMode === "Full Payment" && (
-                              <span className="shrink-0 w-5 h-5 rounded-full bg-[#D4541A] flex items-center justify-center">
+                              <span className="shrink-0 w-5 h-5 rounded-full bg-[#2563EB] flex items-center justify-center">
                                 <Check
                                   size={11}
                                   strokeWidth={3}
@@ -1977,7 +2037,7 @@ function BookingForm() {
                               Partial Payment (Deposit)
                             </span>
                             {paymentMode === "Partial Payment" && (
-                              <span className="shrink-0 w-5 h-5 rounded-full bg-[#D4541A] flex items-center justify-center">
+                              <span className="shrink-0 w-5 h-5 rounded-full bg-[#2563EB] flex items-center justify-center">
                                 <Check
                                   size={11}
                                   strokeWidth={3}
@@ -2011,12 +2071,12 @@ function BookingForm() {
                 >
                   <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 space-y-3 shadow-sm">
                     <div className="border-b border-slate-100 pb-2">
-                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#D4541A]">
+                      <p className="text-[9px] font-extrabold uppercase tracking-widest text-[#2563EB]">
                         Step 4 of 4
                       </p>
                       <h2 className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900">
                         Terms &{" "}
-                        <span className="font-caveat font-bold text-[#D4541A] text-xl sm:text-2xl">
+                        <span className="font-bold text-blue-600 text-xl sm:text-2xl">
                           verification
                         </span>
                       </h2>
@@ -2047,7 +2107,7 @@ function BookingForm() {
                           <button
                             type="button"
                             onClick={() => setCurrentStep(1)}
-                            className="text-[9px] text-[#D4541A] hover:text-[#E65200] font-bold transition-all"
+                            className="text-[9px] text-[#2563EB] hover:text-[#1D4ED8] font-bold transition-all"
                           >
                             Edit
                           </button>
@@ -2096,7 +2156,7 @@ function BookingForm() {
                           <button
                             type="button"
                             onClick={() => setCurrentStep(2)}
-                            className="text-[9px] text-[#D4541A] hover:text-[#E65200] font-bold transition-all"
+                            className="text-[9px] text-[#2563EB] hover:text-[#1D4ED8] font-bold transition-all"
                           >
                             Edit
                           </button>
@@ -2135,7 +2195,7 @@ function BookingForm() {
                       <label className="flex items-start gap-2.5 cursor-pointer text-xs select-none">
                         <input
                           type="checkbox"
-                          className="mt-0.5 accent-[#D4541A] rounded"
+                          className="mt-0.5 accent-[#2563EB] rounded"
                           checked={acceptTerms}
                           onChange={(e) => setAcceptTerms(e.target.checked)}
                         />
@@ -2145,7 +2205,7 @@ function BookingForm() {
                             href="/terms-and-conditions"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#D4541A] underline underline-offset-2"
+                            className="text-[#2563EB] underline underline-offset-2"
                             onClick={(e) => e.stopPropagation()}
                           >
                             Terms and Conditions
@@ -2157,7 +2217,7 @@ function BookingForm() {
                       <label className="flex items-start gap-2.5 cursor-pointer text-xs select-none">
                         <input
                           type="checkbox"
-                          className="mt-0.5 accent-[#D4541A] rounded"
+                          className="mt-0.5 accent-[#2563EB] rounded"
                           checked={whatsappOptIn}
                           onChange={(e) => setWhatsappOptIn(e.target.checked)}
                         />
@@ -2216,7 +2276,7 @@ function BookingForm() {
                         ? "Upload Aadhaar / Govt ID for every traveler"
                         : undefined
                     }
-                    className="hidden lg:flex bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs items-center gap-1.5 shadow-md shadow-[#D4541A]/15 transition-all active:scale-95 min-h-[48px] disabled:opacity-45 disabled:cursor-not-allowed disabled:active:scale-100"
+                    className="hidden lg:flex bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs items-center gap-1.5 shadow-md shadow-[#2563EB]/15 transition-all active:scale-95 min-h-[48px] disabled:opacity-45 disabled:cursor-not-allowed disabled:active:scale-100"
                   >
                     Continue <ChevronRight size={14} strokeWidth={3} />
                   </button>
@@ -2225,7 +2285,7 @@ function BookingForm() {
                     onClick={handleFinalSubmit}
                     disabled={loading}
                     type="button"
-                    className="hidden lg:flex bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs items-center gap-1.5 shadow-md shadow-[#D4541A]/25 transition-all active:scale-95 disabled:opacity-50 min-h-[48px]"
+                    className="hidden lg:flex bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl py-3 px-6 font-extrabold uppercase tracking-widest text-xs items-center gap-1.5 shadow-md shadow-[#2563EB]/25 transition-all active:scale-95 disabled:opacity-50 min-h-[48px]"
                   >
                     {loading ? (
                       <Loader2 className="animate-spin w-4 h-4" />
@@ -2246,13 +2306,13 @@ function BookingForm() {
 
               <div className="grid grid-cols-2 gap-2 text-center">
                 <div className="bg-white border border-slate-200 rounded-xl p-2.5 flex flex-col items-center gap-0.5 shadow-xs">
-                  <ShieldCheck className="text-[#D4541A]" size={13} />
+                  <ShieldCheck className="text-[#2563EB]" size={13} />
                   <span className="text-[9px] font-bold capitalize tracking-wider text-slate-700">
                     100% Secured
                   </span>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-xl p-2.5 flex flex-col items-center gap-0.5 shadow-xs">
-                  <Lock className="text-[#D4541A]" size={13} />
+                  <Lock className="text-[#2563EB]" size={13} />
                   <span className="text-[9px] font-bold capitalize tracking-wider text-slate-700">
                     SSL Checkout
                   </span>
@@ -2275,7 +2335,7 @@ function BookingForm() {
         )}
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 py-2.5 px-4">
           <div className="min-w-0">
-            <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#D4541A] block">
+            <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#2563EB] block">
               Pay now
             </span>
             <div className="flex items-baseline gap-1.5 flex-wrap">
@@ -2303,7 +2363,7 @@ function BookingForm() {
                     ? "Upload Aadhaar / Govt ID for every traveler"
                     : undefined
                 }
-                className="bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-5 font-extrabold uppercase tracking-widest text-[11px] flex items-center gap-1 shadow-lg shadow-[#D4541A]/25 transition-all active:scale-95 min-h-[48px] disabled:opacity-45 disabled:cursor-not-allowed"
+                className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl py-3 px-5 font-extrabold uppercase tracking-widest text-[11px] flex items-center gap-1 shadow-lg shadow-[#2563EB]/25 transition-all active:scale-95 min-h-[48px] disabled:opacity-45 disabled:cursor-not-allowed"
               >
                 Continue <ChevronRight size={14} strokeWidth={3} />
               </button>
@@ -2312,7 +2372,7 @@ function BookingForm() {
                 onClick={handleFinalSubmit}
                 disabled={loading}
                 type="button"
-                className="bg-[#D4541A] hover:bg-[#E65200] text-white rounded-xl py-3 px-5 font-extrabold uppercase tracking-widest text-[11px] flex items-center gap-1 shadow-lg shadow-[#D4541A]/35 transition-all active:scale-95 disabled:opacity-50 min-h-[48px]"
+                className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl py-3 px-5 font-extrabold uppercase tracking-widest text-[11px] flex items-center gap-1 shadow-lg shadow-[#2563EB]/35 transition-all active:scale-95 disabled:opacity-50 min-h-[48px]"
               >
                 {loading ? (
                   <Loader2 className="animate-spin w-3.5 h-3.5" />
@@ -2335,7 +2395,7 @@ export default function BookPage() {
       <Suspense
         fallback={
           <div className="min-h-screen flex items-center justify-center bg-[#F3F1EE]">
-            <Loader2 className="animate-spin text-[#D4541A] w-10 h-10" />
+            <Loader2 className="animate-spin text-[#2563EB] w-10 h-10" />
           </div>
         }
       >

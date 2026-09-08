@@ -34,8 +34,8 @@ interface RealitySectionProps {
 
 const defaultVideos: RealityVideo[] = [
   {
-    title: "Solo Girl Review",
-    sub: "(with Youthcamping)",
+    title: "Solo Traveler Experience",
+    sub: "(Verified Review)",
     img: "https://images.unsplash.com/photo-1527631746610-bca00a040d60?q=80&w=2070",
     url: "https://www.youtube.com/embed/j6hb-iOZalE",
   },

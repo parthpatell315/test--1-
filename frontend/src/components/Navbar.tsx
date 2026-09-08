@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { useTheme } from "@/components/DynamicThemeProvider";
 
+import { BrandLogo, brandConfig } from "@/config/brand.config";
+
 interface NavLink {
   id?: string;
   name?: string;
@@ -16,9 +18,9 @@ interface NavLink {
 
 const defaultNavLinks: NavLink[] = [
   { id: "nav-home", name: "Home", href: "/" },
-  { id: "nav-trips", name: "Trips", href: "/trips" },
-  { id: "nav-[#D4541A]", name: "About Us", href: "/about-us" },
-  { id: "nav-contact", name: "Contact Us", href: "/contact" },
+  { id: "nav-trips", name: "Explore Trips", href: "/trips" },
+  { id: "nav-about", name: "About Us", href: "/about-us" },
+  { id: "nav-contact", name: "Contact", href: "/contact" },
 ];
 
 interface NavbarProps {
@@ -27,7 +29,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({
-  logoUrl = "/logo.png",
+  logoUrl,
   navLinks,
 }: NavbarProps) {
   const pathname = usePathname();
@@ -73,7 +75,7 @@ export default function Navbar({
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 px-5 sm:px-8 md:px-10 flex items-center bg-white border-b border-zinc-100/80 h-[80px]",
+          "fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 px-4 sm:px-6 md:px-10 flex items-center bg-white/95 backdrop-blur-md border-b border-slate-200/80 h-[76px]",
         )}
       >
         <div className="max-w-[1440px] w-full mx-auto flex items-center justify-between">
@@ -83,17 +85,11 @@ export default function Navbar({
             className="relative z-[60] flex items-center justify-start shrink-0"
             onClick={() => { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; }}
           >
-            <img
-              src="/logo.png"
-              alt="Youthcamping Logo"
-              width={160}
-              height={44}
-              className="h-10 sm:h-11 max-h-10 sm:max-h-11 w-auto max-w-[160px] object-contain transition-transform hover:scale-105"
-            />
+            <BrandLogo />
           </Link>
 
           {/* DESKTOP NAV LINKS */}
-          <div className="hidden md:flex items-center gap-10 text-[16px] font-semibold text-[#1B2A4A]">
+          <div className="hidden md:flex items-center gap-8 text-[15px] font-semibold text-slate-700">
             {resolvedNavLinks.map((link: any) => {
               const isActive =
                 pathname === link.href ||
@@ -106,28 +102,28 @@ export default function Navbar({
                   <Link
                     href={link.href}
                     className={cn(
-                      "transition-colors hover:text-[#D4541A]",
-                      isActive ? "text-[#1B2A4A] font-bold" : "text-[#555555]",
+                      "transition-colors hover:text-blue-600",
+                      isActive ? "text-blue-600 font-bold" : "text-slate-600",
                     )}
                   >
                     {link.name}
                   </Link>
-                  {/* Active Orange Underline Bar */}
+                  {/* Active Blue Indicator */}
                   {isActive && (
-                    <div className="absolute bottom-0 w-6 h-[3px] bg-[#D4541A] rounded-full" />
+                    <div className="absolute bottom-0 w-5 h-[2.5px] bg-blue-600 rounded-full" />
                   )}
                 </div>
               );
             })}
           </div>
 
-          {/* RIGHT ACTION BUTTONS: Plan Your Trip + Hamburger Menu */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* RIGHT ACTION BUTTON: Plan Your Trip */}
+          <div className="hidden md:flex items-center gap-3">
             <Link
               href="/trips"
-              className="px-7 py-3 bg-[#D4541A] hover:bg-[#B8451A] text-white font-bold text-[16px] rounded-full transition-all shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-95"
+              className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl transition-all shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-95 flex items-center gap-2"
             >
-              Plan Your Trip
+              Explore Trips
             </Link>
           </div>
 
@@ -138,9 +134,9 @@ export default function Navbar({
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMenuOpen ? (
-              <X className="w-6 h-6 text-[#1B2A4A]" />
+              <X className="w-6 h-6 text-slate-900" />
             ) : (
-              <Menu className="w-6 h-6 text-[#1B2A4A]" />
+              <Menu className="w-6 h-6 text-slate-900" />
             )}
           </button>
         </div>
@@ -149,17 +145,17 @@ export default function Navbar({
       {/* MOBILE FULL-SCREEN OVERLAY MENU */}
       <div
         className={cn(
-          "fixed inset-0 bg-white z-[9998] transition-transform duration-300 md:hidden flex flex-col pt-28 px-6 sm:px-8 gap-4 overflow-y-auto",
+          "fixed inset-0 bg-white z-[9998] transition-transform duration-300 md:hidden flex flex-col pt-24 px-6 sm:px-8 gap-4 overflow-y-auto",
           isMenuOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           {resolvedNavLinks.map((link: any) => (
             <Link
               key={link.id}
               href={link.href}
               onClick={() => setIsMenuOpen(false)}
-              className="text-lg font-extrabold text-[#1B2A4A] hover:text-[#D4541A] min-h-[52px] flex items-center border-b border-zinc-100/80 px-2 transition-colors"
+              className="text-base font-bold text-slate-800 hover:text-blue-600 min-h-[48px] flex items-center border-b border-slate-100 px-2 transition-colors"
             >
               {link.name}
             </Link>
@@ -169,9 +165,9 @@ export default function Navbar({
         <Link
           href="/trips"
           onClick={() => setIsMenuOpen(false)}
-          className="mt-6 w-full min-h-[56px] bg-[#D4541A] text-white text-center font-extrabold text-base rounded-full shadow-md flex items-center justify-center active:scale-95 transition-transform"
+          className="mt-4 w-full min-h-[50px] bg-blue-600 text-white text-center font-bold text-base rounded-xl shadow-md shadow-blue-500/20 flex items-center justify-center active:scale-95 transition-transform"
         >
-          Plan Your Trip
+          Explore All Trips
         </Link>
       </div>
     </>

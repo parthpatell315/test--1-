@@ -1,8 +1,8 @@
-﻿import AboutTripCmsEditor from "@/components/admin/trips/AboutTripCmsEditor";
+import AboutTripCmsEditor from "@/components/admin/trips/AboutTripCmsEditor";
 import VariantsManager from "@/components/admin/trips/VariantsManager";
 import ModernTripCalendar from "@/components/admin/trips/ModernTripCalendar";
 import TripSopEditorTab from "@/components/admin/trips/TripSopEditorTab";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,7 +47,16 @@ import {
   MessageSquare,
   MapPin,
   Settings2,
+  Check,
+  Home,
+  Ban,
+  ChevronDown,
 } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Switch } from "@/components/ui/switch";
 import { RichTextEditor } from "./RichTextEditor";
 import { settingsService } from "@/services/settings.service";
@@ -174,6 +183,26 @@ const CATEGORIES = [
   "Bike Expedition",
   "Workation",
   "Spiritual",
+];
+
+const REGIONS = [
+  "Himachal Pradesh",
+  "Himachal Pradesh & Punjab",
+  "Uttarakhand",
+  "Ladakh",
+  "Kashmir",
+  "Rajasthan",
+  "Kerala",
+  "Goa",
+  "Karnataka",
+  "Tamil Nadu",
+  "North East",
+  "Sikkim",
+  "Meghalaya",
+  "Spiti Valley",
+  "Gujarat",
+  "Maharashtra",
+  "International",
 ];
 
 const TabBtn = ({ value, label }: { value: string; label: string }) => (
@@ -496,9 +525,11 @@ export default function TripFormEditor({
       itinerary: [...form.itinerary, emptyDay(form.itinerary.length + 1)],
     });
   const updateDay = (index: number, field: keyof ItineraryDay, value: any) => {
-    const updated = [...form.itinerary];
-    updated[index] = { ...updated[index], [field]: value };
-    setForm({ ...form, itinerary: updated });
+    setForm((prev: any) => {
+      const updated = [...prev.itinerary];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, itinerary: updated };
+    });
   };
   const removeDay = (index: number) => {
     const updated = form.itinerary
@@ -596,17 +627,27 @@ export default function TripFormEditor({
           <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
             Current Status
           </span>
-          <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() =>
+              setForm({
+                ...form,
+                status: form.status === "published" ? "draft" : "published",
+              })
+            }
+            className="flex items-center gap-2 group cursor-pointer"
+            title="Click to toggle Draft / Published"
+          >
             <div
               className={cn(
-                "w-2 h-2 rounded-full",
-                form.status === "published" ? "bg-green-500" : "bg-amber-500",
+                "w-2 h-2 rounded-full transition-colors",
+                form.status === "published" ? "bg-emerald-500" : "bg-amber-500",
               )}
             />
-            <span className="text-sm font-bold uppercase tracking-tight text-slate-900">
+            <span className="text-sm font-bold uppercase tracking-tight text-slate-900 group-hover:text-[#FF5400] transition-colors">
               {form.status || "Draft"}
             </span>
-          </div>
+          </button>
         </div>
       </div>
       <div className="flex gap-3">
@@ -1207,6 +1248,107 @@ export default function TripFormEditor({
                     }
                     className="h-7 w-16 p-0 text-center text-sm font-bold border-0 bg-slate-50 hover:bg-slate-100 focus-visible:ring-0 rounded-md shadow-none"
                   />
+                </div>
+              </div>
+
+              {/* State / Region */}
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  State / Region
+                </Label>
+                <div className="h-8 flex items-center">
+                  <Select
+                    value={form.location || ""}
+                    onValueChange={(val) => setForm({ ...form, location: val })}
+                  >
+                    <SelectTrigger className="h-7 w-auto min-w-[160px] px-3 text-[11px] font-black uppercase tracking-wide border-0 bg-slate-50 hover:bg-slate-100 focus:ring-0 rounded-md shadow-none whitespace-nowrap text-slate-800">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="w-3 h-3 text-[#FF5400]" />
+                        <SelectValue placeholder="Select Region..." />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {REGIONS.map((r) => (
+                        <SelectItem
+                          key={r}
+                          value={r}
+                          className="text-xs font-bold"
+                        >
+                          {r}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <p className="text-[9px] text-slate-400 font-semibold">
+                  Groups this trip under the region on the website
+                </p>
+              </div>
+
+              {/* Trip Status */}
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">
+                  Trip Status
+                </Label>
+                <div className="h-8 flex items-center">
+                  <Select
+                    value={form.status || "draft"}
+                    onValueChange={(val) => setForm({ ...form, status: val })}
+                  >
+                    <SelectTrigger
+                      className={cn(
+                        "h-7 w-auto min-w-[140px] px-3 text-[11px] font-black uppercase tracking-wide border-0 bg-slate-50 hover:bg-slate-100 focus:ring-0 rounded-md shadow-none whitespace-nowrap",
+                        form.status === "published"
+                          ? "text-emerald-600"
+                          : form.status === "archived"
+                            ? "text-slate-400"
+                            : "text-amber-600",
+                      )}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className={cn(
+                            "w-2 h-2 rounded-full",
+                            form.status === "published"
+                              ? "bg-emerald-500"
+                              : form.status === "archived"
+                                ? "bg-slate-400"
+                                : "bg-amber-500",
+                          )}
+                        />
+                        <SelectValue placeholder="Select..." />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        value="draft"
+                        className="text-xs font-bold"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-amber-500" />
+                          Draft
+                        </span>
+                      </SelectItem>
+                      <SelectItem
+                        value="published"
+                        className="text-xs font-bold"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                          Published
+                        </span>
+                      </SelectItem>
+                      <SelectItem
+                        value="archived"
+                        className="text-xs font-bold"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-slate-400" />
+                          Archived
+                        </span>
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
@@ -3333,39 +3475,95 @@ export default function TripFormEditor({
 
                   {/* Quick Options Row */}
                   <div className="flex flex-wrap items-center gap-2 mt-2">
-                    <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-lg p-1 pr-2">
-                      <select
-                        value={
-                          day.stay === "Night Journey" ? "journey" : "stay"
-                        }
-                        onChange={(e) => {
-                          const val =
-                            e.target.value === "journey"
-                              ? "Night Journey"
-                              : "Stay Included";
-                          updateDay(idx, "stay", val);
-                          if (e.target.value === "journey")
-                            updateDay(idx, "location", "—");
-                        }}
-                        className="h-6 text-[10px] font-bold bg-transparent focus:outline-none cursor-pointer text-slate-600"
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          type="button"
+                          className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-lg p-1 pr-2 hover:bg-slate-100 transition-colors cursor-pointer"
+                        >
+                          <span className="text-[10px] font-bold text-slate-600 px-1">
+                            {day.stay === "Night Journey"
+                              ? "🚌 Night Journey"
+                              : day.stay === "Arrival at Home"
+                                ? "🏠 Arrival at Home (No Stay)"
+                                : day.stay === "No Stay"
+                                  ? "🔴 No Stay / —"
+                                  : "✅ Stay Included"}
+                          </span>
+                          <ChevronDown className="h-3 w-3 text-slate-400" />
+                          {day.stay !== "Night Journey" &&
+                            day.stay !== "Arrival at Home" &&
+                            day.stay !== "No Stay" && (
+                              <>
+                                <div className="w-px h-3 bg-slate-200 mx-0.5" />
+                                <Input
+                                  value={day.location || ""}
+                                  placeholder="Location..."
+                                  onClick={(e) => e.stopPropagation()}
+                                  onChange={(e) =>
+                                    updateDay(idx, "location", e.target.value)
+                                  }
+                                  className="h-6 text-[10px] font-bold border-0 p-0 w-24 bg-transparent focus-visible:ring-0 shadow-none"
+                                />
+                              </>
+                            )}
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent
+                        align="start"
+                        className="w-52 p-1 rounded-xl shadow-lg border border-slate-200"
                       >
-                        <option value="stay">🏨 Stay</option>
-                        <option value="journey">🚌 Night Journey</option>
-                      </select>
-                      {day.stay !== "Night Journey" && (
-                        <>
-                          <div className="w-px h-3 bg-slate-200 mx-1" />
-                          <Input
-                            value={day.location || ""}
-                            placeholder="Location..."
-                            onChange={(e) =>
-                              updateDay(idx, "location", e.target.value)
-                            }
-                            className="h-6 text-[10px] font-bold border-0 p-0 w-24 bg-transparent focus-visible:ring-0 shadow-none"
-                          />
-                        </>
-                      )}
-                    </div>
+                        {[
+                          {
+                            value: "Stay Included",
+                            label: "Stay Included",
+                            icon: <Check className="h-3.5 w-3.5 text-emerald-500" />,
+                          },
+                          {
+                            value: "Night Journey",
+                            label: "Night Journey",
+                            icon: <Car className="h-3.5 w-3.5 text-amber-500" />,
+                          },
+                          {
+                            value: "Arrival at Home",
+                            label: "Arrival at Home (No Stay)",
+                            icon: <Home className="h-3.5 w-3.5 text-blue-500" />,
+                          },
+                          {
+                            value: "No Stay",
+                            label: "No Stay / —",
+                            icon: <Ban className="h-3.5 w-3.5 text-red-400" />,
+                          },
+                        ].map((opt) => (
+                          <button
+                            key={opt.value}
+                            type="button"
+                            className={cn(
+                              "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-[11px] font-semibold text-left transition-colors",
+                              (day.stay || "Stay Included") === opt.value
+                                ? "bg-slate-100 text-slate-900"
+                                : "text-slate-600 hover:bg-slate-50",
+                            )}
+                            onClick={() => {
+                              updateDay(idx, "stay", opt.value);
+                              if (
+                                opt.value === "Night Journey" ||
+                                opt.value === "No Stay" ||
+                                opt.value === "Arrival at Home"
+                              ) {
+                                updateDay(idx, "location", "—");
+                              }
+                            }}
+                          >
+                            {opt.icon}
+                            {opt.label}
+                            {(day.stay || "Stay Included") === opt.value && (
+                              <Check className="h-3 w-3 text-emerald-500 ml-auto" />
+                            )}
+                          </button>
+                        ))}
+                      </PopoverContent>
+                    </Popover>
 
                     <div className="flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-lg p-1 px-2">
                       <span className="text-[10px] font-bold text-slate-500">

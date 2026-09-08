@@ -206,7 +206,7 @@ export default function TripSubNav({ sections }: TripSubNavProps) {
                 type="button"
                 onClick={() => scrollByAmount("left")}
                 aria-label="Show previous sections"
-                className="pointer-events-auto ml-0 flex items-center justify-center w-6 h-6 rounded-full border border-zinc-200/70 bg-white text-zinc-500 hover:text-[#D4541A] hover:border-[#D4541A]/50 transition-colors cursor-pointer"
+                className="pointer-events-auto ml-0 flex items-center justify-center w-6 h-6 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-blue-600 hover:border-blue-300 transition-colors cursor-pointer"
               >
                 <ChevronLeft className="w-3.5 h-3.5" strokeWidth={2.4} />
               </button>
@@ -238,17 +238,17 @@ export default function TripSubNav({ sections }: TripSubNavProps) {
                   }}
                   className={cn(
                     "group relative shrink-0 whitespace-nowrap pb-2 pt-1.5 font-montserrat text-[11px] sm:text-xs font-semibold tracking-[0.1em] transition-colors cursor-pointer",
-                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D4541A]",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600",
                     isActive
-                      ? "text-[#D4541A]"
-                      : "text-zinc-400 hover:text-[#0B1528]",
+                      ? "text-blue-600"
+                      : "text-slate-400 hover:text-slate-900",
                   )}
                 >
                   {section.label}
                   <span
                     aria-hidden="true"
                     className={cn(
-                      "absolute left-1/2 -translate-x-1/2 bottom-0 z-[1] h-[2.5px] w-[14px] rounded-full bg-[#D4541A] transition-transform duration-200 origin-center",
+                      "absolute left-1/2 -translate-x-1/2 bottom-0 z-[1] h-[2.5px] w-[14px] rounded-full bg-blue-600 transition-transform duration-200 origin-center",
                       isActive
                         ? "scale-x-100 opacity-100"
                         : "scale-x-0 opacity-100 group-hover:scale-x-75 group-hover:opacity-40",
@@ -265,7 +265,7 @@ export default function TripSubNav({ sections }: TripSubNavProps) {
                 type="button"
                 onClick={() => scrollByAmount("right")}
                 aria-label="Show more sections"
-                className="pointer-events-auto mr-0 flex items-center justify-center w-6 h-6 rounded-full border border-zinc-200/70 bg-white text-zinc-500 hover:text-[#D4541A] hover:border-[#D4541A]/50 transition-colors cursor-pointer"
+                className="pointer-events-auto mr-0 flex items-center justify-center w-6 h-6 rounded-full border border-slate-200 bg-white text-slate-500 hover:text-blue-600 hover:border-blue-300 transition-colors cursor-pointer"
               >
                 <ChevronRight className="w-3.5 h-3.5" strokeWidth={2.4} />
               </button>

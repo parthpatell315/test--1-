@@ -38,7 +38,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
               className={cn(
                 "flex min-h-[44px] min-w-[56px] flex-1 touch-manipulation flex-col items-center justify-center gap-0.5 rounded-lg px-1 py-1 transition-all active:scale-95",
                 isActive
-                  ? "font-bold text-[#FF4D00]"
+                  ? "font-bold text-blue-600"
                   : "font-medium text-slate-500 hover:text-slate-900",
               )}
             >

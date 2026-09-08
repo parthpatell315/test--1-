@@ -15,16 +15,17 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+import { brandConfig } from "@/config/brand.config";
+
 export const metadata: Metadata = pageMetadata({
-  title: "About Us | YouthCamping",
-  description:
-    "YouthCamping runs small-batch group adventure trips across India, with a focus on safety and local stays.",
+  title: `About Us | ${brandConfig.name}`,
+  description: `${brandConfig.name} curates premier small-batch group adventure tours and expeditions with verified stays and expert trip leadership.`,
   path: "/about-us",
 });
 
 const values = [
   {
-    title: "Boutique Scale & Small Batches",
+    title: "Curated Boutique Groups",
     description:
       "We cap group sizes to ensure every traveler receives personal attention, safe handling, and authentic team camaraderie.",
     icon: Heart,
@@ -36,15 +37,15 @@ const values = [
     icon: Compass,
   },
   {
-    title: "High Altitude Safety & Care",
+    title: "Enterprise Safety & Care",
     description:
-      "Remote mountain travel demands precision. All our trip captains are certified in wilderness first aid and high-altitude protocols.",
+      "Remote travel demands precision. All our trip captains are certified in wilderness first aid and high-altitude emergency protocols.",
     icon: ShieldCheck,
   },
   {
     title: "Sustainable & Conscious Travel",
     description:
-      "We adhere strictly to leave-no-trace principles, supporting local mountain economies and preserving pristine ecosystems.",
+      "We adhere strictly to leave-no-trace principles, supporting local economies and preserving pristine natural ecosystems.",
     icon: Zap,
   },
 ];
@@ -55,30 +56,29 @@ export default function AboutPage() {
   return (
     <div className="bg-white min-h-screen pt-24 font-montserrat pb-20">
       {/* Hero Header */}
-      <section className="py-16 sm:py-20 px-5 sm:px-8 max-w-7xl mx-auto text-center border-b border-zinc-100">
-        <span className="bg-orange-50 text-[#D4541A] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block mb-4 shadow-2xs font-montserrat">
-          OUR STORY & PHILOSOPHY
+      <section className="py-16 sm:py-20 px-5 sm:px-8 max-w-7xl mx-auto text-center border-b border-slate-100">
+        <span className="bg-blue-50 text-blue-600 font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block mb-4 shadow-2xs font-montserrat">
+          OUR STORY & MISSION
         </span>
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-black text-[#0B1528] tracking-tight uppercase leading-none font-montserrat">
-          REDEFINING THE <br />
-          <span className="text-[#D4541A]">MOUNTAIN JOURNEY</span>
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-slate-900 tracking-tight uppercase leading-none font-montserrat">
+          CRAFTING EXTRAORDINARY <br />
+          <span className="text-blue-600">TRAVEL MEMORIES</span>
         </h1>
-        <div className="w-16 h-1.5 bg-[#D4541A] rounded-full mx-auto my-6" />
-        <p className="text-base sm:text-xl text-zinc-600 font-semibold max-w-3xl mx-auto leading-relaxed">
-          YouthCamping was born from a passion for raw, untouched landscapes and
-          authentic group travels across India and beyond.
+        <div className="w-16 h-1 bg-blue-600 rounded-full mx-auto my-6" />
+        <p className="text-base sm:text-xl text-slate-600 font-normal max-w-3xl mx-auto leading-relaxed">
+          {brandConfig.name} was established to connect adventurous travelers with authentic, unforgettable group expeditions across India and beyond.
         </p>
       </section>
 
       {stats.length > 0 && (
-      <section className="bg-[#0B1528] text-white py-12 px-5 sm:px-8 my-12">
+      <section className="bg-[#0F172A] text-white py-12 px-5 sm:px-8 my-12">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {stats.map((st, i) => (
             <div key={i} className="space-y-1">
-              <p className="text-3xl sm:text-5xl font-black text-[#D4541A] font-montserrat">
+              <p className="text-3xl sm:text-5xl font-extrabold text-blue-400 font-montserrat">
                 {st.value}
               </p>
-              <p className="text-xs sm:text-sm font-bold text-zinc-300 uppercase tracking-wider font-montserrat">
+              <p className="text-xs sm:text-sm font-bold text-slate-300 uppercase tracking-wider font-montserrat">
                 {st.label}
               </p>
             </div>
@@ -90,41 +90,36 @@ export default function AboutPage() {
       {/* Story & Philosophy Section */}
       <section className="py-12 px-5 sm:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-          <div className="relative aspect-[4/3] rounded-[28px] overflow-hidden shadow-xl border border-zinc-100">
-            <div className="w-full h-full bg-zinc-200" aria-hidden />
+          <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-slate-100 bg-slate-100">
+            <img
+              src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1000&q=80"
+              alt="Mountain Expedition"
+              className="w-full h-full object-cover"
+            />
           </div>
           <div className="space-y-6">
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#0B1528] tracking-tight leading-tight uppercase font-montserrat">
-              More Than A Travel Company — <br />
-              <span className="text-[#D4541A]">A Community Of Explorers</span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight uppercase font-montserrat">
+              More Than A Travel Brand — <br />
+              <span className="text-blue-600">A Community Of Explorers</span>
             </h2>
-            <div className="space-y-4 text-xs sm:text-sm text-zinc-600 font-semibold leading-relaxed">
+            <div className="space-y-4 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed">
               <p>
-                Founded in 2018, YouthCamping started as a group of passionate
-                mountain enthusiasts exploring the high passes of Himachal
-                Pradesh and Ladakh. Today, we are one of India&apos;s leading
-                experiential travel platforms.
+                {brandConfig.name} brings together passionate explorers to experience remote, breathtaking landscapes with complete peace of mind.
               </p>
               <p>
-                We believe that the best stories are written off the beaten path
-                — sipping hot chai at 14,000 feet, stargazing at remote
-                high-altitude campsites, or exploring ancient Himalayan
-                villages.
+                We believe that the best stories are written off the beaten path — sipping hot chai at 14,000 feet, stargazing at remote high-altitude campsites, or discovering hidden cultural treasures.
               </p>
               <p>
-                Every itinerary is designed with meticulous detail — from
-                handpicked cozy homestays to experienced local drivers and
-                certified trip captains who ensure 100% safety and top-tier
-                hospitality.
+                Every itinerary is designed with meticulous detail — from handpicked verified homestays to experienced local drivers and certified trip captains who ensure 100% safety and top-tier hospitality.
               </p>
             </div>
 
             <div className="pt-2">
               <Link
                 href="/trips"
-                className="inline-flex items-center gap-2 bg-[#D4541A] hover:bg-[#c24813] text-white px-6 py-3.5 rounded-full font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg shadow-orange-500/20 active:scale-95"
+                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-blue-500/20 active:scale-95"
               >
-                <span>Explore Our Expeditions</span>
+                <span>Explore Expeditions</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -133,12 +128,12 @@ export default function AboutPage() {
       </section>
 
       {/* Values Grid */}
-      <section className="py-16 px-5 sm:px-8 max-w-7xl mx-auto border-t border-zinc-100">
+      <section className="py-16 px-5 sm:px-8 max-w-7xl mx-auto border-t border-slate-100">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <span className="text-[#D4541A] font-extrabold text-xs uppercase tracking-widest font-montserrat">
-            WHY TRAVEL WITH US
+          <span className="text-blue-600 font-extrabold text-xs uppercase tracking-widest font-montserrat">
+            WHY CHOOSE US
           </span>
-          <h3 className="text-2xl sm:text-4xl font-black text-[#0B1528] uppercase tracking-tight font-montserrat">
+          <h3 className="text-2xl sm:text-4xl font-extrabold text-slate-900 uppercase tracking-tight font-montserrat">
             OUR CORE FOUNDATIONS
           </h3>
         </div>
@@ -149,15 +144,15 @@ export default function AboutPage() {
             return (
               <div
                 key={i}
-                className="bg-slate-50 border border-zinc-200/80 rounded-[24px] p-6 space-y-3 hover:bg-white hover:border-[#D4541A] hover:shadow-lg transition-all"
+                className="bg-slate-50/80 border border-slate-200/80 rounded-2xl p-6 space-y-3 hover:bg-white hover:border-blue-500 hover:shadow-md transition-all"
               >
-                <div className="w-10 h-10 rounded-xl bg-orange-50 text-[#D4541A] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
                   <Icon className="w-5 h-5" />
                 </div>
-                <h4 className="text-base font-extrabold text-[#0B1528] font-montserrat leading-tight">
+                <h4 className="text-base font-extrabold text-slate-900 font-montserrat leading-tight">
                   {v.title}
                 </h4>
-                <p className="text-xs text-zinc-500 font-semibold leading-relaxed font-montserrat">
+                <p className="text-xs text-slate-500 font-normal leading-relaxed font-montserrat">
                   {v.description}
                 </p>
               </div>

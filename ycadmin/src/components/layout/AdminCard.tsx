@@ -24,12 +24,12 @@ export const AdminCard: React.FC<AdminCardProps> = ({
 
   return (
     <div
-      className={`bg-white rounded-[16px] border border-zinc-100 shadow-sm overflow-hidden ${className}`}
+      className={`bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden ${className}`}
     >
       {(title || extra) && (
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-50 bg-zinc-50/50">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 bg-slate-50/60">
           {typeof title === "string" ? (
-            <h4 className="font-semibold text-zinc-900 tracking-tight">
+            <h4 className="font-semibold text-slate-900 text-sm tracking-tight">
               {title}
             </h4>
           ) : (

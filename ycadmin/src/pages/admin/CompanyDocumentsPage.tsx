@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FileText,
   Search,
@@ -33,7 +33,7 @@ import {
 const DEFAULT_DOCUMENTS: CompanyDocument[] = [
   {
     id: "doc1",
-    name: "YouthCamping GST Registration Certificate",
+    name: "Company GST Registration Certificate",
     category: "GST",
     identifier: "24AAAAA0000A1Z5",
     type: "PDF",

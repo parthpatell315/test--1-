@@ -122,7 +122,7 @@ function ConfirmationContent() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 text-slate-900 gap-4">
-        <Loader2 className="w-12 h-12 animate-spin text-[#D4541A]" />
+        <Loader2 className="w-12 h-12 animate-spin text-[#2563EB]" />
         <p className="text-xs capitalize tracking-widest text-slate-400 font-bold">
           Loading Booking Details...
         </p>
@@ -133,7 +133,7 @@ function ConfirmationContent() {
   const displayBooking = booking || {
     bookingId: bookingId || "YC-PROCESSING",
     status: "Confirmed & Received",
-    tripName: queryTripName || "YouthCamping Expedition",
+    tripName: queryTripName || "Curated Tour Expedition",
     departureDate: queryDate || null,
     pickupCity: queryCity || "Selected Location",
     name: queryName || "Lead Traveler",
@@ -159,7 +159,7 @@ function ConfirmationContent() {
               Booking Request Pending Verification
             </span>
             <h1 className="text-2xl md:text-4xl font-bold tracking-tight text-slate-900 pt-1 leading-tight">
-              Thanks for booking your journey with YouthCamping!
+              Thanks for booking your journey with TravelSphere!
             </h1>
             <p className="text-slate-600 text-sm md:text-base font-medium leading-relaxed pt-1">
               Your booking request has been received. Please note that your
@@ -171,14 +171,14 @@ function ConfirmationContent() {
         </div>
 
         {/* Booking Card */}
-        <div className="bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-2xl">
+        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-2xl">
           {/* Header ID Strip */}
           <div className="bg-slate-50 px-8 py-5 border-b border-slate-100 flex flex-wrap items-center justify-between gap-4">
             <div>
               <span className="text-[10px] text-slate-500 font-bold capitalize tracking-wider">
                 Booking ID
               </span>
-              <p className="text-xl font-bold font-mono text-[#D4541A]">
+              <p className="text-xl font-bold font-mono text-[#2563EB]">
                 {displayBooking.bookingId}
               </p>
             </div>
@@ -266,7 +266,7 @@ function ConfirmationContent() {
                         {displayBooking.age || "N/A"}
                       </p>
                     </div>
-                    <span className="text-[9px] font-bold bg-[#D4541A]/10 text-[#D4541A] px-2 py-0.5 rounded capitalize">
+                    <span className="text-[9px] font-bold bg-[#2563EB]/10 text-[#2563EB] px-2 py-0.5 rounded capitalize">
                       Lead
                     </span>
                   </div>
@@ -297,7 +297,7 @@ export default function BookingConfirmationPage() {
     <Suspense
       fallback={
         <div className="min-h-screen flex items-center justify-center bg-slate-50">
-          <Loader2 className="animate-spin text-[#D4541A] w-10 h-10" />
+          <Loader2 className="animate-spin text-[#2563EB] w-10 h-10" />
         </div>
       }
     >

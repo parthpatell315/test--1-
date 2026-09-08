@@ -16,13 +16,14 @@ import { AdminLayout } from "@/components/admin/AdminLayout";
 import { useAuthStore } from "@/store/auth.store";
 import { hasPermission } from "@/lib/permissions";
 import { Loader2 } from "lucide-react";
+import { brandConfig } from "@/config/brand.config";
 
 const LoadingUI = () => (
   <div className="flex h-screen w-screen items-center justify-center bg-slate-50">
     <div className="flex flex-col items-center gap-3">
-      <Loader2 className="h-8 w-8 animate-spin text-[#FF4D00]" />
+      <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       <p className="text-xs font-semibold text-slate-500">
-        Loading YouthCamping OS...
+        Loading {brandConfig.name}...
       </p>
     </div>
   </div>
@@ -200,8 +201,9 @@ function AdminRoute({
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   const checkAuth = useAuthStore((state) => state.checkAuth);
   useEffect(() => {
+    document.title = `${brandConfig.name} — Cloud ERP & Operations`;
     checkAuth();
-  }, []);
+  }, [checkAuth]);
   return <>{children}</>;
 };
 

@@ -34,6 +34,8 @@ export function truncateMeta(text: string, max = 160): string {
   return `${(lastSpace > 80 ? cut.slice(0, lastSpace) : cut).trim()}…`;
 }
 
+import { brandConfig } from "@/config/brand.config";
+
 export function pageMetadata(opts: {
   title: string;
   description: string;
@@ -58,7 +60,7 @@ export function pageMetadata(opts: {
       title: opts.title,
       description: opts.description,
       url,
-      siteName: "YouthCamping",
+      siteName: brandConfig.name,
       images: [{ url: image, width: 1200, height: 630 }],
       locale: "en_IN",
       type: "website",
@@ -82,7 +84,7 @@ export function tripSeoFields(trip: Trip) {
     (typeof seo.metaTitle === "string" && seo.metaTitle.trim()) ||
     (typeof seo.title === "string" && seo.title.trim()) ||
     (typeof trip.title === "string" && trip.title.trim()) ||
-    "YouthCamping Trip";
+    `${brandConfig.name} Tour`;
 
   const fromSeo =
     (typeof seo.metaDescription === "string" && seo.metaDescription.trim()) ||
@@ -98,7 +100,7 @@ export function tripSeoFields(trip: Trip) {
     const bits = [trip.title, trip.location, trip.duration].filter(Boolean);
     description = bits.length
       ? `${bits.join(" · ")}.`
-      : "YouthCamping group adventure trip.";
+      : `${brandConfig.name} curated group adventure trip.`;
   }
 
   const image =

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import {
   bookingLinksService,
   type BookingLinkRecord,
@@ -135,7 +135,7 @@ export default function BookingLinksPage() {
     pickupCity: "",
     customTime: "9:00 AM – 6:00 PM IST",
     headerTitle: "Complete your booking",
-    headerSubtitle: "Secure checkout · YouthCamping",
+    headerSubtitle: `Secure checkout · ${brandConfig.name}`,
     expiresAt: "",
     customerName: "",
     customerPhone: "",
@@ -289,7 +289,7 @@ export default function BookingLinksPage() {
     setShareUrl(url);
     const dateStr = selectedDate ? formatDate(selectedDate) : "";
     const tripStr = link.tripName || selectedTrip?.title || "";
-    const msg = `Hello 😊\n\nPlease complete your booking here:\n${url}\n\nTrip: ${tripStr}\nDate: ${dateStr}\n\nTeam YouthCamping 🏕️`;
+    const msg = `Hello 😊\n\nPlease complete your booking here:\n${url}\n\nTrip: ${tripStr}\nDate: ${dateStr}\n\nTeam ${brandConfig.name} ✨`;
     setShareMsg(msg);
     setShareOpen(true);
   };

@@ -12,12 +12,13 @@ import {
 } from "lucide-react";
 import { OptimizedImage } from "@/components/ui/OptimizedImage";
 
+import { brandConfig } from "@/config/brand.config";
+
 export const revalidate = 30;
 
 export const metadata: Metadata = pageMetadata({
-  title: "Traveller Reviews | YouthCamping",
-  description:
-    "Read authentic YouthCamping trip reviews from travellers on group adventures across India.",
+  title: `Traveler Reviews | ${brandConfig.name}`,
+  description: `Read authentic ${brandConfig.name} trip reviews and experiences from travelers across India.`,
   path: "/reviews",
 });
 
@@ -44,33 +45,32 @@ export default async function ReviewsPage() {
             <div className="max-w-3xl">
               <Link
                 href="/"
-                className="inline-flex items-center gap-2 text-zinc-400 hover:text-primary-orange mb-8 font-bold text-xs capitalize tracking-widest transition-colors"
+                className="inline-flex items-center gap-2 text-slate-400 hover:text-blue-600 mb-8 font-bold text-xs capitalize tracking-widest transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" /> Back to Home
               </Link>
-              <div className="flex items-center gap-3 text-primary-orange mb-6">
+              <div className="flex items-center gap-3 text-blue-600 mb-6">
                 <MessageCircle className="w-6 h-6" />
                 <span className="font-bold tracking-[0.3em] capitalize text-xs">
                   Community Voices
                 </span>
               </div>
-              <h1 className="text-6xl md:text-8xl font-semibold tracking-tighter text-navy mb-8 leading-[0.9]">
+              <h1 className="text-6xl md:text-8xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[0.9]">
                 Trusted By <br />
-                <span className="text-primary-orange">Travelers</span>
+                <span className="text-blue-600">Travelers</span>
               </h1>
-              <p className="text-zinc-500 text-xl font-medium max-w-xl leading-relaxed">
-                Read authentic stories and experiences from our community. Real
-                people, real adventures.
+              <p className="text-slate-500 text-lg font-normal max-w-xl leading-relaxed">
+                Read authentic stories and verified experiences from our community. Real people, unforgettable journeys.
               </p>
             </div>
 
             {/* Quick Filters Placeholder */}
             <div className="flex flex-wrap gap-4">
-              <button className="px-8 py-4 bg-white border border-zinc-200 rounded-full font-bold text-sm flex items-center gap-3 hover:bg-navy hover:text-white hover:border-navy transition-all shadow-sm">
+              <button className="px-6 py-3 bg-white border border-slate-200 rounded-xl font-bold text-sm flex items-center gap-2 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
                 <Filter className="w-4 h-4" />
                 Filter by Trip
               </button>
-              <button className="px-8 py-4 bg-navy text-white rounded-full font-bold text-sm flex items-center gap-3 shadow-xl hover:bg-primary-orange transition-all">
+              <button className="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm flex items-center gap-2 shadow-md shadow-blue-500/20 hover:bg-blue-700 transition-all">
                 <Sparkles className="w-4 h-4" />
                 Latest Reviews
               </button>

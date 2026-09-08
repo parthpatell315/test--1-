@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,46 +7,46 @@
 @layer base {
   :root {
     /* Brand Color Palette */
-    --color-primary-orange: #ff4d00;
-    --color-navy: #0b1528;
-    --color-text-charcoal: #162b45;
+    --color-primary-orange: #2563eb;
+    --color-navy: #0f172a;
+    --color-text-charcoal: #0f172a;
     --color-white: #ffffff;
 
-    /* Surfaces — warm canvas, not flat grey-white */
-    --primary-hex: #ff4d00;
-    --navy-hex: #0b1528;
+    /* Surfaces — clean neutral SaaS canvas */
+    --primary-hex: #2563eb;
+    --navy-hex: #0f172a;
     --background-hex: #ffffff;
-    --foreground-hex: #162b45;
-    --admin-canvas: #f3f6fb;
-    --admin-canvas-warm: #fff7f2;
-    --admin-hairline: #e8eef4;
-    --admin-orange-soft: #fff1e8;
-    --admin-navy-soft: #eef2f8;
+    --foreground-hex: #0f172a;
+    --admin-canvas: #f8fafc;
+    --admin-canvas-warm: #f8fafc;
+    --admin-hairline: #e2e8f0;
+    --admin-orange-soft: #eff6ff;
+    --admin-navy-soft: #f1f5f9;
     --admin-emerald-soft: #ecfdf5;
     --admin-amber-soft: #fffbeb;
     --admin-sky-soft: #eff6ff;
     --admin-content-max: 1600px;
 
-    /* shadcn tokens — orange is primary action color; navy stays structural */
+    /* shadcn tokens — clean SaaS blue/indigo primary, slate neutrals */
     --background: 210 40% 98%;
-    --foreground: 215 45% 18%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 215 45% 18%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 215 45% 18%;
-    --primary: 16 100% 50%; /* #FF4D00 */
-    --primary-foreground: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221.2 83.2% 53.3%; /* #2563EB */
+    --primary-foreground: 210 40% 98%;
     --secondary: 214 32% 94%;
-    --secondary-foreground: 215 45% 18%;
+    --secondary-foreground: 222 47% 11%;
     --muted: 214 32% 95%;
     --muted-foreground: 215 16% 42%;
-    --accent: 16 100% 96%; /* soft orange wash */
-    --accent-foreground: 16 100% 40%;
+    --accent: 214 32% 95%;
+    --accent-foreground: 222 47% 11%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214 28% 90%;
     --input: 214 28% 90%;
-    --ring: 16 100% 50%;
+    --ring: 221.2 83.2% 53.3%;
     --radius: 8px;
 
     /* Sidebar & Layout Tokens */
@@ -66,14 +66,14 @@
     --radius-lg: 0.75rem;
     --radius-xl: 1rem;
 
-    --sidebar-background: 217 48% 10%; /* #0B1528 */
+    --sidebar-background: 222 47% 11%; /* #0F172A */
     --sidebar-foreground: 210 20% 90%;
-    --sidebar-primary: 16 100% 50%;
+    --sidebar-primary: 221.2 83.2% 53.3%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 40% 16%;
+    --sidebar-accent: 217 33% 17%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 215 35% 16%;
-    --sidebar-ring: 16 100% 50%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 221.2 83.2% 53.3%;
 
     --secondary-hex: #f8fafc;
     --success: 152 60% 40%;
@@ -158,28 +158,16 @@
   }
 
   body {
-    @apply text-[#162B45] antialiased;
-    font-family: "Montserrat", sans-serif !important;
+    @apply text-[#0F172A] antialiased;
+    font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     background-color: var(--admin-canvas);
-    background-image:
-      radial-gradient(
-        ellipse 90% 55% at 100% -10%,
-        rgba(255, 77, 0, 0.09),
-        transparent 55%
-      ),
-      radial-gradient(
-        ellipse 70% 45% at -5% 105%,
-        rgba(11, 21, 40, 0.05),
-        transparent 50%
-      ),
-      linear-gradient(180deg, #f7f9fc 0%, #f3f6fb 45%, #f5f7fa 100%);
+    background-image: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
     background-attachment: fixed;
-    /* Do not lock overflow/position here — AdminLayout main is the touch scroller. */
   }
 
   ::selection {
-    background-color: rgba(255, 77, 0, 0.18);
-    color: #0b1528;
+    background-color: rgba(37, 99, 235, 0.15);
+    color: #0f172a;
   }
 
   h1,
@@ -188,8 +176,8 @@
   h4,
   h5,
   h6 {
-    @apply font-semibold tracking-tight text-[#0B1528];
-    font-family: "Montserrat", sans-serif !important;
+    @apply font-semibold tracking-tight text-[#0F172A];
+    font-family: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   }
 
   /* Hide native spin buttons on number inputs (Chrome/Safari/Firefox) */
@@ -273,31 +261,29 @@
   }
 
   .admin-card {
-    @apply min-w-0 rounded-xl border border-[#E8EEF4] bg-white p-4 sm:p-5;
-    box-shadow:
-      0 1px 2px rgba(11, 21, 40, 0.04),
-      0 10px 28px -16px rgba(255, 77, 0, 0.14);
+    @apply min-w-0 rounded-xl border border-slate-200 bg-white p-4 sm:p-5;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
   }
 
   .admin-card-tint {
     @apply admin-card;
-    background: linear-gradient(180deg, #ffffff 0%, #fffaf7 100%);
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   }
 
   .admin-surface-orange {
-    @apply rounded-xl border border-[#FFD4BF] bg-[#FFF7F2];
+    @apply rounded-xl border border-blue-200 bg-blue-50/50;
   }
 
   .admin-surface-navy {
-    @apply rounded-xl border border-[#D8E0EC] bg-[#EEF2F8];
+    @apply rounded-xl border border-slate-200 bg-slate-100/60;
   }
 
   .admin-surface-emerald {
-    @apply rounded-xl border border-[#A7F3D0] bg-[#ECFDF5];
+    @apply rounded-xl border border-emerald-200 bg-emerald-50/50;
   }
 
   .admin-surface-amber {
-    @apply rounded-xl border border-[#FDE68A] bg-[#FFFBEB];
+    @apply rounded-xl border border-amber-200 bg-amber-50/50;
   }
 
   .admin-chip {
@@ -305,27 +291,27 @@
   }
 
   .admin-chip-orange {
-    @apply admin-chip border-[#FFD4BF] bg-[#FFF1E8] text-[#C2410C];
+    @apply admin-chip border-blue-200 bg-blue-50 text-blue-700;
   }
 
   .admin-chip-navy {
-    @apply admin-chip border-[#D8E0EC] bg-[#EEF2F8] text-[#0B1528];
+    @apply admin-chip border-slate-200 bg-slate-100 text-slate-800;
   }
 
   .admin-chip-emerald {
-    @apply admin-chip border-[#A7F3D0] bg-[#ECFDF5] text-[#047857];
+    @apply admin-chip border-emerald-200 bg-emerald-50 text-emerald-700;
   }
 
   .admin-chip-amber {
-    @apply admin-chip border-[#FDE68A] bg-[#FFFBEB] text-[#B45309];
+    @apply admin-chip border-amber-200 bg-amber-50 text-amber-700;
   }
 
   .admin-chip-sky {
-    @apply admin-chip border-[#BFDBFE] bg-[#EFF6FF] text-[#1D4ED8];
+    @apply admin-chip border-sky-200 bg-sky-50 text-sky-700;
   }
 
   .admin-input {
-    @apply h-9 w-full rounded-lg border border-[#E8EEF4] bg-white px-3 text-xs font-medium text-[#0B1528] placeholder:font-normal placeholder:text-slate-400 transition-colors focus:border-[#FF4D00] focus:outline-none focus:ring-2 focus:ring-[#FF4D00]/20;
+    @apply h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs font-medium text-slate-900 placeholder:font-normal placeholder:text-slate-400 transition-colors focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20;
   }
 
   .admin-button {
@@ -333,8 +319,8 @@
   }
 
   .admin-button-primary {
-    @apply admin-button bg-[#FF4D00] text-white shadow-xs hover:bg-[#E04400];
-    box-shadow: 0 1px 2px rgba(255, 77, 0, 0.25);
+    @apply admin-button bg-blue-600 text-white shadow-xs hover:bg-blue-700;
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
   }
 
   .admin-button-accent {
@@ -342,11 +328,11 @@
   }
 
   .admin-button-secondary {
-    @apply admin-button bg-[#EEF2F8] text-[#0B1528] hover:bg-[#E2E8F0];
+    @apply admin-button bg-slate-100 text-slate-800 hover:bg-slate-200;
   }
 
   .admin-button-outline {
-    @apply admin-button border border-[#E8EEF4] bg-white text-[#0B1528] shadow-xs hover:border-[#FFD4BF] hover:bg-[#FFF7F2] hover:text-[#C2410C];
+    @apply admin-button border border-slate-200 bg-white text-slate-800 shadow-xs hover:border-slate-300 hover:bg-slate-50;
   }
 
   .admin-button-danger {
@@ -354,7 +340,7 @@
   }
 
   .admin-button-ghost {
-    @apply admin-button bg-transparent text-slate-600 hover:bg-[#FFF1E8] hover:text-[#C2410C];
+    @apply admin-button bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-900;
   }
 
   .admin-section {
@@ -362,7 +348,7 @@
   }
 
   .admin-section-band {
-    @apply flex items-center gap-2 rounded-t-xl border-b border-[#E8EEF4] bg-gradient-to-r from-[#FFF7F2] via-white to-[#EEF2F8] px-3 py-2.5 sm:px-4;
+    @apply flex items-center gap-2 rounded-t-xl border-b border-slate-200 bg-gradient-to-r from-slate-50 via-white to-slate-50 px-3 py-2.5 sm:px-4;
   }
 
   .responsive-table {

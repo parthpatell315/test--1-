@@ -8,9 +8,9 @@ import {
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Sitemap | YouthCamping",
+  title: "Sitemap | TravelSphere",
   description:
-    "Browse every public YouthCamping page, trip, story, and destination from one sitemap.",
+    "Browse every public TravelSphere page, trip, story, and destination from one sitemap.",
   path: "/sitemap",
 });
 
@@ -78,17 +78,17 @@ export default async function HtmlSitemapPage() {
 
   return (
     <div className="bg-white min-h-screen pt-24 font-montserrat pb-20">
-      <section className="bg-[#0B1528] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
+      <section className="bg-[#0F172A] text-white py-16 sm:py-20 px-5 sm:px-8 text-center relative overflow-hidden">
         <div className="max-w-4xl mx-auto space-y-3 relative z-10">
-          <span className="bg-white/10 text-[#D4541A] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
+          <span className="bg-white/10 text-[#2563EB] font-extrabold tracking-widest uppercase text-xs px-3.5 py-1.5 rounded-full inline-block">
             Site index
           </span>
           <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
-            SITE<span className="text-[#D4541A]">MAP</span>
+            SITE<span className="text-[#2563EB]">MAP</span>
           </h1>
-          <div className="w-16 h-1.5 bg-[#D4541A] rounded-full mx-auto my-3" />
+          <div className="w-16 h-1.5 bg-[#2563EB] rounded-full mx-auto my-3" />
           <p className="text-xs sm:text-sm text-zinc-300 font-semibold max-w-xl mx-auto leading-relaxed">
-            Every public YouthCamping page, collection, and trip — in one place.
+            Every public TravelSphere page, collection, and trip — in one place.
           </p>
         </div>
       </section>
@@ -125,7 +125,7 @@ function SitemapGroup({
 }) {
   return (
     <section className="space-y-4 border-b border-zinc-100 last:border-b-0 last:pb-0 pb-8">
-      <h2 className="text-lg sm:text-xl font-black text-[#0B1528] uppercase tracking-tight">
+      <h2 className="text-lg sm:text-xl font-black text-[#0F172A] uppercase tracking-tight">
         {title}
       </h2>
       {items.length === 0 ? (
@@ -136,7 +136,7 @@ function SitemapGroup({
             <li key={`${item.href}-${item.label}`}>
               <Link
                 href={item.href}
-                className="text-xs sm:text-sm font-semibold text-zinc-600 hover:text-[#D4541A] transition-colors"
+                className="text-xs sm:text-sm font-semibold text-zinc-600 hover:text-[#2563EB] transition-colors"
               >
                 {item.label}
               </Link>

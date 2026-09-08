@@ -122,7 +122,7 @@ export default function MyBookingsPage() {
             <div className="font-extrabold text-sm tracking-wider mb-6 flex items-center gap-2">
               <img
                 src="/footer-logo.png"
-                alt="YouthCamping"
+                alt="TravelSphere"
                 className="h-12 w-auto object-contain scale-125 origin-left"
               />
             </div>
@@ -133,7 +133,7 @@ export default function MyBookingsPage() {
               >
                 ‹ Back to Tracker
               </button>
-              <div className="w-full text-left py-2.5 px-3 rounded-lg bg-[#ea6d1e] text-white text-xs font-semibold">
+              <div className="w-full text-left py-2.5 px-3 rounded-lg bg-[#2563EB] text-white text-xs font-semibold">
                 My Booking Workspace
               </div>
               <div className="text-slate-500 text-[10px] uppercase font-bold tracking-widest px-3 mt-4 mb-2">
@@ -257,7 +257,7 @@ export default function MyBookingsPage() {
                 className="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all flex flex-col gap-1"
               >
                 <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <DollarSign className="w-3 h-3 text-[#ea6d1e]" /> Payment
+                  <DollarSign className="w-3 h-3 text-[#2563EB]" /> Payment
                 </span>
                 <span className="text-sm font-extrabold text-slate-900">
                   ₹{amountPaid.toLocaleString()}
@@ -272,7 +272,7 @@ export default function MyBookingsPage() {
                 className="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all flex flex-col gap-1"
               >
                 <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <Users className="w-3 h-3 text-[#ea6d1e]" /> Passengers
+                  <Users className="w-3 h-3 text-[#2563EB]" /> Passengers
                 </span>
                 <span className="text-sm font-extrabold text-slate-900">
                   {passengerCount}
@@ -284,7 +284,7 @@ export default function MyBookingsPage() {
 
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all flex flex-col gap-1">
                 <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <Calendar className="w-3 h-3 text-[#ea6d1e]" /> Departure
+                  <Calendar className="w-3 h-3 text-[#2563EB]" /> Departure
                 </span>
                 <span className="text-sm font-extrabold text-slate-900">
                   {daysToGo} Days
@@ -299,7 +299,7 @@ export default function MyBookingsPage() {
                 className="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all flex flex-col gap-1"
               >
                 <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <CheckSquare className="w-3 h-3 text-[#ea6d1e]" /> Operations
+                  <CheckSquare className="w-3 h-3 text-[#2563EB]" /> Operations
                 </span>
                 <span className="text-sm font-extrabold text-slate-900">
                   3/6
@@ -314,7 +314,7 @@ export default function MyBookingsPage() {
                 className="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all flex flex-col gap-1"
               >
                 <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <Ticket className="w-3 h-3 text-[#ea6d1e]" /> Ticketing
+                  <Ticket className="w-3 h-3 text-[#2563EB]" /> Ticketing
                 </span>
                 <span className="text-sm font-extrabold text-slate-900">
                   {selectedBooking.pnrDetails ? "Uploaded" : "Pending"}
@@ -329,7 +329,7 @@ export default function MyBookingsPage() {
                 className="p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all flex flex-col gap-1"
               >
                 <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                  <Activity className="w-3 h-3 text-[#ea6d1e]" /> Activity
+                  <Activity className="w-3 h-3 text-[#2563EB]" /> Activity
                 </span>
                 <span className="text-sm font-extrabold text-slate-900">
                   Live
@@ -358,7 +358,7 @@ export default function MyBookingsPage() {
                     className={cn(
                       "pb-3 text-xs md:text-sm font-bold whitespace-nowrap border-b-2 transition-colors",
                       activeTab === tab.id
-                        ? "text-[#ea6d1e] border-[#ea6d1e]"
+                        ? "text-[#2563EB] border-[#2563EB]"
                         : "text-slate-500 border-transparent hover:text-slate-800",
                     )}
                   >
@@ -499,7 +499,7 @@ export default function MyBookingsPage() {
                             </span>
                           </td>
                           <td className="p-3 text-xs">
-                            <span className="px-2 py-0.5 rounded bg-orange-50 text-[#ea6d1e] text-[10px] font-bold">
+                            <span className="px-2 py-0.5 rounded bg-orange-50 text-[#2563EB] text-[10px] font-bold">
                               Primary Guest
                             </span>
                           </td>
@@ -586,7 +586,7 @@ export default function MyBookingsPage() {
                       </div>
                       <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
                         <div
-                          className="bg-[#ea6d1e] h-full rounded-full transition-all duration-500"
+                          className="bg-[#2563EB] h-full rounded-full transition-all duration-500"
                           style={{ width: `${paymentProgress}%` }}
                         />
                       </div>
@@ -649,7 +649,7 @@ export default function MyBookingsPage() {
                             type="checkbox"
                             readOnly
                             checked={todo.checked}
-                            className="w-4 h-4 accent-[#ea6d1e]"
+                            className="w-4 h-4 accent-[#2563EB]"
                           />
                           <span
                             className={cn(
@@ -758,9 +758,9 @@ export default function MyBookingsPage() {
                     ].map((log, idx) => (
                       <div
                         key={idx}
-                        className="flex gap-4 p-3 bg-slate-50 border-l-4 border-[#ea6d1e] rounded-lg"
+                        className="flex gap-4 p-3 bg-slate-50 border-l-4 border-[#2563EB] rounded-lg"
                       >
-                        <div className="w-2.5 h-2.5 bg-[#ea6d1e] rounded-full mt-1.5 shrink-0" />
+                        <div className="w-2.5 h-2.5 bg-[#2563EB] rounded-full mt-1.5 shrink-0" />
                         <div className="flex-1">
                           <div className="text-xs font-bold text-slate-900">
                             {log.title}
@@ -784,7 +784,7 @@ export default function MyBookingsPage() {
                 Customer Information
               </h4>
               <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 flex flex-col gap-2">
-                <div className="w-10 h-10 bg-[#ea6d1e] text-white rounded-full flex items-center justify-center font-bold text-xs">
+                <div className="w-10 h-10 bg-[#2563EB] text-white rounded-full flex items-center justify-center font-bold text-xs">
                   {selectedBooking.name?.substring(0, 2).toUpperCase()}
                 </div>
                 <div className="font-bold text-xs text-slate-900">

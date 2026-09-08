@@ -126,7 +126,7 @@ export default function Hero({
           <button
             onClick={prevSlide}
             aria-label="Previous Slide"
-            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-[#D4541A] text-white flex items-center justify-center transition-all border border-white/20 shadow-lg cursor-pointer active:scale-95"
+            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-blue-600 text-white flex items-center justify-center transition-all border border-white/20 shadow-lg cursor-pointer active:scale-95"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -134,7 +134,7 @@ export default function Hero({
           <button
             onClick={nextSlide}
             aria-label="Next Slide"
-            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-[#D4541A] text-white flex items-center justify-center transition-all border border-white/20 shadow-lg cursor-pointer active:scale-95"
+            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-black/50 hover:bg-blue-600 text-white flex items-center justify-center transition-all border border-white/20 shadow-lg cursor-pointer active:scale-95"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -152,8 +152,8 @@ export default function Hero({
         >
           {/* TOP TAGLINE */}
           {displayTagline && (
-            <p className="text-[#D4541A] font-extrabold text-xs sm:text-sm tracking-[2.5px] uppercase mb-3 font-montserrat flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#D4541A] inline-block animate-pulse" />
+            <p className="text-blue-400 font-extrabold text-xs sm:text-sm tracking-[2.5px] uppercase mb-3 font-montserrat flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-blue-400 inline-block animate-pulse" />
               {displayTagline}
             </p>
           )}
@@ -167,7 +167,7 @@ export default function Hero({
                   <span className="relative inline-block text-white whitespace-nowrap">
                     {strikethroughWord}
                     <svg
-                      className="absolute -left-2 top-1/2 -translate-y-1/2 w-[114%] h-[24px] sm:h-[34px] md:h-[42px] text-[#D4541A] pointer-events-none overflow-visible"
+                      className="absolute -left-2 top-1/2 -translate-y-1/2 w-[114%] h-[24px] sm:h-[34px] md:h-[42px] text-blue-400 pointer-events-none overflow-visible"
                       viewBox="0 0 120 30"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -195,7 +195,7 @@ export default function Hero({
                           duration: 0.45,
                           ease: [0.25, 0.1, 0.25, 1.0],
                         }}
-                        className="text-[#D4541A] font-black inline-block whitespace-nowrap"
+                        className="text-blue-400 font-black inline-block whitespace-nowrap"
                       >
                         {rotWords[wordIdx % rotWords.length]}
                       </motion.span>
@@ -208,7 +208,7 @@ export default function Hero({
 
           {/* SUBTITLE */}
           {displaySubheadline && (
-            <p className="text-zinc-200 text-sm sm:text-base md:text-lg font-montserrat font-medium leading-relaxed max-w-[580px] drop-shadow-md mt-2">
+            <p className="text-slate-200 text-sm sm:text-base md:text-lg font-montserrat font-medium leading-relaxed max-w-[580px] drop-shadow-md mt-2">
               {displaySubheadline}
             </p>
           )}
@@ -224,7 +224,7 @@ export default function Hero({
                 aria-label={`Go to slide ${dotIdx + 1}`}
                 className={`rounded-full transition-all duration-300 cursor-pointer ${
                   dotIdx === currentSlide
-                    ? "w-8 h-2.5 bg-[#D4541A]"
+                    ? "w-8 h-2.5 bg-blue-500"
                     : "w-2.5 h-2.5 bg-white/60 hover:bg-white"
                 }`}
               />

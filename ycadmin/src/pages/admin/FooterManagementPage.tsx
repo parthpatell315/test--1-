@@ -24,6 +24,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import api from "@/services/api";
+import { brandConfig } from "@/config/brand.config";
 
 interface LinkItem {
   id: string;
@@ -64,7 +65,7 @@ export default function FooterManagementPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [footerConfig, setFooterConfig] = useState<FooterConfig>({
-    brandName: "YOUTHCAMPING",
+    brandName: brandConfig.name.toUpperCase(),
     address: "",
     phone: "",
     email: "",
@@ -85,7 +86,7 @@ export default function FooterManagementPage() {
         const data = await settingsService.getFooter();
         setFooterConfig(
           data || {
-            brandName: "YOUTHCAMPING",
+            brandName: brandConfig.name.toUpperCase(),
             address: "",
             phone: "",
             email: "",

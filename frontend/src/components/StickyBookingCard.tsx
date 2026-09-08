@@ -82,7 +82,7 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
 
           <button
             onClick={handleWhatsAppBooking}
-            className="w-full py-4 bg-[#D4541A] text-white rounded-[16px] font-bold text-sm uppercase tracking-wide hover:bg-[#c2460e] transition-all shadow-lg text-center font-montserrat cursor-pointer active:scale-98 mb-3"
+            className="w-full py-3.5 bg-blue-600 text-white rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-blue-700 transition-all shadow-md shadow-blue-500/20 text-center font-montserrat cursor-pointer active:scale-98 mb-3"
           >
             Book My Spot
           </button>
@@ -106,19 +106,19 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
         </div>
 
         {/* Private Trips Available Card */}
-        <div className="bg-white border border-zinc-100 rounded-[20px] p-5 shadow-xs">
-          <h4 className="text-[#0B1528] font-bold text-sm font-montserrat mb-0.5">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+          <h4 className="text-slate-900 font-bold text-sm font-montserrat mb-0.5">
             Private Trips Available
           </h4>
-          <p className="text-zinc-400 font-medium text-xs font-montserrat mb-4">
+          <p className="text-slate-400 font-medium text-xs font-montserrat mb-4">
             for Group of 12+ Travellers
           </p>
           <button
             onClick={handleWhatsAppBooking}
-            className="w-full py-2.5 px-4 border border-zinc-200 rounded-xl text-xs font-bold text-[#0B1528] hover:bg-zinc-50 transition-all font-montserrat flex items-center justify-center gap-2 shadow-2xs cursor-pointer"
+            className="w-full py-2.5 px-4 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-all font-montserrat flex items-center justify-center gap-2 shadow-2xs cursor-pointer"
           >
             <svg
-              className="w-4 h-4 text-[#D4541A]"
+              className="w-4 h-4 text-blue-600"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -137,7 +137,7 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
         {/* Chat on WhatsApp Card */}
         <button
           onClick={handleWhatsAppBooking}
-          className="w-full bg-white border border-zinc-100 rounded-[20px] p-4 shadow-xs flex items-center justify-center gap-3 text-sm font-bold text-[#0B1528] hover:bg-zinc-50 transition-all font-montserrat cursor-pointer"
+          className="w-full bg-white border border-slate-200 rounded-2xl p-4 shadow-xs flex items-center justify-center gap-3 text-sm font-bold text-slate-800 hover:bg-slate-50 transition-all font-montserrat cursor-pointer"
         >
           <div className="w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white shrink-0 shadow-2xs">
             <MessageCircle className="w-4.5 h-4.5 fill-current" />
@@ -146,12 +146,12 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
         </button>
 
         {/* Got Questions? Dark Navy Card */}
-        <div className="bg-[#0B1528] rounded-[24px] p-6 text-white shadow-xl space-y-4 border border-slate-800">
-          <h4 className="text-lg font-extrabold font-montserrat tracking-tight">
+        <div className="bg-[#0F172A] rounded-2xl p-6 text-white shadow-xl space-y-4 border border-slate-800">
+          <h4 className="text-base font-extrabold font-montserrat tracking-tight">
             Got Questions?
           </h4>
-          <p className="text-zinc-400 text-xs font-montserrat leading-relaxed">
-            We're here to help. Chat with our team for any queries.
+          <p className="text-slate-400 text-xs font-montserrat leading-relaxed">
+            We're here to help. Chat with our team for any customized queries.
           </p>
 
           <div className="space-y-2.5 pt-2">
@@ -164,7 +164,7 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
                 key={i}
                 className="flex items-center gap-2.5 text-xs font-bold text-white font-montserrat"
               >
-                <div className="w-4 h-4 rounded-full bg-[#D4541A] flex items-center justify-center shrink-0">
+                <div className="w-4 h-4 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
                   <svg
                     className="w-2.5 h-2.5 text-white"
                     fill="none"
@@ -187,21 +187,21 @@ export default function StickyBookingCard({ trip }: StickyBookingCardProps) {
       </div>
 
       {/* Mobile Sticky CTA Bar (Always Fixed at Bottom on Mobile) */}
-      <div className="fixed bottom-0 left-0 right-0 z-[9999] lg:hidden bg-white/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.08)] border-t border-zinc-200/80 px-4 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom))]">
+      <div className="fixed bottom-0 left-0 right-0 z-[9999] lg:hidden bg-white/95 backdrop-blur-md shadow-[0_-4px_20px_rgba(0,0,0,0.08)] border-t border-slate-200 px-4 py-2.5 pb-[calc(10px+env(safe-area-inset-bottom))]">
         <div className="flex items-center justify-between gap-3">
           <div className="flex flex-col shrink-0">
-            <span className="text-xl font-extrabold text-[#0B1528] leading-none font-montserrat">
+            <span className="text-xl font-extrabold text-slate-900 leading-none font-montserrat">
               {priceLabel}
             </span>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">
+              <span className="text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                 per person
               </span>
             </div>
           </div>
           <button
             onClick={handleWhatsAppBooking}
-            className="flex-1 max-w-[200px] h-12 min-h-[48px] bg-[#D4541A] text-white px-6 rounded-xl font-extrabold text-sm uppercase tracking-wider active:scale-95 transition-all shadow-md flex items-center justify-center font-montserrat"
+            className="flex-1 max-w-[200px] h-11 min-h-[44px] bg-blue-600 text-white px-6 rounded-xl font-bold text-sm uppercase tracking-wider active:scale-95 transition-all shadow-md shadow-blue-500/20 flex items-center justify-center font-montserrat"
           >
             Book Now
           </button>

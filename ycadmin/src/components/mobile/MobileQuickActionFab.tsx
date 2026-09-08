@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Plus,
@@ -31,7 +31,7 @@ export const MobileQuickActionFab: React.FC<MobileQuickActionFabProps> = ({
       label: "New Booking",
       desc: "Record customer reservation",
       icon: Ticket,
-      color: "bg-[#FF4D00]/5 text-[#FF5400] border-[#FF4D00]/20",
+      color: "bg-blue-50 text-blue-600 border-blue-100",
       onClick: () => {
         setIsOpen(false);
         onOpenNewBooking();
@@ -42,7 +42,7 @@ export const MobileQuickActionFab: React.FC<MobileQuickActionFabProps> = ({
       label: "Create Quotation",
       desc: "Generate trip itinerary PDF",
       icon: FileText,
-      color: "bg-[#FF4D00]/5 text-[#FF4D00] border-[#FF4D00]/20",
+      color: "bg-indigo-50 text-indigo-600 border-indigo-100",
       onClick: () => {
         setIsOpen(false);
         navigate("/admin/quotations/new");
@@ -78,7 +78,7 @@ export const MobileQuickActionFab: React.FC<MobileQuickActionFabProps> = ({
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="flex h-14 w-14 touch-manipulation items-center justify-center rounded-full border-2 border-white bg-[#FF4D00] text-white shadow-lg shadow-orange-500/30 transition-transform active:scale-90"
+          className="flex h-14 w-14 touch-manipulation items-center justify-center rounded-full border-2 border-white bg-blue-600 text-white shadow-lg shadow-blue-500/25 transition-transform active:scale-90"
           aria-label="Quick actions"
         >
           <Plus className="h-6 w-6 stroke-[2.5px]" />

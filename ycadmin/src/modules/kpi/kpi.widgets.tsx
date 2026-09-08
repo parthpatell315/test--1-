@@ -61,22 +61,22 @@ function KpiCard({
   return (
     <div
       onClick={onClick}
-      className="flex h-full min-h-[92px] min-w-0 cursor-pointer flex-col justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-3.5 shadow-[0_1px_4px_0_rgba(0,0,0,0.06)] transition-all duration-200 hover:border-[#FF4D00]/40 hover:shadow-[0_4px_20px_0_rgba(255,77,0,0.08)]"
+      className="flex h-full min-h-[92px] min-w-0 cursor-pointer flex-col justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm transition-all duration-200 hover:border-blue-500/30 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="min-w-0 text-[10px] font-bold uppercase leading-tight tracking-widest text-slate-500">
+        <span className="min-w-0 text-[10px] font-bold uppercase leading-tight tracking-wider text-slate-500">
           {label}
         </span>
         <KpiIcon icon={icon} />
       </div>
       <div className="min-w-0">
-        <h3 className="truncate text-[18px] font-bold leading-none tracking-tight text-[#0B1528]">
+        <h3 className="truncate text-[18px] font-bold leading-none tracking-tight text-slate-900">
           {loading ? <span className="animate-pulse text-slate-300">...</span> : value}
         </h3>
         <p className="mt-1.5 flex items-center gap-1 truncate text-[10px] font-medium leading-none text-slate-500">
           {trend ? (
             <TrendingUp
-              className="h-2.5 w-2.5 shrink-0 text-[#FF4D00]"
+              className="h-2.5 w-2.5 shrink-0 text-blue-600"
               strokeWidth={2}
             />
           ) : null}

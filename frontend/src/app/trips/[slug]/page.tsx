@@ -20,6 +20,8 @@ import TripDetailView from "@/components/TripDetailView";
 import Link from "next/link";
 import TripInquiryAutoTrigger from "@/components/TripInquiryAutoTrigger";
 
+import { brandConfig } from "@/config/brand.config";
+
 export async function generateMetadata({
   params,
 }: {
@@ -30,15 +32,15 @@ export async function generateMetadata({
   const trip = tripResult.ok ? tripResult.data : null;
   if (!trip) {
     return pageMetadata({
-      title: "Trip | YouthCamping",
-      description: "YouthCamping group adventure trip.",
+      title: `Tour | ${brandConfig.name}`,
+      description: brandConfig.subtitle,
       path: `/trips/${slug}`,
       index: false,
     });
   }
   const seo = tripSeoFields(trip);
   return pageMetadata({
-    title: seo.title,
+    title: `${seo.title} | ${brandConfig.name}`,
     description: seo.description,
     path: `/trips/${slug}`,
     image: normalizeImageUrl(seo.image) || seo.image,
@@ -124,13 +126,13 @@ export default async function TripDetailPage({
             return (
               <div>
                 <h1
-                  style={{ fontWeight: 800, color: "#0B1528" }}
-                  className="text-[26px] sm:text-[34px] md:text-[40px] font-black tracking-tight leading-[1.15] font-montserrat"
+                  style={{ fontWeight: 800, color: "#0F172A" }}
+                  className="text-[26px] sm:text-[34px] md:text-[40px] font-extrabold tracking-tight leading-[1.15] font-montserrat"
                 >
                   {main}
                 </h1>
                 {sub && (
-                  <span className="font-caveat font-bold text-[#D4541A] text-[28px] sm:text-[36px] md:text-[42px] leading-tight block mt-0.5">
+                  <span className="font-bold text-blue-600 text-lg sm:text-xl md:text-2xl leading-tight block mt-1">
                     {sub}
                   </span>
                 )}

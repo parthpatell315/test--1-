@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/auth.store";
 import { Input } from "@/components/ui/input";
@@ -14,9 +14,14 @@ import {
   Lock,
   Mail,
   ShieldCheck,
+  Compass,
+  CreditCard,
+  Users,
+  CheckCircle2,
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "@/services/api";
+import { BrandLogo, brandConfig } from "@/config/brand.config";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -85,76 +90,99 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-[#ECECF0] font-sans p-3 sm:p-6 md:p-10 select-none">
+    <div className="min-h-screen w-full flex items-center justify-center bg-slate-100/80 font-sans p-3 sm:p-6 md:p-10 select-none">
       {/* Outer Card Wrapper */}
-      <div className="w-full max-w-[1080px] bg-white rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] border border-white/60 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[620px]">
+      <div className="w-full max-w-[1040px] bg-white rounded-2xl shadow-[0_12px_48px_rgba(15,23,42,0.08)] border border-slate-200/80 overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
         
-        {/* ─── LEFT HERO PANEL (Scenic Dusk Mountain + Tent) ─── */}
-        <div
-          className="lg:col-span-6 relative bg-cover bg-center p-8 sm:p-12 flex flex-col justify-between text-white min-h-[380px] lg:min-h-full"
-          style={{ backgroundImage: `url('/camping_mountain_bg.png')` }}
-        >
-          {/* Dark Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/20 pointer-events-none" />
+        {/* ─── LEFT HERO PANEL (Modern Slate SaaS Showcase) ─── */}
+        <div className="lg:col-span-6 relative bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0B1528] p-8 sm:p-12 flex flex-col justify-between text-white min-h-[360px] lg:min-h-full border-r border-slate-800/60">
+          
+          {/* Top Hero Brand */}
+          <div className="relative z-10 space-y-6">
+            <div className="flex items-center gap-3">
+              <BrandLogo className="h-9 w-9" iconClassName="h-5 w-5" />
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-extrabold tracking-tight text-white">
+                  {brandConfig.name}
+                </span>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-blue-400 bg-blue-500/15 border border-blue-500/30 rounded px-1.5 py-0.5 leading-none">
+                  {brandConfig.badgeText}
+                </span>
+              </div>
+            </div>
 
-          {/* Top Hero Text */}
-          <div className="relative z-10 space-y-1">
-            <h1 className="text-4xl sm:text-5xl font-light tracking-tight text-white/90">
-              One trip
-            </h1>
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#FF5400]">
-              at a time.
-            </h1>
+            <div className="space-y-2 pt-2">
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                Intelligent Travel Operations & ERP
+              </h1>
+              <p className="text-xs sm:text-sm font-normal text-slate-400 max-w-sm leading-relaxed">
+                {brandConfig.tagline}
+              </p>
+            </div>
 
-            <div className="w-10 h-1 bg-[#FF5400] rounded-full my-4" />
-
-            <p className="text-xs sm:text-sm font-medium text-white/80 max-w-xs leading-relaxed">
-              The all-in-one ERP built for YouthCamping operations.
-            </p>
+            {/* Value Proposition Badges */}
+            <div className="pt-2 space-y-2.5 max-w-sm">
+              <div className="flex items-center gap-2.5 text-xs text-slate-300">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                <span>Centralized Booking & Passenger Manifests</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-xs text-slate-300">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                <span>Real-time Departure & Vendor Management</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-xs text-slate-300">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                <span>Automated P&L, Ledgers & Daily Cash Closing</span>
+              </div>
+              <div className="flex items-center gap-2.5 text-xs text-slate-300">
+                <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+                <span>Role-Based Access Control & Full Audit Trail</span>
+              </div>
+            </div>
           </div>
 
-
+          {/* Bottom Security Note */}
+          <div className="relative z-10 pt-8 flex items-center gap-2 text-[11px] text-slate-400 border-t border-white/[0.08]">
+            <ShieldCheck className="h-4 w-4 text-blue-400" />
+            <span>Enterprise-grade security and encrypted authentication</span>
+          </div>
         </div>
 
-        {/* ─── RIGHT FORM PANEL (Crisp White Overlapping Card Layout) ─── */}
+        {/* ─── RIGHT FORM PANEL (Clean White Form Layout) ─── */}
         <div className="lg:col-span-6 bg-white p-8 sm:p-12 md:p-14 flex flex-col justify-between relative">
           
-          {/* Brand Header */}
+          {/* Brand Header for Form */}
           <div className="text-center space-y-2">
-            <div className="flex justify-center items-center">
-              <img
-                src="/logo.png"
-                alt="YouthCamping Logo"
-                className="h-10 w-auto object-contain"
-              />
+            <div className="inline-flex items-center justify-center">
+              <BrandLogo className="h-10 w-10" iconClassName="h-5 w-5" />
             </div>
-            <div className="inline-block">
-              <span className="text-[10px] font-extrabold tracking-widest text-[#FF5400] bg-[#FF4D00]/5/80 uppercase px-3.5 py-1 rounded-full border border-[#FF4D00]/30/50">
-                ADMIN PORTAL
+            <div>
+              <span className="text-[10px] font-bold tracking-widest text-blue-600 bg-blue-50 uppercase px-3 py-1 rounded-full border border-blue-200">
+                STAFF & ADMIN PORTAL
               </span>
             </div>
           </div>
 
           {view === "login" ? (
             /* ─── LOGIN FORM VIEW ─── */
-            <div className="space-y-6 my-auto py-4">
+            <div className="space-y-5 my-auto py-4">
               {/* Heading */}
               <div className="text-center space-y-1">
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  Welcome back!
+                  Welcome back
                 </h2>
                 <p className="text-xs font-medium text-slate-500">
-                  Sign in to access the YouthCamping ERP
+                  Sign in to your {brandConfig.name} workspace
                 </p>
               </div>
 
               {/* Error Alert */}
               {errorMessage && (
-                <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl p-3 text-xs font-medium flex items-start gap-2.5 animate-in fade-in">
-                  <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                <div className="bg-rose-50 border border-rose-200 text-rose-700 rounded-xl p-3 text-xs font-medium flex items-start gap-2.5 animate-in fade-in">
+                  <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <p className="font-bold text-red-900">Unable to sign in</p>
-                    <p className="text-[11px] text-red-700 mt-0.5">{errorMessage}</p>
+                    <p className="font-bold text-rose-900">Unable to sign in</p>
+                    <p className="text-[11px] text-rose-700 mt-0.5">{errorMessage}</p>
                   </div>
                 </div>
               )}
@@ -173,7 +201,7 @@ export default function LoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@company.com"
-                      className="pl-10 h-11 text-xs rounded-xl border-slate-200 focus-visible:ring-[#FF5400] focus-visible:border-[#FF5400] bg-white font-medium text-slate-900 placeholder:text-slate-400 shadow-2xs"
+                      className="pl-10 h-10 text-xs rounded-lg border-slate-200 focus-visible:ring-blue-600 focus-visible:border-blue-600 bg-white font-medium text-slate-900 placeholder:text-slate-400 shadow-2xs"
                       required
                       disabled={loading}
                     />
@@ -193,7 +221,7 @@ export default function LoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
-                      className="pl-10 pr-10 h-11 text-xs rounded-xl border-slate-200 focus-visible:ring-[#FF5400] focus-visible:border-[#FF5400] bg-white font-medium text-slate-900 placeholder:text-slate-400 shadow-2xs"
+                      className="pl-10 pr-10 h-10 text-xs rounded-lg border-slate-200 focus-visible:ring-blue-600 focus-visible:border-blue-600 bg-white font-medium text-slate-900 placeholder:text-slate-400 shadow-2xs"
                       required
                       disabled={loading}
                     />
@@ -213,13 +241,13 @@ export default function LoginPage() {
                 </div>
 
                 {/* Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between text-xs pt-1">
+                <div className="flex items-center justify-between text-xs pt-0.5">
                   <label className="flex items-center gap-2 cursor-pointer font-medium text-slate-600 select-none">
                     <input
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
-                      className="rounded border-slate-300 text-[#FF5400] focus:ring-[#FF5400] w-4 h-4 accent-[#FF5400]"
+                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-600 w-4 h-4 accent-blue-600"
                     />
                     <span>Remember me</span>
                   </label>
@@ -229,7 +257,7 @@ export default function LoginPage() {
                       setView("forgot");
                       setErrorMessage(null);
                     }}
-                    className="text-[#FF5400] font-semibold hover:underline"
+                    className="text-blue-600 font-semibold hover:underline"
                   >
                     Forgot password?
                   </button>
@@ -239,7 +267,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-11 rounded-xl bg-gradient-to-r from-[#FF5400] to-[#FF3B00] hover:from-[#E04800] hover:to-[#E03300] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-500/25 transition-all active:scale-[0.99] disabled:opacity-70 mt-2 cursor-pointer"
+                  className="w-full h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.99] disabled:opacity-70 mt-2 cursor-pointer"
                 >
                   {loading ? (
                     <>
@@ -257,13 +285,13 @@ export default function LoginPage() {
             </div>
           ) : (
             /* ─── FORGOT PASSWORD VIEW ─── */
-            <div className="space-y-6 my-auto py-4 animate-in fade-in">
+            <div className="space-y-5 my-auto py-4 animate-in fade-in">
               <div className="text-center space-y-1">
                 <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
                   Reset password
                 </h2>
                 <p className="text-xs font-medium text-slate-500">
-                  Enter your admin email to receive reset instructions.
+                  Enter your registered work email to receive password reset instructions.
                 </p>
               </div>
 
@@ -280,7 +308,7 @@ export default function LoginPage() {
                       placeholder="you@company.com"
                       value={forgotEmail}
                       onChange={(e) => setForgotEmail(e.target.value)}
-                      className="pl-10 h-11 text-xs rounded-xl border-slate-200 focus-visible:ring-[#FF5400] bg-white font-medium text-slate-900"
+                      className="pl-10 h-10 text-xs rounded-lg border-slate-200 focus-visible:ring-blue-600 bg-white font-medium text-slate-900"
                       required
                       disabled={loading}
                     />
@@ -290,7 +318,7 @@ export default function LoginPage() {
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="w-full h-11 rounded-xl bg-gradient-to-r from-[#FF5400] to-[#FF3B00] hover:from-[#E04800] hover:to-[#E03300] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-orange-500/25 transition-all"
+                  className="w-full h-10 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all"
                 >
                   {loading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -307,7 +335,7 @@ export default function LoginPage() {
                     setView("login");
                     setErrorMessage(null);
                   }}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-[#FF5400] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors"
                 >
                   <ChevronLeft className="w-4 h-4" /> Back to sign in
                 </button>
@@ -323,13 +351,13 @@ export default function LoginPage() {
               </div>
               <div className="relative flex justify-center text-[10.5px]">
                 <span className="bg-white px-3 text-slate-400 font-medium">
-                  Secure access for authorized YouthCamping personnel
+                  Protected by role-based access control · Authorized users only
                 </span>
               </div>
             </div>
 
             <div className="flex justify-center">
-              <div className="w-8 h-8 rounded-full bg-[#FF4D00]/5 border border-[#FF4D00]/20 text-[#FF5400] flex items-center justify-center shadow-2xs">
+              <div className="w-7 h-7 rounded-full bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shadow-2xs">
                 <Lock className="w-3.5 h-3.5" />
               </div>
             </div>
@@ -340,5 +368,6 @@ export default function LoginPage() {
     </div>
   );
 }
+
 
 

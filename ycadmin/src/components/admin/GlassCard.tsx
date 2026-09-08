@@ -24,7 +24,7 @@ const GlassCard = React.forwardRef<HTMLDivElement, GlassCardProps>(
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
-          "rounded-[2.5rem] border p-10 transition-all duration-500",
+          "rounded-2xl border p-6 transition-all duration-300",
           variants[variant],
           className,
         )}

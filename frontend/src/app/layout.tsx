@@ -57,11 +57,12 @@ const caveat = Caveat({
 
 export const revalidate = 600;
 
+import { brandConfig } from "@/config/brand.config";
+
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "YouthCamping — Adventure Tours for Young India",
-    description:
-      "Book Himachal Pradesh, Ladakh, Kashmir, Kerala group tours. Best adventure trips for young adults from Gujarat.",
+    title: `${brandConfig.name} — ${brandConfig.tagline}`,
+    description: brandConfig.subtitle,
     metadataBase: new URL(PUBLIC_SITE_URL),
     verification: {
       google: "Hy949F--o_wnmU-WH5arwK1zE038hpIyxYIauQQv-FA",
@@ -78,9 +79,9 @@ export async function generateMetadata(): Promise<Metadata> {
       apple: "/apple-touch-icon.png",
     },
     openGraph: {
-      title: "YouthCamping — Adventure Tours for Young India",
-      description: "Book group adventure tours across India.",
-      siteName: "YouthCamping",
+      title: `${brandConfig.name} — ${brandConfig.tagline}`,
+      description: brandConfig.subtitle,
+      siteName: brandConfig.name,
       images: [
         {
           url: `${PUBLIC_SITE_ORIGIN}/logo.png`,
@@ -93,8 +94,8 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: "YouthCamping — Adventure Tours for Young India",
-      description: "Book group adventure tours across India.",
+      title: `${brandConfig.name} — ${brandConfig.tagline}`,
+      description: brandConfig.subtitle,
       images: [`${PUBLIC_SITE_ORIGIN}/logo.png`],
     },
   };
@@ -151,13 +152,13 @@ export default async function RootLayout({
               "@graph": [
                 {
                   "@type": "Organization",
-                  name: "YouthCamping",
+                  name: brandConfig.name,
                   url: PUBLIC_SITE_URL,
                   logo: `${PUBLIC_SITE_ORIGIN}/logo.png`,
                 },
                 {
                   "@type": "WebSite",
-                  name: "YouthCamping",
+                  name: brandConfig.name,
                   url: PUBLIC_SITE_URL,
                 },
               ],

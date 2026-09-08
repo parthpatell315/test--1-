@@ -794,7 +794,7 @@ export default function AccountingPage() {
       if (!collectionAccounts || collectionAccounts.length === 0) {
         return {
           id: "",
-          name: paymentMode === "CASH" ? "Cash Collection Account" : "YouthCamping Company Account",
+          name: paymentMode === "CASH" ? "Cash Collection Account" : "Primary Company Account",
         };
       }
       const normMode = (paymentMode || "UPI").toUpperCase();
@@ -819,7 +819,7 @@ export default function AccountingPage() {
           ) || collectionAccounts.find((a) => a.accountType === "COMPANY");
         if (upiAcc) return { id: upiAcc.id, name: upiAcc.accountName };
       }
-      return { id: collectionAccounts[0]?.id || "", name: collectionAccounts[0]?.accountName || "YouthCamping Company Account" };
+      return { id: collectionAccounts[0]?.id || "", name: collectionAccounts[0]?.accountName || "Primary Company Account" };
     };
 
     bookings.forEach((b) => {
