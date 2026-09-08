@@ -9,6 +9,7 @@
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:report": "playwright show-report",
     "test:all": "npm run test:unit && npm run test:api && npm run test:e2e",
+    "build": "cd frontend && npm install && npm run build",
     "vercel-build": "cd frontend && npm install && npm run build && cd .. && node -e \"const fs = require('fs'); fs.rmSync('.next', {recursive: true, force: true}); fs.cpSync('frontend/.next', '.next', {recursive: true});\"",
     "prepare": "husky"
   },
